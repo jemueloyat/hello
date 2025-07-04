@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Philippine Gaze - Home</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+        body {
+            background: linear-gradient(120deg, #f4f4f4 60%, #ffb300 100%);
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .transparent-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(26,34,51,0.4);
+            display: flex;
+            align-items: center;
+            padding: 16px 40px;
+            z-index: 1000;
+            box-shadow: none;
+        }
+        .transparent-navbar .logo {
+            font-size: 1.7em;
+            font-weight: bold;
+            color: #ffb300;
+            margin-right: 40px;
+        }
+        .transparent-navbar nav {
+            display: flex;
+            gap: 24px;
+        }
+        .transparent-navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .transparent-navbar a:hover,
+        .transparent-navbar a.active {
+            background: rgba(255,179,0,0.15);
+            color: #ffb300;
+        }
+        .search-form {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+        .search-input {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 16px;
+            outline: none;
+            font-size: 1em;
+            margin-right: 8px;
+        }
+        .search-btn {
+            background: #ffb300;
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-btn:hover {
+            background: #e0a800;
+        }
+        .home-hero {
+            margin-top: 120px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .home-hero img {
+            width: 120px;
+            margin-bottom: 16px;
+        }
+        .home-hero h1 {
+            font-size: 2.5em;
+            margin-bottom: 12px;
+            color: #1a2233;
+        }
+        .home-hero p {
+            font-size: 1.2em;
+            color: #444;
+            margin-bottom: 32px;
+        }
+        .recommended-islands {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+        .island-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            padding: 24px;
+            width: 260px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .island-card:hover {
+            transform: translateY(-8px) scale(1.03);
+        }
+        .island-card img {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+        .island-card h3 {
+            margin: 0 0 8px 0;
+            color: #1a2233;
+        }
+        .island-card p {
+            color: #555;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+  <header class="transparent-navbar">
+    <div class="logo">Philippine Gaze</div>
+    <nav>
+      <a href="index.html" class="active">Home</a>
+      <a href="main.html">Main</a>
+      <a href="#stories">Stories</a>
+      <a href="favorites.html">Favorites</a>
+      <button id="logoutBtn" class="logout-button" style="margin-left: auto;">Logout</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="home-hero">
+      <img src="assets/ph-flag.jpg" alt="Philippines Flag" />
+      <h1>Welcome to the Philippines!</h1>
+      <p>Discover the wonders of the Pearl of the Orient Seas.<br />
+        Explore breathtaking islands, vibrant culture, and warm hospitality.
+      </p>
+    </section>
+
+    <section class="recommended-islands">
+      <div class="island-card">
+        <img src="assets/palawan.jpg" alt="Palawan" />
+        <h3>Palawan</h3>
+        <p>Crystal-clear waters, limestone cliffs, and the world-famous Underground River.</p>
+      </div>
+      <div class="island-card">
+        <img src="assets/boracay.jpg" alt="Boracay" />
+        <h3>Boracay</h3>
+        <p>Powdery white sand beaches and vibrant nightlife.</p>
+      </div>
+      <div class="island-card">
+        <img src="assets/siargao.jpg" alt="Siargao" />
+        <h3>Siargao</h3>
+        <p>The surfing capital of the Philippines, also known for its lagoons and island hopping.</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDoijFlD_hJ2mp4FstfSZO4qUPKIzEdmPs",
+      authDomain: "hello-e7a6d.firebaseapp.com",
+      projectId: "hello-e7a6d",
+      storageBucket: "hello-e7a6d.appspot.com",
+      messagingSenderId: "693146874206",
+      appId: "1:693146874206:web:d37f7a3c823fcba4401fcf"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const logoutButton = document.getElementById("logoutBtn");
+    logoutButton.addEventListener("click", () => {
+      signOut(auth)
+        .then(() => {
+          alert("You have been logged out.");
+          window.location.href = "login.html";
+        })
+        .catch((error) => {
+          console.error("Logout failed:", error);
+          alert("Logout failed.");
+        });
+    });
+  </script>
+</body>
+</html>
+

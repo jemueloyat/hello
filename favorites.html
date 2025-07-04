@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Favorites</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <style>
+    .recommended-islands {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      padding: 40px;
+      margin-top: 60px;
+    }
+    .island-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 24px;
+      width: 260px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .island-card:hover {
+      transform: translateY(-8px) scale(1.03);
+    }
+    .island-card img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+    .island-card h3 {
+      margin: 0 0 8px 0;
+      color: #1a2233;
+    }
+    .island-card p {
+      color: #555;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+  <header class="transparent-navbar">
+    <div class="logo">Philippine Gaze</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="main.html">Main</a>
+      <a href="#stories">Stories</a>
+      <a href="favorites.html" class="active">Favorites</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2 style="text-align: center; margin-top: 100px;">My Favorite Places</h2>
+    <section class="recommended-islands" id="favoritesList">
+      <!-- Favorite cards will appear here -->
+    </section>
+  </main>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDoijFlD_hJ2mp4FstfSZO4qUPKIzEdmPs",
+      authDomain: "hello-e7a6d.firebaseapp.com",
+      projectId: "hello-e7a6d",
+      storageBucket: "hello-e7a6d.appspot.com",
+      messagingSenderId: "693146874206",
+      appId: "1:693146874206:web:d37f7a3c823fcba4401fcf"
+    };
+
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        alert("You must be logged in to view favorites.");
+        window.location.href = "login.html";
+        return;
+      }
+
+      const container = document.getElementById("favoritesList");
+
+      try {
+        const userDoc = await db.collection("users").doc(user.uid).get();
+        const data = userDoc.data();
+
+        if (!data || !data.favorites || data.favorites.length === 0) {
+          container.innerHTML = '<p style="text-align:center; color:#666;">You have no favorites yet.</p>';
+          return;
+        }
+
+data.favorites.forEach((spot) => {
+  const card = document.createElement("div");
+  card.className = "island-card";
+  card.innerHTML = `
+    <img src="${spot.image}" alt="${spot.name}">
+    <h3>${spot.name}</h3>
+    ${spot.description ? `<p>${spot.description}</p>` : ""}
+  `;
+  container.appendChild(card);
+});
+
+
+      } catch (error) {
+        console.error("Error loading favorites:", error);
+        container.innerHTML = '<p style="text-align:center; color:red;">Failed to load favorites.</p>';
+      }
+    });
+  </script>
+</body>
+</html>

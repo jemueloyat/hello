@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Philippine Gaze - Main</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .region-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px;
+      margin: 60px 0;
+    }
+    .region-card {
+      width: 300px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .region-card:hover {
+      transform: scale(1.03);
+    }
+    .region-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .region-card h3 {
+      margin: 16px 0;
+      font-size: 1.4rem;
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="search-form">
+  <input type="text" class="search-input" placeholder="Search Luzon destinations...">
+  <button class="search-btn">Search</button>
+</div>
+
+
+  <header class="transparent-navbar">
+    <div class="logo">Philippine Gaze</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="main.html" class="active">Main</a>
+      <a href="#stories">Stories</a>
+      <a href="favorites.html">Favorites</a>
+      <a href="login.html" id="logoutBtn" class="logout-button">Logout</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="region-section">
+      <div class="region-card">
+        <a href="luzon.html">
+          <img src="1_acl_kd5jjbgpwg4irthgtq.jpg" alt="Luzon">
+          <h3>Luzon</h3>
+        </a>
+      </div>
+      <div class="region-card">
+        <a href="visayas.html">
+          <img src="1_acl_kd5jjbgpwg4irthgtq.jpg" alt="Visayas">
+          <h3>Visayas</h3>
+        </a>
+      </div>
+      <div class="region-card">
+        <a href="mindanao.html">
+          <img src="1_acl_kd5jjbgpwg4irthgtq.jpg" alt="Mindanao">
+          <h3>Mindanao</h3>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("logoutBtn")?.addEventListener("click", () => {
+      alert("You have been logged out.");
+      window.location.href = "login.html";
+    });
+  </script>
+  
+</body>
+</html>
