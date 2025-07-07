@@ -4,7 +4,83 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Luzon - Philippine Gaze</title>
-  <link rel="stylesheet" href="luzon.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Netflix-style Overlay */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .modal {
+      background: #1a1a1a;
+      color: white;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 900px;
+      position: relative;
+      animation: fadeIn 0.3s ease-in-out;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .modal h2 {
+      margin-top: 0;
+      font-size: 2rem;
+    }
+
+    .modal p {
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-size: 28px;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .favorite-overlay-btn {
+      margin-top: 20px;
+      background: #ff5252;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .favorite-overlay-btn:hover {
+      background: #ff3333;
+    }
+
+    @keyframes fadeIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+  </style>
 </head>
 <body>
   <header class="transparent-navbar">
@@ -17,56 +93,93 @@
       <a href="mindanao.html">Mindanao</a>
       <a href="favorites.html">Favorites</a>
       <a href="login.html" id="logoutBtn" class="logout-button">Logout</a>
-
     </nav>
   </header>
 
   <main>
     <h2 class="section-title">Top 10 Most Visited</h2>
-    <section class="scroll-row">
-      <!-- 10 cards -->
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 1</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 2</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 3</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 4</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 5</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 6</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 7</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 8</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 9</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 10</h3></div>
-    </section>
+    <div class="scroll-wrapper">
+      <button class="scroll-btn left">&#10094;</button>
+      <section class="scroll-row">
+        <!-- Spots 1 to 10 -->
+        <!-- Only Spot 1 has overlay functionality as example -->
+        <div class="card" onclick="openOverlay('Spot 1', 'assets/43-facts-about-baguio-1689570859.jpg', 'Description for Spot 1')">
+          <img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 1</h3>
+        </div>
+        <!-- Add other spots with optional onclicks later -->
+        <div class="card" onclick="openOverlay('Spot 2', 'assets/43-facts-about-baguio-1689570859.jpg', 'Description for Spot 2')">
+          <img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 2</h3>
+        </div>
+        <div class="card" onclick="openOverlay('Spot 3', 'assets/43-facts-about-baguio-1689570859.jpg', 'Description for Spot 3')">
+          <img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 3</h3>
+        </div>
+        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 4</h3></div>
+        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 5</h3></div>
+        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 6</h3></div>
+        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 7</h3></div>
+        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 8</h3></div>
+        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 9</h3></div>
+        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 10</h3></div>
+      </section>
+      <button class="scroll-btn right">&#10095;</button>
+    </div>
 
     <h2 class="section-title">Historical Destinations</h2>
-    <section class="scroll-row">
-      <!-- 10 cards -->
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 11</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 12</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 13</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 14</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 15</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 16</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 17</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 18</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 19</h3></div>
-      <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 20</h3></div>
-    </section>
+    <div class="scroll-wrapper">
+      <button class="scroll-btn left">&#10094;</button>
+      <section class="scroll-row">
+        <!-- Spots 11 to 20 -->
+        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 11</h3></div>
+        <!-- ... other spots ... -->
+        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 20</h3></div>
+      </section>
+      <button class="scroll-btn right">&#10095;</button>
+    </div>
 
     <h2 class="section-title">Nature Escapes</h2>
-    <section class="scroll-row">
-      <!-- 10 cards -->
-      <div class="card"><img src="assets\43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 1</h3></div>
-      <div class="card"><img src="assets\43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 1</h3></div>
-      <div class="card"><img src="assets\43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 1</h3></div>
-      <div class="card"><img src="assets\43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 1</h3></div>
-      <div class="card"><img src="assets\43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 1</h3></div>
-      <div class="card"><img src="assets\43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 1</h3></div>
-      <div class="card"><img src="assets\43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 1</h3></div>
-      <div class="card"><img src="assets\43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 1</h3></div>
-      <div class="card"><img src="assets\43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 1</h3></div>
-      <div class="card"><img src="assets\43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 1</h3></div>
-    </section>
+    <div class="scroll-wrapper">
+      <button class="scroll-btn left">&#10094;</button>
+      <section class="scroll-row">
+        <!-- Spots 21 to 30 -->
+        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 21</h3></div>
+        <!-- ... other spots ... -->
+        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 30</h3></div>
+      </section>
+      <button class="scroll-btn right">&#10095;</button>
+    </div>
   </main>
+
+  <!-- Netflix-style Overlay Modal -->
+  <div id="overlay" class="overlay">
+    <div class="modal">
+      <button class="close-btn" onclick="closeOverlay()">&times;</button>
+      <img id="modal-img" src="" alt="Preview" />
+      <h2 id="modal-title">Title</h2>
+      <p id="modal-desc">Description</p>
+      <button id="favoriteModalBtn" class="favorite-overlay-btn">♡ Add to Favorites</button>
+    </div>
+  </div>
+
+  <script>
+    function openOverlay(title, imageUrl, description) {
+      document.getElementById("modal-title").textContent = title;
+      document.getElementById("modal-img").src = imageUrl;
+      document.getElementById("modal-desc").textContent = description;
+      document.getElementById("overlay").style.display = "flex";
+    }
+
+    function closeOverlay() {
+      document.getElementById("overlay").style.display = "none";
+    }
+
+    const favoriteBtn = document.getElementById("favoriteModalBtn");
+    let isFavorited = false;
+
+    favoriteBtn.addEventListener("click", () => {
+      isFavorited = !isFavorited;
+      favoriteBtn.textContent = isFavorited ? "♥ Favorited" : "♡ Add to Favorites";
+    });
+  </script>
 
   <script type="module" src="luzon.js"></script>
 </body>

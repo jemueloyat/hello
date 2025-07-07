@@ -92,3 +92,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+  
+    document.querySelectorAll('.scroll-wrapper').forEach(wrapper => {
+      const scrollRow = wrapper.querySelector('.scroll-row');
+      const leftBtn = wrapper.querySelector('.scroll-btn.left');
+      const rightBtn = wrapper.querySelector('.scroll-btn.right');
+
+      leftBtn.addEventListener('click', () => {
+        scrollRow.scrollBy({ left: -300, behavior: 'smooth' });
+      });
+
+      rightBtn.addEventListener('click', () => {
+        scrollRow.scrollBy({ left: 300, behavior: 'smooth' });
+      });
+    });
+ 
