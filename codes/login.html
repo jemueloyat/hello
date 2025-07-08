@@ -25,6 +25,9 @@
     <p class="auth-link">Don't have an account? <a href="signup.html">Sign up</a></p>
   </div>
 
+  <div id="login-success-msg" style="display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#4caf50;color:#fff;padding:10px 20px;border-radius:5px;z-index:1000;">
+    Login successful!
+  </div>
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDoijFlD_hJ2mp4FstfSZO4qUPKIzEdmPs",
@@ -38,7 +41,17 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    document.getElementById("loginBtn").addEventListener("click", async () => {
+    // Listen for Enter key on email and password fields
+    ["email", "password"].forEach(id => {
+      document.getElementById(id).addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          document.getElementById("loginBtn").click();
+        }
+      });
+    });
+
+    document.getElementById("loginBtn").addEventListener("click", async (event) => {
+      event.preventDefault();
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
 
@@ -55,8 +68,11 @@
           });
         }
 
-        alert("Login successful! Redirecting...");
-        window.location.href = "index.html";
+        // Show non-blocking message and redirect after 1 second
+        document.getElementById("login-success-msg").style.display = "block";
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1000);
       } catch (error) {
         alert("Login failed: " + error.message);
       }

@@ -38,6 +38,15 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
+    // Listen for Enter key on email and password fields
+    ["email", "password"].forEach(id => {
+      document.getElementById(id).addEventListener("keydown", function(e) {
+        if (e.key === "Enter") {
+          document.getElementById("signupBtn").click();
+        }
+      });
+    });
+
     document.getElementById("signupBtn").addEventListener("click", async () => {
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
@@ -80,3 +89,4 @@
     });
   </script>
 </body>
+</html>
