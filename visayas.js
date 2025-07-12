@@ -1,4 +1,4 @@
-// luzon.js
+// visayas.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getFirestore, doc, updateDoc, arrayUnion, arrayRemove, getDoc, setDoc, collection, addDoc, query, onSnapshot
@@ -120,11 +120,8 @@ function showReplyInput(commentElement, parentId) {
   replyInputArea.classList.add('comment-input-area', 'reply-input-area'); // Add reply-input-area class for specific styling
   
   // Indent the reply input based on its parent's status
-  if (parentId) { // If replying to an existing comment (which might already be indented)
-      replyInputArea.style.marginLeft = '0px'; // No extra margin, it's already inside an indented commentItem
-  } else { // If replying to a top-level comment
-      replyInputArea.style.marginLeft = '20px'; // Indent the input for first-level replies
-  }
+  // All replies (including replies to replies) will have the same fixed indentation
+  replyInputArea.style.marginLeft = '20px';
   replyInputArea.style.borderLeft = '2px solid #ffb300'; // Tali for reply input
   replyInputArea.style.paddingLeft = '15px'; // Padding for tali
 
@@ -184,9 +181,6 @@ function renderComment(comment, parentElement) {
   if (comment.replies && comment.replies.length > 0) {
     const repliesContainer = document.createElement('div');
     repliesContainer.classList.add('replies-container', 'hidden-replies'); // Initially hidden
-
-    // The repliesContainer itself does not add additional indentation or border here.
-    // Its children (the replies) will handle their own indentation and border.
 
     const showRepliesButton = document.createElement('button');
     showRepliesButton.classList.add('show-replies-button');
@@ -288,69 +282,62 @@ window.openOverlay = async (title, imageUrl, description, spotId) => {
   // Load directions content immediately
   const spotName = document.getElementById("modal-title").textContent;
   const destinationAddress = `${spotName}, Philippines`;
-  let startAddress = "Manila, Philippines"; // Default starting point for Luzon
+  let startAddress = "Cebu City, Philippines"; // Default starting point for Visayas
 
-  // Customize starting point based on spotId for Luzon
+  // Customize starting point based on spotId for Visayas
   switch (spotId) {
-    case 'spot-banauerice-nature':
-      startAddress = "Banaue, Ifugao, Philippines";
+    case 'spot-boracayisland':
+    case 'spot-whitebeach':
+      startAddress = "Caticlan, Malay, Aklan, Philippines";
       break;
-    case 'spot-mtpulag-nature':
-      startAddress = "Kabayan, Benguet, Philippines";
+    case 'spot-chocolatehills':
+    case 'spot-tarsiersanctuary':
+    case 'spot-bloodcompact':
+    case 'spot-lobocrivercruise':
+    case 'spot-tarsierchocolate':
+      startAddress = "Tagbilaran City, Bohol, Philippines";
       break;
-    case 'spot-taal-nature':
-      startAddress = "Tagaytay City, Cavite, Philippines";
+    case 'spot-kawasanfalls':
+    case 'spot-oslobwhaleshark':
+    case 'spot-pescadorisland':
+    case 'spot-sumilonisland':
+    case 'spot-magellanscross':
+    case 'spot-cebumonument':
+    case 'spot-casagorordo':
+    case 'spot-fortsanpedro':
+    case 'spot-mactanshrine':
+    case 'spot-osmenapeak':
+    case 'spot-bantayanisland-other':
+    case 'spot-pandanonisland':
+    case 'spot-crocodileisland':
+    case 'spot-malapascua':
+    case 'spot-rizalparkcebu':
+      startAddress = "Cebu City, Philippines";
       break;
-    case 'spot-hundredislands-nature':
-      startAddress = "Alaminos City, Pangasinan, Philippines";
+    case 'spot-navalaschurch':
+    case 'spot-guimaras':
+      startAddress = "Jordan, Guimaras, Philippines";
       break;
-    case 'spot-mayon-nature':
-      startAddress = "Legazpi City, Albay, Philippines";
+    case 'spot-sanjuanicobridge':
+      startAddress = "Tacloban City, Leyte, Philippines";
       break;
-    case 'spot-pagsanjanfalls-nature':
-      startAddress = "Pagsanjan, Laguna, Philippines";
+    case 'spot-museoiloilo':
+    case 'spot-gigantesislands-nature':
+    case 'spot-iloilocity-other':
+      startAddress = "Iloilo City, Iloilo, Philippines";
       break;
-    case 'spot-masungi-nature':
-      startAddress = "Baras, Rizal, Philippines";
+    case 'spot-siquijorisland-other':
+    case 'spot-cambugahayfalls':
+      startAddress = "Siquijor, Siquijor, Philippines";
       break;
-    case 'spot-sabangbeach-nature':
-      startAddress = "Baler, Aurora, Philippines";
+    case 'spot-tingkasanbatcave':
+      startAddress = "San Francisco, Camotes Islands, Cebu, Philippines";
       break;
-    case 'spot-mtpulatubo-nature':
-      startAddress = "Capas, Tarlac, Philippines";
+    case 'spot-sumilonsandbar':
+      startAddress = "Oslob, Cebu, Philippines";
       break;
-    case 'spot-intramuros-hist':
-      startAddress = "Manila, Philippines";
-      break;
-    case 'spot-vigan-hist':
-      startAddress = "Vigan City, Ilocos Sur, Philippines";
-      break;
-    case 'spot-corregidor-hist':
-      startAddress = "Mariveles, Bataan, Philippines";
-      break;
-    case 'spot-rizalpark-hist':
-      startAddress = "Manila, Philippines";
-      break;
-    case 'spot-hoyopoyopan-hist':
-      startAddress = "Camalig, Albay, Philippines";
-      break;
-    case 'spot-bataanmemorial-hist':
-      startAddress = "Pilar, Bataan, Philippines";
-      break;
-    case 'spot-binondo-other':
-      startAddress = "Manila, Philippines";
-      break;
-    case 'spot-banguiwindmills-other':
-      startAddress = "Bangui, Ilocos Norte, Philippines";
-      break;
-    case 'spot-villaescudero-other':
-      startAddress = "San Pablo City, Laguna, Philippines";
-      break;
-    case 'spot-sumaguingcave-other':
-      startAddress = "Sagada, Mountain Province, Philippines";
-      break;
-    case 'spot-sagadahanging-other':
-      startAddress = "Sagada, Mountain Province, Philippines";
+    default:
+      startAddress = "Cebu City, Philippines"; // Fallback for Visayas
       break;
   }
 
@@ -366,7 +353,7 @@ window.closeOverlay = () => {
   currentSpotId = null;
   // Reset comments and directions sections to their initial state with headings
   document.getElementById("modal-directions").innerHTML = '<h3>Directions and Tutorial</h3>';
-  document.getElementById("modal-comment-section").innerHTML = '<h3>Comments</h3><div id="comments-display-area" class="comments-display-area"></div><div id="comment-message-area" style="display: none;"></div><div class="comment-input-area"><textarea id="comment-input" placeholder="Isulat ang iyong komento..." disabled></textarea><button id="submit-comment-btn" disabled>Submit</button></div>';
+  document.getElementById("modal-comment-section").innerHTML = '<h3>Comments</h3><div id="comments-display-area" class="comments-display-area"></div><div id="comment-message-area" style="display: none;"></div><div class="comment-input-section"><textarea id="comment-input" placeholder="Isulat ang iyong komento..." disabled></textarea><button id="submit-comment-btn" disabled>Isumite ang Komento</button></div>';
   showTemporaryMessage('');
 
   if (unsubscribeComments) {
@@ -379,6 +366,30 @@ window.closeOverlay = () => {
 document.addEventListener('DOMContentLoaded', async () => {
   console.log("DOMContentLoaded event fired.");
   const favoriteModalBtn = document.getElementById("favoriteModalBtn");
+  const directionModalBtn = document.getElementById("directionModalBtn");
+  const commentModalBtn = document.getElementById("commentModalBtn");
+  const modalDirectionsSection = document.getElementById("modal-directions");
+  const modalCommentSection = document.getElementById("modal-comment-section");
+
+  // Initial state: hide directions and comments sections
+  if (modalDirectionsSection) modalDirectionsSection.style.display = 'none';
+  if (modalCommentSection) modalCommentSection.style.display = 'none';
+
+  if (directionModalBtn) {
+    directionModalBtn.addEventListener('click', () => {
+      if (modalDirectionsSection) modalDirectionsSection.style.display = 'block';
+      if (modalCommentSection) modalCommentSection.style.display = 'none';
+    });
+  }
+
+  if (commentModalBtn) {
+    commentModalBtn.addEventListener('click', () => {
+      if (modalDirectionsSection) modalDirectionsSection.style.display = 'none';
+      if (modalCommentSection) modalCommentSection.style.display = 'block';
+    });
+  }
+
+
   if (favoriteModalBtn) {
     console.log("Favorite button found.");
     favoriteModalBtn.addEventListener("click", async () => {

@@ -1,4 +1,4 @@
-// luzon.js
+// mindanao.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getFirestore, doc, updateDoc, arrayUnion, arrayRemove, getDoc, setDoc, collection, addDoc, query, onSnapshot
@@ -120,11 +120,8 @@ function showReplyInput(commentElement, parentId) {
   replyInputArea.classList.add('comment-input-area', 'reply-input-area'); // Add reply-input-area class for specific styling
   
   // Indent the reply input based on its parent's status
-  if (parentId) { // If replying to an existing comment (which might already be indented)
-      replyInputArea.style.marginLeft = '0px'; // No extra margin, it's already inside an indented commentItem
-  } else { // If replying to a top-level comment
-      replyInputArea.style.marginLeft = '20px'; // Indent the input for first-level replies
-  }
+  // All replies (including replies to replies) will have the same fixed indentation
+  replyInputArea.style.marginLeft = '20px';
   replyInputArea.style.borderLeft = '2px solid #ffb300'; // Tali for reply input
   replyInputArea.style.paddingLeft = '15px'; // Padding for tali
 
@@ -184,9 +181,6 @@ function renderComment(comment, parentElement) {
   if (comment.replies && comment.replies.length > 0) {
     const repliesContainer = document.createElement('div');
     repliesContainer.classList.add('replies-container', 'hidden-replies'); // Initially hidden
-
-    // The repliesContainer itself does not add additional indentation or border here.
-    // Its children (the replies) will handle their own indentation and border.
 
     const showRepliesButton = document.createElement('button');
     showRepliesButton.classList.add('show-replies-button');
@@ -288,69 +282,81 @@ window.openOverlay = async (title, imageUrl, description, spotId) => {
   // Load directions content immediately
   const spotName = document.getElementById("modal-title").textContent;
   const destinationAddress = `${spotName}, Philippines`;
-  let startAddress = "Manila, Philippines"; // Default starting point for Luzon
+  let startAddress = "Davao City, Philippines"; // Default starting point for Mindanao
 
-  // Customize starting point based on spotId for Luzon
+  // Customize starting point based on spotId for Mindanao
   switch (spotId) {
-    case 'spot-banauerice-nature':
-      startAddress = "Banaue, Ifugao, Philippines";
+    case 'spot-siargaoisland':
+    case 'spot-cloud9-other':
+    case 'spot-dakuisland':
+      startAddress = "General Luna, Siargao Island, Surigao del Norte, Philippines";
       break;
-    case 'spot-mtpulag-nature':
-      startAddress = "Kabayan, Benguet, Philippines";
+    case 'spot-enchantedriver':
+    case 'spot-tinuyanfalls':
+    case 'spot-mangroveboardwalk':
+      startAddress = "Hinatuan, Surigao del Sur, Philippines";
       break;
-    case 'spot-taal-nature':
-      startAddress = "Tagaytay City, Cavite, Philippines";
+    case 'spot-mountapo':
+    case 'spot-lakevenado':
+    case 'spot-davaomuseum':
+    case 'spot-holyinfantjesus':
+    case 'spot-davaopark':
+    case 'spot-samalisland':
+      startAddress = "Davao City, Philippines";
       break;
-    case 'spot-hundredislands-nature':
-      startAddress = "Alaminos City, Pangasinan, Philippines";
+    case 'spot-whiteisland':
+    case 'spot-cambugahayfalls': // Although Cambugahay is Siquijor (Visayas), it's in the Mindanao list.
+      startAddress = "Mambajao, Camiguin, Philippines";
       break;
-    case 'spot-mayon-nature':
-      startAddress = "Legazpi City, Albay, Philippines";
+    case 'spot-mariacristina':
+    case 'spot-tinagofalls':
+      startAddress = "Iligan City, Lanao del Norte, Philippines";
       break;
-    case 'spot-pagsanjanfalls-nature':
-      startAddress = "Pagsanjan, Laguna, Philippines";
+    case 'spot-cdorafting':
+    case 'spot-cdorafting-other':
+      startAddress = "Cagayan de Oro City, Misamis Oriental, Philippines";
       break;
-    case 'spot-masungi-nature':
-      startAddress = "Baras, Rizal, Philippines";
+    case 'spot-lakesebu':
+    case 'spot-lakesebu-nature':
+      startAddress = "Lake Sebu, South Cotabato, Philippines";
       break;
-    case 'spot-sabangbeach-nature':
-      startAddress = "Baler, Aurora, Philippines";
+    case 'spot-butuanmuseums':
+    case 'spot-butuanmuseums-other':
+      startAddress = "Butuan City, Agusan del Norte, Philippines";
       break;
-    case 'spot-mtpulatubo-nature':
-      startAddress = "Capas, Tarlac, Philippines";
+    case 'spot-fortpilar':
+    case 'spot-pinkbeach':
+      startAddress = "Zamboanga City, Zamboanga del Sur, Philippines";
       break;
-    case 'spot-intramuros-hist':
-      startAddress = "Manila, Philippines";
+    case 'spot-rizalshrine':
+      startAddress = "Dapitan City, Zamboanga del Norte, Philippines";
       break;
-    case 'spot-vigan-hist':
-      startAddress = "Vigan City, Ilocos Sur, Philippines";
+    case 'spot-monfortbatsanctuary':
+      startAddress = "Samal Island, Davao del Norte, Philippines";
       break;
-    case 'spot-corregidor-hist':
-      startAddress = "Mariveles, Bataan, Philippines";
+    case 'spot-mindanaomuseum':
+      startAddress = "Cagayan de Oro City, Misamis Oriental, Philippines"; // Assuming museum is in CDO
       break;
-    case 'spot-rizalpark-hist':
-      startAddress = "Manila, Philippines";
+    case 'spot-pagalunganmosque':
+      startAddress = "Datu Pagalungan, Maguindanao, Philippines";
       break;
-    case 'spot-hoyopoyopan-hist':
-      startAddress = "Camalig, Albay, Philippines";
+    case 'spot-kutawatocave':
+      startAddress = "Cotabato City, Maguindanao, Philippines";
       break;
-    case 'spot-bataanmemorial-hist':
-      startAddress = "Pilar, Bataan, Philippines";
+    case 'spot-campabubakar':
+      startAddress = "Shariff Aguak, Maguindanao, Philippines";
       break;
-    case 'spot-binondo-other':
-      startAddress = "Manila, Philippines";
+    case 'spot-aliwagwagfalls':
+      startAddress = "Cateel, Davao Oriental, Philippines";
       break;
-    case 'spot-banguiwindmills-other':
-      startAddress = "Bangui, Ilocos Norte, Philippines";
+    case 'spot-matidahican-nature':
+      startAddress = "Mati City, Davao Oriental, Philippines";
       break;
-    case 'spot-villaescudero-other':
-      startAddress = "San Pablo City, Laguna, Philippines";
+    case 'spot-managongfalls':
+      startAddress = "New Bataan, Compostela Valley, Philippines";
       break;
-    case 'spot-sumaguingcave-other':
-      startAddress = "Sagada, Mountain Province, Philippines";
-      break;
-    case 'spot-sagadahanging-other':
-      startAddress = "Sagada, Mountain Province, Philippines";
+    default:
+      startAddress = "Davao City, Philippines"; // Fallback for Mindanao
       break;
   }
 
@@ -366,7 +372,7 @@ window.closeOverlay = () => {
   currentSpotId = null;
   // Reset comments and directions sections to their initial state with headings
   document.getElementById("modal-directions").innerHTML = '<h3>Directions and Tutorial</h3>';
-  document.getElementById("modal-comment-section").innerHTML = '<h3>Comments</h3><div id="comments-display-area" class="comments-display-area"></div><div id="comment-message-area" style="display: none;"></div><div class="comment-input-area"><textarea id="comment-input" placeholder="Isulat ang iyong komento..." disabled></textarea><button id="submit-comment-btn" disabled>Submit</button></div>';
+  document.getElementById("modal-comment-section").innerHTML = '<h3>Comments</h3><div id="comments-display-area" class="comments-display-area"></div><div id="comment-message-area" style="display: none;"></div><div class="comment-input-section"><textarea id="comment-input" placeholder="Isulat ang iyong komento..." disabled></textarea><button id="submit-comment-btn" disabled>Isumite ang Komento</button></div>';
   showTemporaryMessage('');
 
   if (unsubscribeComments) {
@@ -379,6 +385,30 @@ window.closeOverlay = () => {
 document.addEventListener('DOMContentLoaded', async () => {
   console.log("DOMContentLoaded event fired.");
   const favoriteModalBtn = document.getElementById("favoriteModalBtn");
+  const directionModalBtn = document.getElementById("directionModalBtn");
+  const commentModalBtn = document.getElementById("commentModalBtn");
+  const modalDirectionsSection = document.getElementById("modal-directions");
+  const modalCommentSection = document.getElementById("modal-comment-section");
+
+  // Initial state: hide directions and comments sections
+  if (modalDirectionsSection) modalDirectionsSection.style.display = 'none';
+  if (modalCommentSection) modalCommentSection.style.display = 'none';
+
+  if (directionModalBtn) {
+    directionModalBtn.addEventListener('click', () => {
+      if (modalDirectionsSection) modalDirectionsSection.style.display = 'block';
+      if (modalCommentSection) modalCommentSection.style.display = 'none';
+    });
+  }
+
+  if (commentModalBtn) {
+    commentModalBtn.addEventListener('click', () => {
+      if (modalDirectionsSection) modalDirectionsSection.style.display = 'none';
+      if (modalCommentSection) modalCommentSection.style.display = 'block';
+    });
+  }
+
+
   if (favoriteModalBtn) {
     console.log("Favorite button found.");
     favoriteModalBtn.addEventListener("click", async () => {

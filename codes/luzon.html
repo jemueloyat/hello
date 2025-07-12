@@ -1,26 +1,10 @@
-<!-- luzon.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luzon - Philippine Gaze</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    /* Netflix-style Overlay */
-    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 9999; }
-    .modal { background: #1a1a1a; color: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 900px; position: relative; animation: fadeIn 0.3s ease-in-out; max-height: 90vh; overflow-y: auto; }
-    .modal img { width: 100%; border-radius: 8px; margin-bottom: 16px; }
-    .modal h2 { margin-top: 0; font-size: 2rem; }
-    .modal p { font-size: 1.1rem; color: #ccc; }
-    .close-btn { position: absolute; top: 12px; right: 16px; font-size: 28px; color: white; background: none; border: none; cursor: pointer; }
-    /* Updated styles for vertical buttons */
-    .favorite-overlay-btn, .direction-overlay-btn { margin-top: 10px; background: #ff5252; color: white; border: none; padding: 12px 20px; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: background 0.3s; width: fit-content; }
-    .favorite-overlay-btn:hover, .direction-overlay-btn:hover { background: #ff3333; }
-    .modal-buttons { display: flex; flex-direction: column; align-items: center; margin-top: 20px; } /* Changed to column direction and centered items */
-    .modal-directions { margin-top: 20px; padding: 15px; background: #2a2a2a; border-radius: 8px; color: #eee; font-size: 1rem; line-height: 1.5; }
-    @keyframes fadeIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Philippine Gaze - Luzon</title>
+  <link rel="stylesheet" href="styles.css"> <!-- Siguraduhin na ito ay nakaturo sa tamang styles.css file -->
 </head>
 <body>
   <header class="transparent-navbar">
@@ -28,303 +12,277 @@
     <nav>
       <a href="index.html">Home</a>
       <a href="main.html">Main</a>
-      <a href="luzon.html" class="active">Luzon</a>
-      <a href="visayas.html">Visayas</a>
-      <a href="mindanao.html">Mindanao</a>
+      <a href="#stories">Stories</a>
       <a href="favorites.html">Favorites</a>
       <a href="login.html" id="logoutBtn" class="logout-button">Logout</a>
     </nav>
   </header>
 
- <main>
-    <h2 class="section-title">Top 10 Most Visited</h2>
-    <div class="scroll-wrapper">
-      <button class="scroll-btn left">&#10094;</button>
-      <section class="scroll-row">
-        <div class="card" onclick="openOverlay('Banaue Rice Terraces', 'https://placehold.co/400x300/FF5733/FFFFFF?text=Banaue+Rice+Terraces', '2,000‑year‑old terraces carved into mountains; UNESCO site.', 'spot-banauerice')">
-          <img src="https://placehold.co/400x300/FF5733/FFFFFF?text=Banaue+Rice+Terraces" alt="Banaue Rice Terraces">
-          <div class="card-text-overlay">
-            <h3>Banaue Rice Terraces</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Batad Rice Terraces', 'https://placehold.co/400x300/33FF57/FFFFFF?text=Batad+Rice+Terraces', 'Steep amphitheater terraces reached on foot; dramatic views.', 'spot-batadrice')">
-          <img src="https://placehold.co/400x300/33FF57/FFFFFF?text=Batad+Rice+Terraces" alt="Batad Rice Terraces">
-          <div class="card-text-overlay">
-            <h3>Batad Rice Terraces</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Intramuros', 'https://placehold.co/400x300/3357FF/FFFFFF?text=Intramuros', 'Historic Spanish walled city with museums and forts.', 'spot-intramuros')">
-          <img src="https://placehold.co/400x300/3357FF/FFFFFF?text=Intramuros" alt="Intramuros">
-          <div class="card-text-overlay">
-            <h3>Intramuros</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Vigan', 'https://placehold.co/400x300/FF33A1/FFFFFF?text=Vigan', 'Well‑preserved colonial town with cobbled streets and calesas.', 'spot-vigan')">
-          <img src="https://placehold.co/400x300/FF33A1/FFFFFF?text=Vigan" alt="Vigan">
-          <div class="card-text-overlay">
-            <h3>Vigan</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Taal Volcano & Lake', 'https://placehold.co/400x300/A133FF/FFFFFF?text=Taal+Volcano', 'Island‑in‑a‑lake within a lake; world’s largest double lake.', 'spot-taal')">
-          <img src="https://placehold.co/400x300/A133FF/FFFFFF?text=Taal+Volcano" alt="Taal Volcano & Lake">
-          <div class="card-text-overlay">
-            <h3>Taal Volcano & Lake</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Mt. Pulag', 'https://placehold.co/400x300/33FFA1/FFFFFF?text=Mt+Pulag', 'Highest peak in Luzon, famous for its sea of clouds.', 'spot-mtpulag')">
-          <img src="https://placehold.co/400x300/33FFA1/FFFFFF?text=Mt+Pulag" alt="Mt. Pulag">
-          <div class="card-text-overlay">
-            <h3>Mt. Pulag</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Hundred Islands', 'https://placehold.co/400x300/FF8833/FFFFFF?text=Hundred+Islands', '100+ limestone islets ideal for boating and snorkeling.', 'spot-hundredislands')">
-          <img src="https://placehold.co/400x300/FF8833/FFFFFF?text=Hundred+Islands" alt="Hundred Islands">
-          <div class="card-text-overlay">
-            <h3>Hundred Islands</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Pagsanjan Falls', 'https://placehold.co/400x300/3388FF/FFFFFF?text=Pagsanjan+Falls', 'Bamboo rafting through rapids culminating in landing under the falls.', 'spot-pagsanjanfalls')">
-          <img src="https://placehold.co/400x300/3388FF/FFFFFF?text=Pagsanjan+Falls" alt="Pagsanjan Falls">
-          <div class="card-text-overlay">
-            <h3>Pagsanjan Falls</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Mount Mayon', 'https://placehold.co/400x300/8833FF/FFFFFF?text=Mount+Mayon', 'Perfect cone volcano, iconic silhouette.', 'spot-mayon')">
-          <img src="https://placehold.co/400x300/8833FF/FFFFFF?text=Mount+Mayon" alt="Mount Mayon">
-          <div class="card-text-overlay">
-            <h3>Mount Mayon</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Masungi Georeserve', 'https://placehold.co/400x300/FF3333/FFFFFF?text=Masungi+Georeserve', 'Limestone forest sanctuary with rope courses and trails.', 'spot-masungi')">
-          <img src="https://placehold.co/400x300/FF3333/FFFFFF?text=Masungi+Georeserve" alt="Masungi Georeserve">
-          <div class="card-text-overlay">
-            <h3>Masungi Georeserve</h3>
-          </div>
-        </div>
-      </section>
-      <button class="scroll-btn right">&#10095;</button>
-    </div>
+  <main>
+    <h1>Luzon Destinations</h1>
 
+    <!-- Top 10 Destinations Section -->
+    <section class="region-section">
+      <h2>Top 10 Destinations</h2>
+      <div class="scroll-wrapper">
+        <button class="scroll-btn left">‹</button>
+        <div class="scroll-row">
+          <div class="spot-card" onclick="openOverlay('Banaue Rice Terraces', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Banaue_Rice_Terraces_in_Ifugao.jpg/1280px-Banaue_Rice_Terraces_in_Ifugao.jpg', 'The Banaue Rice Terraces are 2,000-year-old terraces that were carved into the mountains of Ifugao by ancestors of the indigenous people. They are often referred to as the &quot;Eighth Wonder of the World&quot;.', 'spot-banauerice-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Banaue_Rice_Terraces_in_Ifugao.jpg/1280px-Banaue_Rice_Terraces_in_Ifugao.jpg" alt="Banaue Rice Terraces">
+            <div class="card-text-overlay">
+              <h3>Banaue Rice Terraces</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Mount Pulag', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Mount_Pulag_Sea_of_Clouds.jpg/1280px-Mount_Pulag_Sea_of_Clouds.jpg', 'Mount Pulag is the third highest mountain in the Philippines and Luzon\'s highest peak. It is famous for its sea of clouds and the stunning sunrise views.', 'spot-mtpulag-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Mount_Pulag_Sea_of_Clouds.jpg/1280px-Mount_Pulag_Sea_of_Clouds.jpg" alt="Mount Pulag">
+            <div class="card-text-overlay">
+              <h3>Mount Pulag</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Taal Volcano', 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Taal_Volcano_and_Lake.jpg/1280px-Taal_Volcano_and_Lake.jpg', 'Taal Volcano is a large caldera filled by Taal Lake in Batangas. It is the second most active volcano in the Philippines, with 38 recorded historical eruptions.', 'spot-taal-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Taal_Volcano_and_Lake.jpg/1280px-Taal_Volcano_and_Lake.jpg" alt="Taal Volcano">
+            <div class="card-text-overlay">
+              <h3>Taal Volcano</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Hundred Islands National Park', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Hundred_Islands_National_Park.jpg/1280px-Hundred_Islands_National_Park.jpg', 'The Hundred Islands National Park is a protected area located in Alaminos, Pangasinan. It comprises 124 islands at low tide and 123 at high tide, scattered in Lingayen Gulf.', 'spot-hundredislands-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Hundred_Islands_National_Park.jpg/1280px-Hundred_Islands_National_Park.jpg" alt="Hundred Islands National Park">
+            <div class="card-text-overlay">
+              <h3>Hundred Islands National Park</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Mayon Volcano', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Mayon_Volcano_at_Sunrise.jpg/1280px-Mayon_Volcano_at_Sunrise.jpg', 'Mayon Volcano is an active stratovolcano in the province of Albay, Bicol Region. It is renowned for its &quot;perfect cone&quot; shape.', 'spot-mayon-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Mayon_Volcano_at_Sunrise.jpg/1280px-Mayon_Volcano_at_Sunrise.jpg" alt="Mayon Volcano">
+            <div class="card-text-overlay">
+              <h3>Mayon Volcano</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Intramuros', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/San_Agustin_Church_and_Convent_%28Intramuros%29.jpg/1280px-San_Agustin_Church_and_Convent_%28Intramuros%29.jpg', 'Intramuros, known as the Walled City, is the oldest district and historic center of Manila. It was the seat of government during the Spanish colonial period.', 'spot-intramuros-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/San_Agustin_Church_and_Convent_%28Intramuros%29.jpg/1280px-San_Agustin_Church_and_Convent_%28Intramuros%29.jpg" alt="Intramuros">
+            <div class="card-text-overlay">
+              <h3>Intramuros</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Vigan City', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Vigan_City_Calle_Crisologo.jpg/1280px-Vigan_City_Calle_Crisologo.jpg', 'Vigan City is a UNESCO World Heritage site in Ilocos Sur, known for its well-preserved Spanish colonial town. Calle Crisologo is its most famous street.', 'spot-vigan-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Vigan_City_Calle_Crisologo.jpg/1280px-Vigan_City_Calle_Crisologo.jpg" alt="Vigan City">
+            <div class="card-text-overlay">
+              <h3>Vigan City</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Corregidor Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Corregidor_Island_Battery_Hearn.jpg/1280px-Corregidor_Island_Battery_Hearn.jpg', 'Corregidor Island is a small island located at the entrance of Manila Bay. It was a crucial defense fortress during World War II.', 'spot-corregidor-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Corregidor_Island_Battery_Hearn.jpg/1280px-Corregidor_Island_Battery_Hearn.jpg" alt="Corregidor Island">
+            <div class="card-text-overlay">
+              <h3>Corregidor Island</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Mount Pinatubo', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Mount_Pinatubo_Crater_Lake.jpg/1280px-Mount_Pinatubo_Crater_Lake.jpg', 'Mount Pinatubo is an active stratovolcano in the Cabusilan Mountains, located on the tripoint boundary of Zambales, Tarlac, and Pampanga. It is famous for its beautiful crater lake.', 'spot-mtpulatubo-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Mount_Pinatubo_Crater_Lake.jpg/1280px-Mount_Pinatubo_Crater_Lake.jpg" alt="Mount Pinatubo">
+            <div class="card-text-overlay">
+              <h3>Mount Pinatubo</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Sabang Beach, Baler', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Sabang_Beach_Baler.jpg/1280px-Sabang_Beach_Baler.jpg', 'Sabang Beach is a popular surfing spot in Baler, Aurora. It is known for its consistent waves suitable for beginners and experienced surfers alike.', 'spot-sabangbeach-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Sabang_Beach_Baler.jpg/1280px-Sabang_Beach_Baler.jpg" alt="Sabang Beach, Baler">
+            <div class="card-text-overlay">
+              <h3>Sabang Beach, Baler</h3>
+            </div>
+          </div>
+        </div>
+        <button class="scroll-btn right">›</button>
+      </div>
+    </section>
 
-    <h2 class="section-title">Historical Destinations</h2>
-    <div class="scroll-wrapper">
-      <button class="scroll-btn left">&#10094;</button>
-      <section class="scroll-row">
-        <div class="card" onclick="openOverlay('Intramuros', 'https://placehold.co/400x300/33FF88/FFFFFF?text=Intramuros', 'Historic Spanish walled city with museums and forts.', 'spot-intramuros-hist')">
-          <img src="https://placehold.co/400x300/33FF88/FFFFFF?text=Intramuros" alt="Intramuros">
-          <div class="card-text-overlay">
-            <h3>Intramuros</h3>
+    <!-- Nature Spots Section -->
+    <section class="region-section">
+      <h2>Nature Spots</h2>
+      <div class="scroll-wrapper">
+        <button class="scroll-btn left">‹</button>
+        <div class="scroll-row">
+          <div class="spot-card" onclick="openOverlay('Banaue Rice Terraces', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Banaue_Rice_Terraces_in_Ifugao.jpg/1280px-Banaue_Rice_Terraces_in_Ifugao.jpg', 'The Banaue Rice Terraces are 2,000-year-old terraces that were carved into the mountains of Ifugao by ancestors of the indigenous people. They are often referred to as the &quot;Eighth Wonder of the World&quot;.', 'spot-banauerice-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Banaue_Rice_Terraces_in_Ifugao.jpg/1280px-Banaue_Rice_Terraces_in_Ifugao.jpg" alt="Banaue Rice Terraces">
+            <div class="card-text-overlay">
+              <h3>Banaue Rice Terraces</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Mount Pulag', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Mount_Pulag_Sea_of_Clouds.jpg/1280px-Mount_Pulag_Sea_of_Clouds.jpg', 'Mount Pulag is the third highest mountain in the Philippines and Luzon\'s highest peak. It is famous for its sea of clouds and the stunning sunrise views.', 'spot-mtpulag-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Mount_Pulag_Sea_of_Clouds.jpg/1280px-Mount_Pulag_Sea_of_Clouds.jpg" alt="Mount Pulag">
+            <div class="card-text-overlay">
+              <h3>Mount Pulag</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Taal Volcano', 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Taal_Volcano_and_Lake.jpg/1280px-Taal_Volcano_and_Lake.jpg', 'Taal Volcano is a large caldera filled by Taal Lake in Batangas. It is the second most active volcano in the Philippines, with 38 recorded historical eruptions.', 'spot-taal-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Taal_Volcano_and_Lake.jpg/1280px-Taal_Volcano_and_Lake.jpg" alt="Taal Volcano">
+            <div class="card-text-overlay">
+              <h3>Taal Volcano</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Hundred Islands National Park', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Hundred_Islands_National_Park.jpg/1280px-Hundred_Islands_National_Park.jpg', 'The Hundred Islands National Park is a protected area located in Alaminos, Pangasinan. It comprises 124 islands at low tide and 123 at high tide, scattered in Lingayen Gulf.', 'spot-hundredislands-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Hundred_Islands_National_Park.jpg/1280px-Hundred_Islands_National_Park.jpg" alt="Hundred Islands National Park">
+            <div class="card-text-overlay">
+              <h3>Hundred Islands National Park</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Mayon Volcano', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Mayon_Volcano_at_Sunrise.jpg/1280px-Mayon_Volcano_at_Sunrise.jpg', 'Mayon Volcano is an active stratovolcano in the province of Albay, Bicol Region. It is renowned for its &quot;perfect cone&quot; shape.', 'spot-mayon-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Mayon_Volcano_at_Sunrise.jpg/1280px-Mayon_Volcano_at_Sunrise.jpg" alt="Mayon Volcano">
+            <div class="card-text-overlay">
+              <h3>Mayon Volcano</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Pagsanjan Falls', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Pagsanjan_Falls_Laguna_Philippines.jpg/1280px-Pagsanjan_Falls_Laguna_Philippines.jpg', 'Pagsanjan Falls is one of the most famous waterfalls in the Philippines. It is located in Laguna province and is a popular tourist destination.', 'spot-pagsanjanfalls-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Pagsanjan_Falls_Laguna_Philippines.jpg/1280px-Pagsanjan_Falls_Laguna_Philippines.jpg" alt="Pagsanjan Falls">
+            <div class="card-text-overlay">
+              <h3>Pagsanjan Falls</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Masungi Georeserve', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Masungi_Georeserve_Rope_Course.jpg/1280px-Masungi_Georeserve_Rope_Course.jpg', 'Masungi Georeserve is a conservation area and a geotourism site in Baras, Rizal. It is famous for its unique rock formations and conservation efforts.', 'spot-masungi-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Masungi_Georeserve_Rope_Course.jpg/1280px-Masungi_Georeserve_Rope_Course.jpg" alt="Masungi Georeserve">
+            <div class="card-text-overlay">
+              <h3>Masungi Georeserve</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Sabang Beach, Baler', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Sabang_Beach_Baler.jpg/1280px-Sabang_Beach_Baler.jpg', 'Sabang Beach is a popular surfing spot in Baler, Aurora. It is known for its consistent waves suitable for beginners and experienced surfers alike.', 'spot-sabangbeach-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Sabang_Beach_Baler.jpg/1280px-Sabang_Beach_Baler.jpg" alt="Sabang Beach, Baler">
+            <div class="card-text-overlay">
+              <h3>Sabang Beach, Baler</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Mount Pinatubo', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Mount_Pinatubo_Crater_Lake.jpg/1280px-Mount_Pinatubo_Crater_Lake.jpg', 'Mount Pinatubo is an active stratovolcano in the Cabusilan Mountains, located on the tripoint boundary of Zambales, Tarlac, and Pampanga. It is famous for its beautiful crater lake.', 'spot-mtpulatubo-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Mount_Pinatubo_Crater_Lake.jpg/1280px-Mount_Pinatubo_Crater_Lake.jpg" alt="Mount Pinatubo">
+            <div class="card-text-overlay">
+              <h3>Mount Pinatubo</h3>
+            </div>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Vigan', 'https://placehold.co/400x300/88FF33/FFFFFF?text=Vigan', 'Well‑preserved colonial town with cobbled streets and calesas.', 'spot-vigan-hist')">
-          <img src="https://placehold.co/400x300/88FF33/FFFFFF?text=Vigan" alt="Vigan">
-          <div class="card-text-overlay">
-            <h3>Vigan</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Corregidor Island', 'https://placehold.co/400x300/3388FF/FFFFFF?text=Corregidor+Island', 'WWII historical ruins and memorials accessible by ferry.', 'spot-corregidor')">
-          <img src="https://placehold.co/400x300/3388FF/FFFFFF?text=Corregidor+Island" alt="Corregidor Island">
-          <div class="card-text-overlay">
-            <h3>Corregidor Island</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Rizal Park & National Museum Complex', 'https://placehold.co/400x300/FF5733/FFFFFF?text=Rizal+Park', 'Central greenscape with historical museums.', 'spot-rizalpark')">
-          <img src="https://placehold.co/400x300/FF5733/FFFFFF?text=Rizal+Park" alt="Rizal Park & National Museum Complex">
-          <div class="card-text-overlay">
-            <h3>Rizal Park & National Museum Complex</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Calle Crisologo, Vigan', 'https://placehold.co/400x300/33FF57/FFFFFF?text=Calle+Crisologo', 'Antique-lined street perfect for heritage walks and horse-drawn rides.', 'spot-callecrisologo')">
-          <img src="https://placehold.co/400x300/33FF57/FFFFFF?text=Calle+Crisologo" alt="Calle Crisologo, Vigan">
-          <div class="card-text-overlay">
-            <h3>Calle Crisologo, Vigan</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Binondo, Manila', 'https://placehold.co/400x300/3357FF/FFFFFF?text=Binondo', 'Oldest Chinatown in the world; famed foodie destination.', 'spot-binondo')">
-          <img src="https://placehold.co/400x300/3357FF/FFFFFF?text=Binondo" alt="Binondo, Manila">
-          <div class="card-text-overlay">
-            <h3>Binondo, Manila</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Villa Escudero', 'https://placehold.co/400x300/FF33A1/FFFFFF?text=Villa+Escudero', 'Resort‑plantation featuring waterfall dining and cultural shows.', 'spot-villaescudero')">
-          <img src="https://placehold.co/400x300/FF33A1/FFFFFF?text=Villa+Escudero" alt="Villa Escudero">
-          <div class="card-text-overlay">
-            <h3>Villa Escudero</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Hoyop-Hoyopan Cave', 'https://placehold.co/400x300/A133FF/FFFFFF?text=Hoyop-Hoyopan+Cave', 'Subterranean limestone cave with unique formations.', 'spot-hoyopoyopan-hist')">
-          <img src="https://placehold.co/400x300/A133FF/FFFFFF?text=Hoyop-Hoyopan+Cave" alt="Hoyop-Hoyopan Cave">
-          <div class="card-text-overlay">
-            <h3>Hoyop-Hoyopan Cave</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Bangui Windmills', 'https://placehold.co/400x300/33FFA1/FFFFFF?text=Bangui+Windmills', 'Offshore wind farm along the coast with dramatic scenery.', 'spot-banguiwindmills')">
-          <img src="https://placehold.co/400x300/33FFA1/FFFFFF?text=Bangui+Windmills" alt="Bangui Windmills">
-          <div class="card-text-overlay">
-            <h3>Bangui Windmills</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Bataan Death March Memorial', 'https://placehold.co/400x300/FF8833/FFFFFF?text=Bataan+Memorial', 'Historical marker for WWII event.', 'spot-bataanmemorial')">
-          <img src="https://placehold.co/400x300/FF8833/FFFFFF?text=Bataan+Memorial" alt="Bataan Death March Memorial">
-          <div class="card-text-overlay">
-            <h3>Bataan Death March Memorial</h3>
-          </div>
-        </div>
-      </section>
-      <button class="scroll-btn right">&#10095;</button>
-    </div>
+        <button class="scroll-btn right">›</button>
+      </div>
+    </section>
 
-    <h2 class="section-title">Nature Escapes</h2>
-    <div class="scroll-wrapper">
-      <button class="scroll-btn left">&#10094;</button>
-      <section class="scroll-row">
-        <div class="card" onclick="openOverlay('Banaue Rice Terraces', 'https://placehold.co/400x300/3388FF/FFFFFF?text=Banaue+Rice+Terraces', '2,000‑year‑old terraces carved into mountains; UNESCO site.', 'spot-banauerice-nature')">
-          <img src="https://placehold.co/400x300/3388FF/FFFFFF?text=Banaue+Rice+Terraces" alt="Banaue Rice Terraces">
-          <div class="card-text-overlay">
-            <h3>Banaue Rice Terraces</h3>
+    <!-- Historical Spots Section -->
+    <section class="region-section">
+      <h2>Historical Spots</h2>
+      <div class="scroll-wrapper">
+        <button class="scroll-btn left">‹</button>
+        <div class="scroll-row">
+          <div class="spot-card" onclick="openOverlay('Intramuros', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/San_Agustin_Church_and_Convent_%28Intramuros%29.jpg/1280px-San_Agustin_Church_and_Convent_%28Intramuros%29.jpg', 'Intramuros, known as the Walled City, is the oldest district and historic center of Manila. It was the seat of government during the Spanish colonial period.', 'spot-intramuros-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/San_Agustin_Church_and_Convent_%28Intramuros%29.jpg/1280px-San_Agustin_Church_and_Convent_%28Intramuros%29.jpg" alt="Intramuros">
+            <div class="card-text-overlay">
+              <h3>Intramuros</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Vigan City', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Vigan_City_Calle_Crisologo.jpg/1280px-Vigan_City_Calle_Crisologo.jpg', 'Vigan City is a UNESCO World Heritage site in Ilocos Sur, known for its well-preserved Spanish colonial town. Calle Crisologo is its most famous street.', 'spot-vigan-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Vigan_City_Calle_Crisologo.jpg/1280px-Vigan_City_Calle_Crisologo.jpg" alt="Vigan City">
+            <div class="card-text-overlay">
+              <h3>Vigan City</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Corregidor Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Corregidor_Island_Battery_Hearn.jpg/1280px-Corregidor_Island_Battery_Hearn.jpg', 'Corregidor Island is a small island located at the entrance of Manila Bay. It was a crucial defense fortress during World War II.', 'spot-corregidor-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Corregidor_Island_Battery_Hearn.jpg/1280px-Corregidor_Island_Battery_Hearn.jpg" alt="Corregidor Island">
+            <div class="card-text-overlay">
+              <h3>Corregidor Island</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Rizal Park', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Rizal_Park_Manila.jpg/1280px-Rizal_Park_Manila.jpg', 'Rizal Park, also known as Luneta Park, is a historical urban park located in Ermita, Manila. It is one of the largest urban parks in Asia.', 'spot-rizalpark-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Rizal_Park_Manila.jpg/1280px-Rizal_Park_Manila.jpg" alt="Rizal Park">
+            <div class="card-text-overlay">
+              <h3>Rizal Park</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Hoyop-Hoyopan Cave', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Hoyop-Hoyopan_Cave_Entrance.jpg/1280px-Hoyop-Hoyopan_Cave_Entrance.jpg', 'Hoyop-Hoyopan Cave is a natural cave system in Camalig, Albay. It was used as a shelter by locals during World War II.', 'spot-hoyopoyopan-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Hoyop-Hoyopan_Cave_Entrance.jpg/1280px-Hoyop-Hoyopan_Cave_Entrance.jpg" alt="Hoyop-Hoyopan Cave">
+            <div class="card-text-overlay">
+              <h3>Hoyop-Hoyopan Cave</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Bataan Death March Memorial', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Bataan_Death_March_Memorial_Shrine.jpg/1280px-Bataan_Death_March_Memorial_Shrine.jpg', 'The Bataan Death March Memorial Shrine is a memorial complex in Pilar, Bataan, commemorating the Bataan Death March during World War II.', 'spot-bataanmemorial-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Bataan_Death_March_Memorial_Shrine.jpg/1280px-Bataan_Death_March_Memorial_Shrine.jpg" alt="Bataan Death March Memorial">
+            <div class="card-text-overlay">
+              <h3>Bataan Death March Memorial</h3>
+            </div>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Batad Rice Terraces', 'https://placehold.co/400x300/8833FF/FFFFFF?text=Batad+Rice+Terraces', 'Steep amphitheater terraces reached on foot; dramatic views.', 'spot-batadrice-nature')">
-          <img src="https://placehold.co/400x300/8833FF/FFFFFF?text=Batad+Rice+Terraces" alt="Batad Rice Terraces">
-          <div class="card-text-overlay">
-            <h3>Batad Rice Terraces</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Taal Volcano & Lake', 'https://placehold.co/400x300/FF3333/FFFFFF?text=Taal+Volcano', 'Island‑in‑a‑lake within a lake; world’s largest double lake.', 'spot-taal-nature')">
-          <img src="https://placehold.co/400x300/FF3333/FFFFFF?text=Taal+Volcano" alt="Taal Volcano & Lake">
-          <div class="card-text-overlay">
-            <h3>Taal Volcano & Lake</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Mt. Pulag', 'https://placehold.co/400x300/33FF88/FFFFFF?text=Mt+Pulag', 'Highest peak in Luzon, famous for its sea of clouds.', 'spot-mtpulag-nature')">
-          <img src="https://placehold.co/400x300/33FF88/FFFFFF?text=Mt+Pulag" alt="Mt. Pulag">
-          <div class="card-text-overlay">
-            <h3>Mt. Pulag</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Hundred Islands', 'https://placehold.co/400x300/88FF33/FFFFFF?text=Hundred+Islands', '100+ limestone islets ideal for boating and snorkeling.', 'spot-hundredislands-nature')">
-          <img src="https://placehold.co/400x300/88FF33/FFFFFF?text=Hundred+Islands" alt="Hundred Islands">
-          <div class="card-text-overlay">
-            <h3>Hundred Islands</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Pagsanjan Falls', 'https://placehold.co/400x300/3388FF/FFFFFF?text=Pagsanjan+Falls', 'Bamboo rafting through rapids culminating in landing under the falls.', 'spot-pagsanjanfalls-nature')">
-          <img src="https://placehold.co/400x300/3388FF/FFFFFF?text=Pagsanjan+Falls" alt="Pagsanjan Falls">
-          <div class="card-text-overlay">
-            <h3>Pagsanjan Falls</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Mount Mayon', 'https://placehold.co/400x300/FF5733/FFFFFF?text=Mount+Mayon', 'Perfect cone volcano, iconic silhouette.', 'spot-mayon-nature')">
-          <img src="https://placehold.co/400x300/FF5733/FFFFFF?text=Mount+Mayon" alt="Mount Mayon">
-          <div class="card-text-overlay">
-            <h3>Mount Mayon</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Masungi Georeserve', 'https://placehold.co/400x300/33FF57/FFFFFF?text=Masungi+Georeserve', 'Limestone forest sanctuary with rope courses and trails.', 'spot-masungi-nature')">
-          <img src="https://placehold.co/400x300/33FF57/FFFFFF?text=Masungi+Georeserve" alt="Masungi Georeserve">
-          <div class="card-text-overlay">
-            <h3>Masungi Georeserve</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Sabang Beach, Baler', 'https://placehold.co/400x300/3357FF/FFFFFF?text=Sabang+Beach', 'Surfing hotspot and historic USS Colorado wreck site.', 'spot-sabangbeach-nature')">
-          <img src="https://placehold.co/400x300/3357FF/FFFFFF?text=Sabang+Beach" alt="Sabang Beach, Baler">
-          <div class="card-text-overlay">
-            <h3>Sabang Beach, Baler</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Mt. Pinatubo', 'https://placehold.co/400x300/FF33A1/FFFFFF?text=Mt+Pinatubo', 'Crater lake formed by 1991 eruption; accessed via 4×4 tours.', 'spot-mtpinatubo-nature')">
-          <img src="https://placehold.co/400x300/FF33A1/FFFFFF?text=Mt+Pinatubo" alt="Mt. Pinatubo">
-          <div class="card-text-overlay">
-            <h3>Mt. Pinatubo</h3>
-          </div>
-        </div>
-      </section>
-      <button class="scroll-btn right">&#10095;</button>
-    </div>
+        <button class="scroll-btn right">›</button>
+      </div>
+    </section>
 
-    <h2 class="section-title">Other Attractions</h2>
-    <div class="scroll-wrapper">
-      <button class="scroll-btn left">&#10094;</button>
-      <section class="scroll-row">
-        <div class="card" onclick="openOverlay('Masungi Carving Gardens', 'https://placehold.co/400x300/A133FF/FFFFFF?text=Masungi+Carving', 'Scenic limestone karst landscapes with treetop trails.', 'spot-masungicarving')">
-          <img src="https://placehold.co/400x300/A133FF/FFFFFF?text=Masungi+Carving" alt="Masungi Carving Gardens">
-          <div class="card-text-overlay">
-            <h3>Masungi Carving Gardens</h3>
+    <!-- Other Notable Spots Section -->
+    <section class="region-section">
+      <h2>Other Notable Spots</h2>
+      <div class="scroll-wrapper">
+        <button class="scroll-btn left">‹</button>
+        <div class="scroll-row">
+          <div class="spot-card" onclick="openOverlay('Binondo Chinatown', 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Binondo_Arch.jpg/1280px-Binondo_Arch.jpg', 'Binondo is the oldest Chinatown in the world, established in 1594. It is a vibrant district known for its authentic Chinese cuisine and cultural landmarks.', 'spot-binondo-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Binondo_Arch.jpg/1280px-Binondo_Arch.jpg" alt="Binondo Chinatown">
+            <div class="card-text-overlay">
+              <h3>Binondo Chinatown</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Bangui Windmills', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Bangui_Windmills_Ilocos_Norte.jpg/1280px-Bangui_Windmills_Ilocos_Norte.jpg', 'The Bangui Windmills are a row of 20 wind turbines in Bangui, Ilocos Norte, facing the South China Sea. They are a popular tourist attraction and a source of renewable energy.', 'spot-banguiwindmills-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Bangui_Windmills_Ilocos_Norte.jpg/1280px-Bangui_Windmills_Ilocos_Norte.jpg" alt="Bangui Windmills">
+            <div class="card-text-overlay">
+              <h3>Bangui Windmills</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Villa Escudero Plantations and Resort', 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Villa_Escudero_Labasin_Falls_Restaurant.jpg/1280px-Villa_Escudero_Labasin_Falls_Restaurant.jpg', 'Villa Escudero Plantations and Resort is a hacienda-style resort in San Pablo City, Laguna. It offers a unique dining experience at the foot of a waterfall and cultural shows.', 'spot-villaescudero-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Villa_Escudero_Labasin_Falls_Restaurant.jpg/1280px-Villa_Escudero_Labasin_Falls_Restaurant.jpg" alt="Villa Escudero Plantations and Resort">
+            <div class="card-text-overlay">
+              <h3>Villa Escudero Plantations and Resort</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Sumaguing Cave', 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Sumaguing_Cave_Entrance.jpg/1280px-Sumaguing_Cave_Entrance.jpg', 'Sumaguing Cave is one of the most popular caves in Sagada, Mountain Province. It is known for its impressive rock formations and challenging spelunking experience.', 'spot-sumaguingcave-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Sumaguing_Cave_Entrance.jpg/1280px-Sumaguing_Cave_Entrance.jpg" alt="Sumaguing Cave">
+            <div class="card-text-overlay">
+              <h3>Sumaguing Cave</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Sagada Hanging Coffins', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Sagada_Hanging_Coffins.jpg/1280px-Sagada_Hanging_Coffins.jpg', 'The hanging coffins of Sagada are an ancient burial practice of the Igorot tribe. Coffins are nailed to the side of cliffs, a unique cultural sight.', 'spot-sagadahanging-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Sagada_Hanging_Coffins.jpg/1280px-Sagada_Hanging_Coffins.jpg" alt="Sagada Hanging Coffins">
+            <div class="card-text-overlay">
+              <h3>Sagada Hanging Coffins</h3>
+            </div>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Sumaguing Cave', 'https://placehold.co/400x300/33FFA1/FFFFFF?text=Sumaguing+Cave', 'Vast cave system featuring river beds and limestone formations.', 'spot-sumaguingcave-other')">
-          <img src="https://placehold.co/400x300/33FFA1/FFFFFF?text=Sumaguing+Cave" alt="Sumaguing Cave">
-          <div class="card-text-overlay">
-            <h3>Sumaguing Cave</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Sagada Hanging Coffins', 'https://placehold.co/400x300/FF8833/FFFFFF?text=Sagada+Hanging', 'Traditional burial practice decorating high cliffs.', 'spot-sagadahanging-other')">
-          <img src="https://placehold.co/400x300/FF8833/FFFFFF?text=Sagada+Hanging" alt="Sagada Hanging Coffins">
-          <div class="card-text-overlay">
-            <h3>Sagada Hanging Coffins</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Palawan Underground River, Puerto Princesa', 'https://placehold.co/400x300/3388FF/FFFFFF?text=Underground+River', 'UNESCO site with paddle‑boat cavern tours.', 'spot-palawanunderground')">
-          <img src="https://placehold.co/400x300/3388FF/FFFFFF?text=Underground+River" alt="Palawan Underground River, Puerto Princesa">
-          <div class="card-text-overlay">
-            <h3>Palawan Underground River, Puerto Princesa</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Kayangan Lake, Coron (Palawan)', 'https://placehold.co/400x300/8833FF/FFFFFF?text=Kayangan+Lake', 'Pristine clear lake in limestone scenery.', 'spot-kayanganlake')">
-          <img src="https://placehold.co/400x300/8833FF/FFFFFF?text=Kayangan+Lake" alt="Kayangan Lake, Coron (Palawan)">
-          <div class="card-text-overlay">
-            <h3>Kayangan Lake, Coron (Palawan)</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('El Nido Big Lagoon (Palawan)', 'assets/43-facts-about-baguio-1689570859.jpg', 'Turquoise waters framed by sheer limestone cliffs.', 'spot-elnidobiglagoon')">
-          <img src="assets/43-facts-about-baguio-1689570859.jpg" alt="El Nido Big Lagoon (Palawan)">
-          <div class="card-text-overlay">
-            <h3>El Nido Big Lagoon (Palawan)</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Donsol Whale Shark Interaction', 'https://placehold.co/400x300/33FF88/FFFFFF?text=Donsol+Whale+Shark', 'Seasonal interaction with whale sharks.', 'spot-donsol')">
-          <img src="https://placehold.co/400x300/33FF88/FFFFFF?text=Donsol+Whale+Shark" alt="Donsol Whale Shark Interaction">
-          <div class="card-text-overlay">
-            <h3>Donsol Whale Shark Interaction</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Subic Bay', 'https://placehold.co/400x300/88FF33/FFFFFF?text=Subic+Bay', 'Former US Naval Base with resorts and wildlife parks.', 'spot-subic')">
-          <img src="https://placehold.co/400x300/88FF33/FFFFFF?text=Subic+Bay" alt="Subic Bay">
-          <div class="card-text-overlay">
-            <h3>Subic Bay</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('Tagaytay', 'https://placehold.co/400x300/3388FF/FFFFFF?text=Tagaytay', 'Cool climate and views of Taal Volcano.', 'spot-tagaytay')">
-          <img src="https://placehold.co/400x300/3388FF/FFFFFF?text=Tagaytay" alt="Tagaytay">
-          <div class="card-text-overlay">
-            <h3>Tagaytay</h3>
-          </div>
-        </div>
-        <div class="card" onclick="openOverlay('La Union', 'https://placehold.co/400x300/FF5733/FFFFFF?text=La+Union', 'Surfing destination.', 'spot-launion')">
-          <img src="https://placehold.co/400x300/FF5733/FFFFFF?text=La+Union" alt="La Union">
-          <div class="card-text-overlay">
-            <h3>La Union</h3>
-          </div>
-        </div>
-      </section>
-      <button class="scroll-btn right">&#10095;</button>
-    </div>
+        <button class="scroll-btn right">›</button>
+      </div>
+    </section>
   </main>
 
+  <!-- The Modal (Overlay) Structure -->
   <div id="overlay" class="overlay">
-    <div class="modal">
+    <div class="modal-content">
       <button class="close-btn" onclick="closeOverlay()">&times;</button>
-      <img id="modal-img" src="" alt="Preview" />
-      <h2 id="modal-title">Title</h2>
-      <p id="modal-desc">Description</p>
+      <h2 id="modal-title" class="modal-title"></h2>
+      <img id="modal-img" class="modal-img" src="" alt="Destination Image">
+      <p id="modal-desc" class="modal-desc"></p>
+
       <div class="modal-buttons">
-        <button id="favoriteModalBtn" class="favorite-overlay-btn">♡ Add to Favorites</button>
-        <button id="directionModalBtn" class="direction-overlay-btn">Directions</button>
+        <button id="favoriteModalBtn">♡ Add to Favorites</button>
       </div>
-      <div id="modal-directions" class="modal-directions" style="display: none;"></div>
+
+      <div id="modal-directions" class="modal-directions">
+        <h3>Directions and Tutorial</h3>
+        <!-- Directions content will be loaded here by JavaScript -->
+      </div>
+
+      <div id="modal-comment-section" class="modal-comment-section">
+        <h3>Comments</h3>
+        <div id="comments-display-area" class="comments-display-area">
+          <!-- Comments will be loaded here by JavaScript -->
+        </div>
+        <div id="comment-message-area" style="display: none;"></div>
+        <div class="comment-input-area">
+          <textarea id="comment-input" placeholder="Isulat ang iyong komento..." disabled></textarea>
+          <button id="submit-comment-btn" disabled>Submit</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <script type="module" src="luzon.js" ></script>
+  <script src="luzon.js" type="module"></script>
+  <script>
+    document.getElementById("logoutBtn")?.addEventListener("click", () => {
+      alert("You have been logged out."); // Consider replacing alert with a custom modal for better UX
+      window.location.href = "login.html";
+    });
+  </script>
 </body>
 </html>
