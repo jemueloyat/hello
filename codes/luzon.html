@@ -1,3 +1,4 @@
+<!-- luzon.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,79 +8,18 @@
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* Netflix-style Overlay */
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-
-    .modal {
-      background: #1a1a1a;
-      color: white;
-      padding: 30px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 900px;
-      position: relative;
-      animation: fadeIn 0.3s ease-in-out;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .modal img {
-      width: 100%;
-      border-radius: 8px;
-      margin-bottom: 16px;
-    }
-
-    .modal h2 {
-      margin-top: 0;
-      font-size: 2rem;
-    }
-
-    .modal p {
-      font-size: 1.1rem;
-      color: #ccc;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 12px;
-      right: 16px;
-      font-size: 28px;
-      color: white;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    .favorite-overlay-btn {
-      margin-top: 20px;
-      background: #ff5252;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .favorite-overlay-btn:hover {
-      background: #ff3333;
-    }
-
-    @keyframes fadeIn {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
+    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 9999; }
+    .modal { background: #1a1a1a; color: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 900px; position: relative; animation: fadeIn 0.3s ease-in-out; max-height: 90vh; overflow-y: auto; }
+    .modal img { width: 100%; border-radius: 8px; margin-bottom: 16px; }
+    .modal h2 { margin-top: 0; font-size: 2rem; }
+    .modal p { font-size: 1.1rem; color: #ccc; }
+    .close-btn { position: absolute; top: 12px; right: 16px; font-size: 28px; color: white; background: none; border: none; cursor: pointer; }
+    /* Updated styles for vertical buttons */
+    .favorite-overlay-btn, .direction-overlay-btn { margin-top: 10px; background: #ff5252; color: white; border: none; padding: 12px 20px; font-size: 1rem; border-radius: 8px; cursor: pointer; transition: background 0.3s; width: fit-content; }
+    .favorite-overlay-btn:hover, .direction-overlay-btn:hover { background: #ff3333; }
+    .modal-buttons { display: flex; flex-direction: column; align-items: center; margin-top: 20px; } /* Changed to column direction and centered items */
+    .modal-directions { margin-top: 20px; padding: 15px; background: #2a2a2a; border-radius: 8px; color: #eee; font-size: 1rem; line-height: 1.5; }
+    @keyframes fadeIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   </style>
 </head>
 <body>
@@ -96,42 +36,147 @@
     </nav>
   </header>
 
-  <main>
+ <main>
     <h2 class="section-title">Top 10 Most Visited</h2>
     <div class="scroll-wrapper">
       <button class="scroll-btn left">&#10094;</button>
       <section class="scroll-row">
+<<<<<<< HEAD
         <!-- Spots 1 to 10 -->
         <!-- Only Spot 1 has overlay functionality as example -->
         <div class="card" onclick="openOverlay('Batad Rice Terraces', 'assets/43-facts-about-baguio-1689570859.jpg', 'Description for Spot 1')">
           <img src="assets/Batad_Rice_Terraces.jpg" alt="Location"><h3>Spot 1</h3>
+=======
+        <div class="card" onclick="openOverlay('Banaue Rice Terraces', 'https://placehold.co/400x300/FF5733/FFFFFF?text=Banaue+Rice+Terraces', '2,000‑year‑old terraces carved into mountains; UNESCO site.', 'spot-banauerice')">
+          <img src="https://placehold.co/400x300/FF5733/FFFFFF?text=Banaue+Rice+Terraces" alt="Banaue Rice Terraces">
+          <div class="card-text-overlay">
+            <h3>Banaue Rice Terraces</h3>
+          </div>
+>>>>>>> 2782f0f7a50dbae33cc8dd70cc10106681546420
         </div>
-        <!-- Add other spots with optional onclicks later -->
-        <div class="card" onclick="openOverlay('Spot 2', 'assets/43-facts-about-baguio-1689570859.jpg', 'Description for Spot 2')">
-          <img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 2</h3>
+        <div class="card" onclick="openOverlay('Batad Rice Terraces', 'https://placehold.co/400x300/33FF57/FFFFFF?text=Batad+Rice+Terraces', 'Steep amphitheater terraces reached on foot; dramatic views.', 'spot-batadrice')">
+          <img src="https://placehold.co/400x300/33FF57/FFFFFF?text=Batad+Rice+Terraces" alt="Batad Rice Terraces">
+          <div class="card-text-overlay">
+            <h3>Batad Rice Terraces</h3>
+          </div>
         </div>
-        <div class="card" onclick="openOverlay('Spot 3', 'assets/43-facts-about-baguio-1689570859.jpg', 'Description for Spot 3')">
-          <img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 3</h3>
+        <div class="card" onclick="openOverlay('Intramuros', 'https://placehold.co/400x300/3357FF/FFFFFF?text=Intramuros', 'Historic Spanish walled city with museums and forts.', 'spot-intramuros')">
+          <img src="https://placehold.co/400x300/3357FF/FFFFFF?text=Intramuros" alt="Intramuros">
+          <div class="card-text-overlay">
+            <h3>Intramuros</h3>
+          </div>
         </div>
-        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 4</h3></div>
-        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 5</h3></div>
-        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 6</h3></div>
-        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 7</h3></div>
-        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 8</h3></div>
-        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 9</h3></div>
-        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 10</h3></div>
+        <div class="card" onclick="openOverlay('Vigan', 'https://placehold.co/400x300/FF33A1/FFFFFF?text=Vigan', 'Well‑preserved colonial town with cobbled streets and calesas.', 'spot-vigan')">
+          <img src="https://placehold.co/400x300/FF33A1/FFFFFF?text=Vigan" alt="Vigan">
+          <div class="card-text-overlay">
+            <h3>Vigan</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Taal Volcano & Lake', 'https://placehold.co/400x300/A133FF/FFFFFF?text=Taal+Volcano', 'Island‑in‑a‑lake within a lake; world’s largest double lake.', 'spot-taal')">
+          <img src="https://placehold.co/400x300/A133FF/FFFFFF?text=Taal+Volcano" alt="Taal Volcano & Lake">
+          <div class="card-text-overlay">
+            <h3>Taal Volcano & Lake</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Mt. Pulag', 'https://placehold.co/400x300/33FFA1/FFFFFF?text=Mt+Pulag', 'Highest peak in Luzon, famous for its sea of clouds.', 'spot-mtpulag')">
+          <img src="https://placehold.co/400x300/33FFA1/FFFFFF?text=Mt+Pulag" alt="Mt. Pulag">
+          <div class="card-text-overlay">
+            <h3>Mt. Pulag</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Hundred Islands', 'https://placehold.co/400x300/FF8833/FFFFFF?text=Hundred+Islands', '100+ limestone islets ideal for boating and snorkeling.', 'spot-hundredislands')">
+          <img src="https://placehold.co/400x300/FF8833/FFFFFF?text=Hundred+Islands" alt="Hundred Islands">
+          <div class="card-text-overlay">
+            <h3>Hundred Islands</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Pagsanjan Falls', 'https://placehold.co/400x300/3388FF/FFFFFF?text=Pagsanjan+Falls', 'Bamboo rafting through rapids culminating in landing under the falls.', 'spot-pagsanjanfalls')">
+          <img src="https://placehold.co/400x300/3388FF/FFFFFF?text=Pagsanjan+Falls" alt="Pagsanjan Falls">
+          <div class="card-text-overlay">
+            <h3>Pagsanjan Falls</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Mount Mayon', 'https://placehold.co/400x300/8833FF/FFFFFF?text=Mount+Mayon', 'Perfect cone volcano, iconic silhouette.', 'spot-mayon')">
+          <img src="https://placehold.co/400x300/8833FF/FFFFFF?text=Mount+Mayon" alt="Mount Mayon">
+          <div class="card-text-overlay">
+            <h3>Mount Mayon</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Masungi Georeserve', 'https://placehold.co/400x300/FF3333/FFFFFF?text=Masungi+Georeserve', 'Limestone forest sanctuary with rope courses and trails.', 'spot-masungi')">
+          <img src="https://placehold.co/400x300/FF3333/FFFFFF?text=Masungi+Georeserve" alt="Masungi Georeserve">
+          <div class="card-text-overlay">
+            <h3>Masungi Georeserve</h3>
+          </div>
+        </div>
       </section>
       <button class="scroll-btn right">&#10095;</button>
     </div>
+
 
     <h2 class="section-title">Historical Destinations</h2>
     <div class="scroll-wrapper">
       <button class="scroll-btn left">&#10094;</button>
       <section class="scroll-row">
-        <!-- Spots 11 to 20 -->
-        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 11</h3></div>
-        <!-- ... other spots ... -->
-        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 20</h3></div>
+        <div class="card" onclick="openOverlay('Intramuros', 'https://placehold.co/400x300/33FF88/FFFFFF?text=Intramuros', 'Historic Spanish walled city with museums and forts.', 'spot-intramuros-hist')">
+          <img src="https://placehold.co/400x300/33FF88/FFFFFF?text=Intramuros" alt="Intramuros">
+          <div class="card-text-overlay">
+            <h3>Intramuros</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Vigan', 'https://placehold.co/400x300/88FF33/FFFFFF?text=Vigan', 'Well‑preserved colonial town with cobbled streets and calesas.', 'spot-vigan-hist')">
+          <img src="https://placehold.co/400x300/88FF33/FFFFFF?text=Vigan" alt="Vigan">
+          <div class="card-text-overlay">
+            <h3>Vigan</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Corregidor Island', 'https://placehold.co/400x300/3388FF/FFFFFF?text=Corregidor+Island', 'WWII historical ruins and memorials accessible by ferry.', 'spot-corregidor')">
+          <img src="https://placehold.co/400x300/3388FF/FFFFFF?text=Corregidor+Island" alt="Corregidor Island">
+          <div class="card-text-overlay">
+            <h3>Corregidor Island</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Rizal Park & National Museum Complex', 'https://placehold.co/400x300/FF5733/FFFFFF?text=Rizal+Park', 'Central greenscape with historical museums.', 'spot-rizalpark')">
+          <img src="https://placehold.co/400x300/FF5733/FFFFFF?text=Rizal+Park" alt="Rizal Park & National Museum Complex">
+          <div class="card-text-overlay">
+            <h3>Rizal Park & National Museum Complex</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Calle Crisologo, Vigan', 'https://placehold.co/400x300/33FF57/FFFFFF?text=Calle+Crisologo', 'Antique-lined street perfect for heritage walks and horse-drawn rides.', 'spot-callecrisologo')">
+          <img src="https://placehold.co/400x300/33FF57/FFFFFF?text=Calle+Crisologo" alt="Calle Crisologo, Vigan">
+          <div class="card-text-overlay">
+            <h3>Calle Crisologo, Vigan</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Binondo, Manila', 'https://placehold.co/400x300/3357FF/FFFFFF?text=Binondo', 'Oldest Chinatown in the world; famed foodie destination.', 'spot-binondo')">
+          <img src="https://placehold.co/400x300/3357FF/FFFFFF?text=Binondo" alt="Binondo, Manila">
+          <div class="card-text-overlay">
+            <h3>Binondo, Manila</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Villa Escudero', 'https://placehold.co/400x300/FF33A1/FFFFFF?text=Villa+Escudero', 'Resort‑plantation featuring waterfall dining and cultural shows.', 'spot-villaescudero')">
+          <img src="https://placehold.co/400x300/FF33A1/FFFFFF?text=Villa+Escudero" alt="Villa Escudero">
+          <div class="card-text-overlay">
+            <h3>Villa Escudero</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Hoyop-Hoyopan Cave', 'https://placehold.co/400x300/A133FF/FFFFFF?text=Hoyop-Hoyopan+Cave', 'Subterranean limestone cave with unique formations.', 'spot-hoyopoyopan-hist')">
+          <img src="https://placehold.co/400x300/A133FF/FFFFFF?text=Hoyop-Hoyopan+Cave" alt="Hoyop-Hoyopan Cave">
+          <div class="card-text-overlay">
+            <h3>Hoyop-Hoyopan Cave</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Bangui Windmills', 'https://placehold.co/400x300/33FFA1/FFFFFF?text=Bangui+Windmills', 'Offshore wind farm along the coast with dramatic scenery.', 'spot-banguiwindmills')">
+          <img src="https://placehold.co/400x300/33FFA1/FFFFFF?text=Bangui+Windmills" alt="Bangui Windmills">
+          <div class="card-text-overlay">
+            <h3>Bangui Windmills</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Bataan Death March Memorial', 'https://placehold.co/400x300/FF8833/FFFFFF?text=Bataan+Memorial', 'Historical marker for WWII event.', 'spot-bataanmemorial')">
+          <img src="https://placehold.co/400x300/FF8833/FFFFFF?text=Bataan+Memorial" alt="Bataan Death March Memorial">
+          <div class="card-text-overlay">
+            <h3>Bataan Death March Memorial</h3>
+          </div>
+        </div>
       </section>
       <button class="scroll-btn right">&#10095;</button>
     </div>
@@ -140,47 +185,153 @@
     <div class="scroll-wrapper">
       <button class="scroll-btn left">&#10094;</button>
       <section class="scroll-row">
-        <!-- Spots 21 to 30 -->
-        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 21</h3></div>
-        <!-- ... other spots ... -->
-        <div class="card"><img src="assets/43-facts-about-baguio-1689570859.jpg" alt="Location"><h3>Spot 30</h3></div>
+        <div class="card" onclick="openOverlay('Banaue Rice Terraces', 'https://placehold.co/400x300/3388FF/FFFFFF?text=Banaue+Rice+Terraces', '2,000‑year‑old terraces carved into mountains; UNESCO site.', 'spot-banauerice-nature')">
+          <img src="https://placehold.co/400x300/3388FF/FFFFFF?text=Banaue+Rice+Terraces" alt="Banaue Rice Terraces">
+          <div class="card-text-overlay">
+            <h3>Banaue Rice Terraces</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Batad Rice Terraces', 'https://placehold.co/400x300/8833FF/FFFFFF?text=Batad+Rice+Terraces', 'Steep amphitheater terraces reached on foot; dramatic views.', 'spot-batadrice-nature')">
+          <img src="https://placehold.co/400x300/8833FF/FFFFFF?text=Batad+Rice+Terraces" alt="Batad Rice Terraces">
+          <div class="card-text-overlay">
+            <h3>Batad Rice Terraces</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Taal Volcano & Lake', 'https://placehold.co/400x300/FF3333/FFFFFF?text=Taal+Volcano', 'Island‑in‑a‑lake within a lake; world’s largest double lake.', 'spot-taal-nature')">
+          <img src="https://placehold.co/400x300/FF3333/FFFFFF?text=Taal+Volcano" alt="Taal Volcano & Lake">
+          <div class="card-text-overlay">
+            <h3>Taal Volcano & Lake</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Mt. Pulag', 'https://placehold.co/400x300/33FF88/FFFFFF?text=Mt+Pulag', 'Highest peak in Luzon, famous for its sea of clouds.', 'spot-mtpulag-nature')">
+          <img src="https://placehold.co/400x300/33FF88/FFFFFF?text=Mt+Pulag" alt="Mt. Pulag">
+          <div class="card-text-overlay">
+            <h3>Mt. Pulag</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Hundred Islands', 'https://placehold.co/400x300/88FF33/FFFFFF?text=Hundred+Islands', '100+ limestone islets ideal for boating and snorkeling.', 'spot-hundredislands-nature')">
+          <img src="https://placehold.co/400x300/88FF33/FFFFFF?text=Hundred+Islands" alt="Hundred Islands">
+          <div class="card-text-overlay">
+            <h3>Hundred Islands</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Pagsanjan Falls', 'https://placehold.co/400x300/3388FF/FFFFFF?text=Pagsanjan+Falls', 'Bamboo rafting through rapids culminating in landing under the falls.', 'spot-pagsanjanfalls-nature')">
+          <img src="https://placehold.co/400x300/3388FF/FFFFFF?text=Pagsanjan+Falls" alt="Pagsanjan Falls">
+          <div class="card-text-overlay">
+            <h3>Pagsanjan Falls</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Mount Mayon', 'https://placehold.co/400x300/FF5733/FFFFFF?text=Mount+Mayon', 'Perfect cone volcano, iconic silhouette.', 'spot-mayon-nature')">
+          <img src="https://placehold.co/400x300/FF5733/FFFFFF?text=Mount+Mayon" alt="Mount Mayon">
+          <div class="card-text-overlay">
+            <h3>Mount Mayon</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Masungi Georeserve', 'https://placehold.co/400x300/33FF57/FFFFFF?text=Masungi+Georeserve', 'Limestone forest sanctuary with rope courses and trails.', 'spot-masungi-nature')">
+          <img src="https://placehold.co/400x300/33FF57/FFFFFF?text=Masungi+Georeserve" alt="Masungi Georeserve">
+          <div class="card-text-overlay">
+            <h3>Masungi Georeserve</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Sabang Beach, Baler', 'https://placehold.co/400x300/3357FF/FFFFFF?text=Sabang+Beach', 'Surfing hotspot and historic USS Colorado wreck site.', 'spot-sabangbeach-nature')">
+          <img src="https://placehold.co/400x300/3357FF/FFFFFF?text=Sabang+Beach" alt="Sabang Beach, Baler">
+          <div class="card-text-overlay">
+            <h3>Sabang Beach, Baler</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Mt. Pinatubo', 'https://placehold.co/400x300/FF33A1/FFFFFF?text=Mt+Pinatubo', 'Crater lake formed by 1991 eruption; accessed via 4×4 tours.', 'spot-mtpinatubo-nature')">
+          <img src="https://placehold.co/400x300/FF33A1/FFFFFF?text=Mt+Pinatubo" alt="Mt. Pinatubo">
+          <div class="card-text-overlay">
+            <h3>Mt. Pinatubo</h3>
+          </div>
+        </div>
+      </section>
+      <button class="scroll-btn right">&#10095;</button>
+    </div>
+
+    <h2 class="section-title">Other Attractions</h2>
+    <div class="scroll-wrapper">
+      <button class="scroll-btn left">&#10094;</button>
+      <section class="scroll-row">
+        <div class="card" onclick="openOverlay('Masungi Carving Gardens', 'https://placehold.co/400x300/A133FF/FFFFFF?text=Masungi+Carving', 'Scenic limestone karst landscapes with treetop trails.', 'spot-masungicarving')">
+          <img src="https://placehold.co/400x300/A133FF/FFFFFF?text=Masungi+Carving" alt="Masungi Carving Gardens">
+          <div class="card-text-overlay">
+            <h3>Masungi Carving Gardens</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Sumaguing Cave', 'https://placehold.co/400x300/33FFA1/FFFFFF?text=Sumaguing+Cave', 'Vast cave system featuring river beds and limestone formations.', 'spot-sumaguingcave-other')">
+          <img src="https://placehold.co/400x300/33FFA1/FFFFFF?text=Sumaguing+Cave" alt="Sumaguing Cave">
+          <div class="card-text-overlay">
+            <h3>Sumaguing Cave</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Sagada Hanging Coffins', 'https://placehold.co/400x300/FF8833/FFFFFF?text=Sagada+Hanging', 'Traditional burial practice decorating high cliffs.', 'spot-sagadahanging-other')">
+          <img src="https://placehold.co/400x300/FF8833/FFFFFF?text=Sagada+Hanging" alt="Sagada Hanging Coffins">
+          <div class="card-text-overlay">
+            <h3>Sagada Hanging Coffins</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Palawan Underground River, Puerto Princesa', 'https://placehold.co/400x300/3388FF/FFFFFF?text=Underground+River', 'UNESCO site with paddle‑boat cavern tours.', 'spot-palawanunderground')">
+          <img src="https://placehold.co/400x300/3388FF/FFFFFF?text=Underground+River" alt="Palawan Underground River, Puerto Princesa">
+          <div class="card-text-overlay">
+            <h3>Palawan Underground River, Puerto Princesa</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Kayangan Lake, Coron (Palawan)', 'https://placehold.co/400x300/8833FF/FFFFFF?text=Kayangan+Lake', 'Pristine clear lake in limestone scenery.', 'spot-kayanganlake')">
+          <img src="https://placehold.co/400x300/8833FF/FFFFFF?text=Kayangan+Lake" alt="Kayangan Lake, Coron (Palawan)">
+          <div class="card-text-overlay">
+            <h3>Kayangan Lake, Coron (Palawan)</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('El Nido Big Lagoon (Palawan)', 'assets/43-facts-about-baguio-1689570859.jpg', 'Turquoise waters framed by sheer limestone cliffs.', 'spot-elnidobiglagoon')">
+          <img src="assets/43-facts-about-baguio-1689570859.jpg" alt="El Nido Big Lagoon (Palawan)">
+          <div class="card-text-overlay">
+            <h3>El Nido Big Lagoon (Palawan)</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Donsol Whale Shark Interaction', 'https://placehold.co/400x300/33FF88/FFFFFF?text=Donsol+Whale+Shark', 'Seasonal interaction with whale sharks.', 'spot-donsol')">
+          <img src="https://placehold.co/400x300/33FF88/FFFFFF?text=Donsol+Whale+Shark" alt="Donsol Whale Shark Interaction">
+          <div class="card-text-overlay">
+            <h3>Donsol Whale Shark Interaction</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Subic Bay', 'https://placehold.co/400x300/88FF33/FFFFFF?text=Subic+Bay', 'Former US Naval Base with resorts and wildlife parks.', 'spot-subic')">
+          <img src="https://placehold.co/400x300/88FF33/FFFFFF?text=Subic+Bay" alt="Subic Bay">
+          <div class="card-text-overlay">
+            <h3>Subic Bay</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('Tagaytay', 'https://placehold.co/400x300/3388FF/FFFFFF?text=Tagaytay', 'Cool climate and views of Taal Volcano.', 'spot-tagaytay')">
+          <img src="https://placehold.co/400x300/3388FF/FFFFFF?text=Tagaytay" alt="Tagaytay">
+          <div class="card-text-overlay">
+            <h3>Tagaytay</h3>
+          </div>
+        </div>
+        <div class="card" onclick="openOverlay('La Union', 'https://placehold.co/400x300/FF5733/FFFFFF?text=La+Union', 'Surfing destination.', 'spot-launion')">
+          <img src="https://placehold.co/400x300/FF5733/FFFFFF?text=La+Union" alt="La Union">
+          <div class="card-text-overlay">
+            <h3>La Union</h3>
+          </div>
+        </div>
       </section>
       <button class="scroll-btn right">&#10095;</button>
     </div>
   </main>
 
-  <!-- Netflix-style Overlay Modal -->
   <div id="overlay" class="overlay">
     <div class="modal">
       <button class="close-btn" onclick="closeOverlay()">&times;</button>
       <img id="modal-img" src="" alt="Preview" />
       <h2 id="modal-title">Mt. Pulag (Benguet)</h2>
       <p id="modal-desc">Description</p>
-      <button id="favoriteModalBtn" class="favorite-overlay-btn">♡ Add to Favorites</button>
+      <div class="modal-buttons">
+        <button id="favoriteModalBtn" class="favorite-overlay-btn">♡ Add to Favorites</button>
+        <button id="directionModalBtn" class="direction-overlay-btn">Directions</button>
+      </div>
+      <div id="modal-directions" class="modal-directions" style="display: none;"></div>
     </div>
   </div>
 
-  <script>
-    function openOverlay(title, imageUrl, description) {
-      document.getElementById("modal-title").textContent = title;
-      document.getElementById("modal-img").src = imageUrl;
-      document.getElementById("modal-desc").textContent = description;
-      document.getElementById("overlay").style.display = "flex";
-    }
-
-    function closeOverlay() {
-      document.getElementById("overlay").style.display = "none";
-    }
-
-    const favoriteBtn = document.getElementById("favoriteModalBtn");
-    let isFavorited = false;
-
-    favoriteBtn.addEventListener("click", () => {
-      isFavorited = !isFavorited;
-      favoriteBtn.textContent = isFavorited ? "♥ Favorited" : "♡ Add to Favorites";
-    });
-  </script>
-
-  <script type="module" src="luzon.js"></script>
+  <script type="module" src="luzon.js" ></script>
 </body>
 </html>
