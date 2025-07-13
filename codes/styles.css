@@ -1,35 +1,36 @@
+/* General Body and Main Layout */
 body {
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
   background: linear-gradient(to bottom right, #f4f4f4, #ffb300);
   min-height: 100vh;
   background-attachment: fixed;
+  color: #333; /* Default text color */
 }
 
 main {
-  margin-top: 100px;
+  margin-top: 100px; /* Space for fixed navbar */
   padding: 32px;
 }
 
 /* Navbar */
-
 .transparent-navbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background: rgba(26, 34, 51, 0.4);
+  background: rgba(26, 34, 51, 0.4); /* Semi-transparent dark background */
   display: flex;
   align-items: center;
   padding: 16px 40px;
-  z-index: 1000;
-  box-shadow: none;
+  z-index: 1000; /* Ensure navbar is on top */
+  box-shadow: none; /* No shadow as per user's preference */
 }
 
 .transparent-navbar .logo {
   font-size: 1.7em;
   font-weight: bold;
-  color: #ffb300;
+  color: #ffb300; /* Accent color for logo */
   margin-right: 40px;
 }
 
@@ -41,7 +42,7 @@ main {
 }
 
 .transparent-navbar a {
-  color: #fff;
+  color: #fff; /* White text for links */
   text-decoration: none;
   font-size: 1.1em;
   font-weight: 500;
@@ -50,7 +51,7 @@ main {
   transition: background 0.2s, color 0.2s;
 }
 
-.transparent-navbar a.home-btn {
+.transparent-navbar a.home-btn { /* Specific style for home button if used */
   background: #ffb300;
   color: #1a2233;
   font-weight: bold;
@@ -59,30 +60,46 @@ main {
 
 .transparent-navbar a:hover,
 .transparent-navbar a.active {
-  background: rgba(255, 179, 0, 0.15);
+  background: rgba(255, 179, 0, 0.15); /* Light yellow transparent background on hover/active */
   color: #ffb300;
 }
 
 .logout-button {
   background: none;
   border: none;
-  color: #d00;
+  color: #d00; /* Red color for logout */
   font-weight: bold;
   cursor: pointer;
+  padding: 8px 16px; /* Match other nav links padding */
+  border-radius: 8px; /* Match other nav links border-radius */
+  transition: background 0.2s, color 0.2s;
 }
+
+.logout-button:hover {
+  background: rgba(204, 0, 0, 0.15); /* Light red transparent background on hover */
+  color: #ff3333;
+}
+
 
 /* Section Headings */
-
-.section-title {
-  margin-top: 120px;
+.section-title, h1, h2 { /* Applied to h1, h2 for consistency with section-title */
+  margin-top: 40px; /* Adjusted margin-top for general headings */
   text-align: center;
-  color: #1a2233;
+  color: #1a2233; /* Dark text color */
   font-size: 1.8rem;
-  margin-bottom: 40px;
+  margin-bottom: 30px; /* Consistent bottom margin */
+}
+h1 {
+    font-size: 2.5rem; /* Larger for main title */
+    color: #0056b3;
+}
+h2 {
+    font-size: 2rem; /* Slightly smaller for section titles */
+    color: #0056b3;
 }
 
-/* Scrollable Cards Section */
 
+/* Scrollable Cards Section */
 .scroll-wrapper {
   position: relative;
   display: flex;
@@ -95,12 +112,13 @@ main {
 .scroll-row {
   display: flex;
   gap: 20px;
-  padding: 20px;
+  padding: 20px 0; /* Adjusted padding to prevent cutting off shadows */
   position: relative;
   overflow-x: scroll; /* Enable horizontal scrolling */
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
   scroll-behavior: smooth; /* Smooth scrolling */
+  flex-wrap: nowrap; /* Ensure cards stay in a single row */
 }
 
 .scroll-row::-webkit-scrollbar {
@@ -136,28 +154,28 @@ main {
   background-color: rgba(0, 0, 0, 0.9);
 }
 
-/* Cards */
-
-.card {
+/* Card Styles (Applied to .spot-card and .region-card) */
+.spot-card, .region-card { /* Combined styles for consistency */
   flex: 0 0 auto; /* Prevent cards from shrinking */
-  width: 250px; /* Fixed width for cards */
+  width: 280px; /* Adjusted width for better appearance */
   height: 280px; /* Fixed height for cards */
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease; /* Smooth transition for scale */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for scale and shadow */
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  position: relative; /* For favorite button positioning */
+  position: relative;
+  /* Removed background-color: #f9f9f9; */ /* Removed white background as requested */
 }
 
-.card:hover {
+.spot-card:hover, .region-card:hover {
   transform: scale(1.05); /* Simple expand effect on hover */
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
 }
 
-.card img {
+.spot-card img, .region-card img {
   width: 100%;
   height: 100%; /* Image takes 100% of card height */
   object-fit: cover;
@@ -165,6 +183,7 @@ main {
   border-radius: 10px; /* Rounded corners for the entire image */
 }
 
+/* Card Text Overlay (for showing name on hover) */
 .card-text-overlay { /* Wrapper for h3 */
   position: absolute;
   bottom: 0;
@@ -174,7 +193,7 @@ main {
   padding-top: 40px; /* Space for the gradient to fade in */
   padding-bottom: 10px; /* Padding for content */
   box-sizing: border-box; /* Include padding in width/height */
-  opacity: 0; /* Nakatago sa simula */
+  opacity: 0; /* Hidden by default */
   transition: opacity 0.3s ease; /* Smooth transition */
   border-radius: 0 0 10px 10px; /* Rounded bottom corners */
   display: flex; /* Use flexbox for vertical alignment */
@@ -183,7 +202,8 @@ main {
   align-items: center; /* Center horizontally */
 }
 
-.card:hover .card-text-overlay { /* Lalabas ang buong info block kapag naka-hover */
+.spot-card:hover .card-text-overlay, /* Apply to spot-card on hover */
+.region-card:hover .card-text-overlay { /* Apply to region-card on hover */
   opacity: 1;
 }
 
@@ -195,53 +215,73 @@ main {
   text-align: center;
 }
 
-/* Overlay for modal */
+.region-card a {
+    text-decoration: none; /* Remove underline from links in region-card */
+    color: inherit; /* Inherit color from parent */
+}
 
+/* Styles moved from main.html's inline style */
+.region-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  margin: 60px 0;
+}
+
+
+/* Overlay for modal */
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  display: none;
+  background: rgba(0, 0, 0, 0.9); /* Darker, more opaque background */
+  display: none; /* Hidden by default, controlled by JS */
   align-items: center;
   justify-content: center;
-  z-index: 9999;
-  overflow-y: auto;
+  z-index: 9999; /* Highest z-index */
+  overflow-y: auto; /* Enable scrolling for the overlay itself if content is too tall */
   padding: 40px 20px;
+  box-sizing: border-box; /* Include padding in dimensions */
 }
 
-.modal {
-  background: #121212;
+.modal-content { /* Renamed from .modal to match luzon.html */
+  background: #121212; /* Dark background for modal */
   color: white;
   border-radius: 12px;
   max-width: 900px;
   width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-height: 90vh; /* Max height to allow scrolling */
+  overflow-y: auto; /* Enable scrolling for modal content */
   position: relative;
   animation: zoomIn 0.3s ease-in-out;
   padding: 40px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6); /* Stronger shadow */
+  display: flex; /* Use flexbox for internal layout */
+  flex-direction: column; /* Stack elements vertically */
 }
 
-.modal img {
+.modal-img { /* Renamed from .modal img to match luzon.html */
   width: 100%;
   height: auto;
   border-radius: 8px;
   margin-bottom: 24px;
 }
 
-.modal h2 {
+.modal-title { /* Renamed from .modal h2 to match luzon.html */
   font-size: 2rem;
   margin-bottom: 16px;
+  color: #ffb300; /* Accent color for modal title */
+  text-align: center; /* Center modal title */
 }
 
-.modal p {
+.modal-desc { /* Renamed from .modal p to match luzon.html */
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #ccc;
+  color: #ccc; /* Lighter text color for description */
+  margin-bottom: 24px; /* Added margin-bottom for spacing */
 }
 
 .close-btn {
@@ -253,42 +293,251 @@ main {
   background: none;
   border: none;
   cursor: pointer;
+  transition: color 0.2s;
+}
+.close-btn:hover {
+    color: #ffb300; /* Accent color on hover */
 }
 
-/* Styles for modal buttons - vertical arrangement */
-.favorite-overlay-btn, .direction-overlay-btn {
-  margin-top: 10px; /* Spacing between buttons */
-  background: #ff5252;
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  font-size: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-  width: fit-content; /* Adjust width to content */
-}
-.favorite-overlay-btn:hover, .direction-overlay-btn:hover {
-  background: #ff3333;
-}
+/* Styles for modal buttons */
 .modal-buttons {
   display: flex;
-  flex-direction: column; /* Arrange buttons vertically */
-  align-items: center; /* Center buttons horizontally */
+  justify-content: center; /* Center the single favorite button */
+  gap: 15px; /* Spacing between buttons (if more are added later) */
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-.modal-directions {
+.modal-buttons button { /* General styles for all modal buttons */
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: bold;
+  width: fit-content; /* Adjust width to content */
+  min-width: 180px; /* Minimum width for consistency */
+}
+
+#favoriteModalBtn {
+  background-color: #ffcc00; /* Yellow for favorite */
+  color: #333;
+}
+
+#favoriteModalBtn:hover {
+  background-color: #e6b800;
+}
+
+#favoriteModalBtn.favorited {
+  background-color: #ff5252; /* Red when favorited */
+  color: white;
+}
+
+/* Modal sections for directions and comments - now always visible */
+.modal-directions,
+.modal-comment-section {
   margin-top: 20px;
   padding: 15px;
-  background: #2a2a2a;
-  border-radius: 8px;
-  color: #eee;
-  font-size: 1rem;
+  background-color: #2a2a2a; /* Dark background for sections */
+  border-radius: 10px;
+  border: 1px solid #444; /* Darker border */
+  color: #eee; /* Light text color */
+  display: block; /* Always visible */
+}
+
+.modal-directions p,
+.modal-comment-section p {
+  margin-bottom: 10px;
   line-height: 1.5;
 }
 
+.modal-directions iframe {
+  border-radius: 8px;
+  margin-top: 15px;
+  width: 100%;
+  height: 300px; /* Fixed height for map */
+}
+
+/* Comment Input Area */
+.comment-input-area {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  align-items: flex-end; /* Align items to the bottom */
+}
+
+.comment-input-area textarea {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #555; /* Darker border for input */
+  background-color: #3a3a3a; /* Dark background for input */
+  color: #eee; /* Light text color for input */
+  resize: vertical;
+  min-height: 60px;
+}
+
+.comment-input-area textarea::placeholder {
+  color: #bbb; /* Lighter placeholder text */
+}
+
+.comment-input-area button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  background-color: #007bff; /* Blue for submit button */
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.comment-input-area button:hover {
+  background-color: #0056b3;
+}
+
+#comment-message-area {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* Comments Display Area */
+.comments-display-area {
+  margin-top: 20px;
+  max-height: 300px; /* Limit height for comments section */
+  overflow-y: auto; /* Enable scrolling for comments */
+  padding-right: 10px; /* Space for scrollbar */
+}
+
+.comment-item {
+  background-color: #333; /* Darker background for individual comments */
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #555;
+  color: #eee; /* Light text color for comments */
+}
+
+.comment-item strong {
+  color: #ffb300; /* Accent color for username */
+}
+
+.comment-item p {
+    color: #ccc; /* Lighter color for comment text */
+}
+
+/* Styles for reply button within comments */
+.comment-item .reply-button {
+    margin-left: 0; /* Remove default button margin */
+    padding: 5px 10px;
+    font-size: 0.85em;
+    border-radius: 5px;
+    background-color: #555; /* Darker background for reply button */
+    color: white;
+}
+
+.comment-item .reply-button:hover {
+    background-color: #777;
+}
+
+/* Styles for the dynamically added reply input area */
+.reply-input-area {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /* Removed padding-left and border-left from here as they are now set inline in JS */
+}
+
+/* New styles for hiding/showing replies */
+.replies-container {
+  margin-top: 10px;
+  /* Removed border-left and padding-left from here as they are now handled by comment-item directly */
+}
+
+.hidden-replies {
+  display: none;
+}
+
+.show-replies-button {
+  background: #007bff; /* Blue button */
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  margin-top: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.show-replies-button:hover {
+  background-color: #0056b3;
+}
+
+
+/* Animations */
 @keyframes zoomIn {
   from { transform: scale(0.85); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .transparent-navbar {
+    padding: 10px 20px;
+  }
+  .transparent-navbar .logo {
+    font-size: 1.5em;
+    margin-right: 20px;
+  }
+  .transparent-navbar nav {
+    gap: 15px;
+  }
+  .transparent-navbar a {
+    font-size: 1em;
+    padding: 6px 12px;
+  }
+  main {
+    padding: 15px;
+    margin-top: 80px;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1.6rem;
+  }
+  .spot-card, .region-card {
+    width: 90%; /* Make cards almost full width on small screens */
+    max-width: 300px; /* Keep max-width for larger phones */
+  }
+  .scroll-row {
+    padding: 10px 0;
+  }
+  .scroll-btn {
+    padding: 8px 12px;
+    font-size: 1.2rem;
+    width: 35px;
+    height: 35px;
+  }
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
+  .modal-title {
+    font-size: 1.5rem;
+  }
+  .modal-desc {
+    font-size: 1rem;
+  }
+  .modal-buttons button {
+    min-width: unset; /* Remove min-width on small screens */
+    width: 100%; /* Full width for buttons */
+  }
+  .comment-input-area {
+    flex-direction: column;
+  }
+  .comment-input-area button {
+    width: 100%;
+  }
 }

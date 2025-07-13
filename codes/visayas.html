@@ -5,99 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Visayas - Philippine Gaze</title>
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    /* Netflix-style Overlay */
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-
-    .modal {
-      background: #1a1a1a;
-      color: white;
-      padding: 30px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 900px;
-      position: relative;
-      animation: fadeIn 0.3s ease-in-out;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .modal img {
-      width: 100%;
-      border-radius: 8px;
-      margin-bottom: 16px;
-    }
-
-    .modal h2 {
-      margin-top: 0;
-      font-size: 2rem;
-    }
-
-    .modal p {
-      font-size: 1.1rem;
-      color: #ccc;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 12px;
-      right: 16px;
-      font-size: 28px;
-      color: white;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    /* Updated styles for vertical buttons */
-    .favorite-overlay-btn, .direction-overlay-btn {
-      margin-top: 10px; /* Spacing between buttons */
-      background: #ff5252;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      font-size: 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-      width: fit-content; /* Adjust width to content */
-    }
-    .favorite-overlay-btn:hover, .direction-overlay-btn:hover {
-      background: #ff3333;
-    }
-    .modal-buttons {
-      display: flex;
-      flex-direction: column; /* Arrange buttons vertically */
-      align-items: center; /* Center buttons horizontally */
-      margin-top: 20px;
-    }
-
-    .modal-directions {
-      margin-top: 20px;
-      padding: 15px;
-      background: #2a2a2a;
-      border-radius: 8px;
-      color: #eee;
-      font-size: 1rem;
-      line-height: 1.5;
-    }
-
-    @keyframes fadeIn {
-      from { transform: scale(0.9); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-  </style>
 </head>
 <body>
   <header class="transparent-navbar">
@@ -118,65 +25,64 @@
     <div class="scroll-wrapper">
       <button class="scroll-btn left">&#10094;</button>
       <section class="scroll-row">
-        <!-- Spots 1 to 10 -->
-        <div class="card" onclick="openOverlay('Cebu', 'https://placehold.co/400x300/FF5733/FFFFFF?text=Cebu', 'Known for its beautiful beaches and historical sites.', 'spot-cebu')">
-          <img src="https://placehold.co/400x300/FF5733/FFFFFF?text=Cebu" alt="Cebu">
+        <div class="spot-card" onclick="openOverlay('Boracay Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Boracay_Island_Philippines.jpg/1280px-Boracay_Island_Philippines.jpg', 'Famous white sand beaches, vibrant nightlife, water sports.', 'spot-boracayisland')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Boracay_Island_Philippines.jpg/1280px-Boracay_Island_Philippines.jpg" alt="Boracay Island">
           <div class="card-text-overlay">
-            <h3>Cebu</h3>
+            <h3>Boracay Island</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Boracay', 'https://placehold.co/400x300/33FF57/FFFFFF?text=Boracay', 'Famous for its white sand beaches.', 'spot-boracay')">
-          <img src="https://placehold.co/400x300/33FF57/FFFFFF?text=Boracay" alt="Boracay">
+        <div class="spot-card" onclick="openOverlay('White Beach, Boracay', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/White_Beach_Boracay_Philippines.jpg/1280px-White_Beach_Boracay_Philippines.jpg', 'East-facing 4km of powdery sand.', 'spot-whitebeach')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/White_Beach_Boracay_Philippines.jpg/1280px-White_Beach_Boracay_Philippines.jpg" alt="White Beach, Boracay">
           <div class="card-text-overlay">
-            <h3>Boracay</h3>
+            <h3>White Beach, Boracay</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Bohol', 'https://placehold.co/400x300/3357FF/FFFFFF?text=Bohol', 'Home of the Chocolate Hills and Tarsiers.', 'spot-bohol')">
-          <img src="https://placehold.co/400x300/3357FF/FFFFFF?text=Bohol" alt="Bohol">
+        <div class="spot-card" onclick="openOverlay('Chocolate Hills', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Chocolate_Hills_Bohol.jpg/1280px-Chocolate_Hills_Bohol.jpg', 'Over 1,200 cone-shaped hills turning brown in dry season.', 'spot-chocolatehills')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Chocolate_Hills_Bohol.jpg/1280px-Chocolate_Hills_Bohol.jpg" alt="Chocolate Hills">
           <div class="card-text-overlay">
-            <h3>Bohol</h3>
+            <h3>Chocolate Hills</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Palawan', 'https://placehold.co/400x300/FF33A1/FFFFFF?text=Palawan', 'Often called the Last Frontier of the Philippines.', 'spot-palawan')">
-          <img src="https://placehold.co/400x300/FF33A1/FFFFFF?text=Palawan" alt="Palawan">
+        <div class="spot-card" onclick="openOverlay('Tarsier Sanctuary', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Philippine_Tarsier_%28Tarsius_syrichta%29.jpg/1280px-Philippine_Tarsier_%28Tarsius_syrichta%29.jpg', 'Habitat and conserved population of the tiny Philippine tarsier.', 'spot-tarsiersanctuary')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Philippine_Tarsier_%28Tarsius_syrichta%29.jpg/1280px-Philippine_Tarsier_%28Tarsius_syrichta%29.jpg" alt="Tarsier Sanctuary">
           <div class="card-text-overlay">
-            <h3>Palawan</h3>
+            <h3>Tarsier Sanctuary</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Siquijor', 'https://placehold.co/400x300/A133FF/FFFFFF?text=Siquijor', 'Mystical island known for its healers and natural beauty.', 'spot-siquijor')">
-          <img src="https://placehold.co/400x300/A133FF/FFFFFF?text=Siquijor" alt="Siquijor">
+        <div class="spot-card" onclick="openOverlay('Kawasan Falls', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Kawasan_Falls_Cebu.jpg/1280px-Kawasan_Falls_Cebu.jpg', 'Multi-tiered turquoise waterfalls & popular canyoneering spot.', 'spot-kawasanfalls')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Kawasan_Falls_Cebu.jpg/1280px-Kawasan_Falls_Cebu.jpg" alt="Kawasan Falls">
           <div class="card-text-overlay">
-            <h3>Siquijor</h3>
+            <h3>Kawasan Falls</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Dumaguete', 'https://placehold.co/400x300/33FFA1/FFFFFF?text=Dumaguete', 'City of Gentle People.', 'spot-dumaguete')">
-          <img src="https://placehold.co/400x300/33FFA1/FFFFFF?text=Dumaguete" alt="Dumaguete">
+        <div class="spot-card" onclick="openOverlay('Oslob Whale Shark Watching', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Whale_Shark_Oslob.jpg/1280px-Whale_Shark_Oslob.jpg', 'Swim or snorkel with gentle whale sharks.', 'spot-oslobwhaleshark')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Whale_Shark_Oslob.jpg/1280px-Whale_Shark_Oslob.jpg" alt="Oslob Whale Shark Watching">
           <div class="card-text-overlay">
-            <h3>Dumaguete</h3>
+            <h3>Oslob Whale Shark Watching</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Iloilo', 'https://placehold.co/400x300/FF8833/FFFFFF?text=Iloilo', 'Known for its rich history and delicious cuisine.', 'spot-iloilo')">
-          <img src="https://placehold.co/400x300/FF8833/FFFFFF?text=Iloilo" alt="Iloilo">
+        <div class="spot-card" onclick="openOverlay('Pescador Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Pescador_Island_Cebu.jpg/1280px-Pescador_Island_Cebu.jpg', 'Renowned dive site with rich coral walls and marine life.', 'spot-pescadorisland')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Pescador_Island_Cebu.jpg/1280px-Pescador_Island_Cebu.jpg" alt="Pescador Island">
           <div class="card-text-overlay">
-            <h3>Iloilo</h3>
+            <h3>Pescador Island</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Bacolod', 'https://placehold.co/400x300/3388FF/FFFFFF?text=Bacolod', 'City of Smiles.', 'spot-bacolod')">
-          <img src="https://placehold.co/400x300/3388FF/FFFFFF?text=Bacolod" alt="Bacolod">
+        <div class="spot-card" onclick="openOverlay('Sumilon Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Sumilon_Island_Sandbar.jpg/1280px-Sumilon_Island_Sandbar.jpg', 'Marine sanctuary with sandbar and lighthouse.', 'spot-sumilonisland')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Sumilon_Island_Sandbar.jpg/1280px-Sumilon_Island_Sandbar.jpg" alt="Sumilon Island">
           <div class="card-text-overlay">
-            <h3>Bacolod</h3>
+            <h3>Sumilon Island</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Leyte', 'https://placehold.co/400x300/8833FF/FFFFFF?text=Leyte', 'Historical significance from WWII.', 'spot-leyte')">
-          <img src="https://placehold.co/400x300/8833FF/FFFFFF?text=Leyte" alt="Leyte">
+        <div class="spot-card" onclick="openOverlay('Magellan’s Cross', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Magellan%27s_Cross_Cebu.jpg/1280px-Magellan%27s_Cross_Cebu.jpg', 'Historic Christian landmark planted by Ferdinand Magellan.', 'spot-magellanscross')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Magellan%27s_Cross_Cebu.jpg/1280px-Magellan%27s_Cross_Cebu.jpg" alt="Magellan’s Cross">
           <div class="card-text-overlay">
-            <h3>Leyte</h3>
+            <h3>Magellan’s Cross</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Samar', 'https://placehold.co/400x300/FF3333/FFFFFF?text=Samar', 'Known for its caves and waterfalls.', 'spot-samar')">
-          <img src="https://placehold.co/400x300/FF3333/FFFFFF?text=Samar" alt="Samar">
+        <div class="spot-card" onclick="openOverlay('Heritage of Cebu Monument/Cathedral', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Heritage_of_Cebu_Monument.jpg/1280px-Heritage_of_Cebu_Monument.jpg', 'Bronze sculptures and centuries‑old church.', 'spot-cebumonument')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Heritage_of_Cebu_Monument.jpg/1280px-Heritage_of_Cebu_Monument.jpg" alt="Heritage of Cebu Monument/Cathedral">
           <div class="card-text-overlay">
-            <h3>Samar</h3>
+            <h3>Heritage of Cebu Monument/Cathedral</h3>
           </div>
         </div>
       </section>
@@ -187,34 +93,64 @@
     <div class="scroll-wrapper">
       <button class="scroll-btn left">&#10094;</button>
       <section class="scroll-row">
-        <div class="card" onclick="openOverlay('Magellan\'s Cross', 'https://placehold.co/400x300/33FF88/FFFFFF?text=Magellans+Cross', 'Historic cross planted by Ferdinand Magellan.', 'spot-magellanscross')">
-          <img src="https://placehold.co/400x300/33FF88/FFFFFF?text=Magellans+Cross" alt="Magellan's Cross">
+        <div class="spot-card" onclick="openOverlay('Magellan’s Cross', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Magellan%27s_Cross_Cebu.jpg/1280px-Magellan%27s_Cross_Cebu.jpg', 'Historic Christian landmark planted by Ferdinand Magellan.', 'spot-magellanscross-hist')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Magellan%27s_Cross_Cebu.jpg/1280px-Magellan%27s_Cross_Cebu.jpg" alt="Magellan’s Cross">
           <div class="card-text-overlay">
-            <h3>Magellan's Cross</h3>
+            <h3>Magellan’s Cross</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Fort San Pedro', 'https://placehold.co/400x300/88FF33/FFFFFF?text=Fort+San+Pedro', 'Triangular fort in Cebu City.', 'spot-fortsanpedro')">
-          <img src="https://placehold.co/400x300/88FF33/FFFFFF?text=Fort+San+Pedro" alt="Fort San Pedro">
+        <div class="spot-card" onclick="openOverlay('Heritage of Cebu Monument/Cathedral', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Heritage_of_Cebu_Monument.jpg/1280px-Heritage_of_Cebu_Monument.jpg', 'Bronze sculptures and centuries‑old church.', 'spot-cebumonument-hist')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Heritage_of_Cebu_Monument.jpg/1280px-Heritage_of_Cebu_Monument.jpg" alt="Heritage of Cebu Monument/Cathedral">
+          <div class="card-text-overlay">
+            <h3>Heritage of Cebu Monument/Cathedral</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Navalas Church', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Navalas_Church_Guimaras.jpg/1280px-Navalas_Church_Guimaras.jpg', 'Historic centuries‑old church in Guimaras, the oldest in the province.', 'spot-navalaschurch')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Navalas_Church_Guimaras.jpg/1280px-Navalas_Church_Guimaras.jpg" alt="Navalas Church">
+          <div class="card-text-overlay">
+            <h3>Navalas Church</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Casa Gorordo Museum', 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Casa_Gorordo_Museum.jpg/1280px-Casa_Gorordo_Museum.jpg', 'Restored historical house museum.', 'spot-casagorordo')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Casa_Gorordo_Museum.jpg/1280px-Casa_Gorordo_Museum.jpg" alt="Casa Gorordo Museum">
+          <div class="card-text-overlay">
+            <h3>Casa Gorordo Museum</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Fort San Pedro', 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Fort_San_Pedro_Cebu.jpg/1280px-Fort_San_Pedro_Cebu.jpg', 'Triangular fort in Cebu City.', 'spot-fortsanpedro')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Fort_San_Pedro_Cebu.jpg/1280px-Fort_San_Pedro_Cebu.jpg" alt="Fort San Pedro">
           <div class="card-text-overlay">
             <h3>Fort San Pedro</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Mactan Shrine', 'https://placehold.co/400x300/3388FF/FFFFFF?text=Mactan+Shrine', 'Commemorates the Battle of Mactan.', 'spot-mactanshrine')">
-          <img src="https://placehold.co/400x300/3388FF/FFFFFF?text=Mactan+Shrine" alt="Mactan Shrine">
+        <div class="spot-card" onclick="openOverlay('Mactan Shrine', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Mactan_Shrine_Lapu-Lapu_City.jpg/1280px-Mactan_Shrine_Lapu-Lapu_City.jpg', 'Commemorates the Battle of Mactan.', 'spot-mactanshrine')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Mactan_Shrine_Lapu-Lapu_City.jpg/1280px-Mactan_Shrine_Lapu-Lapu_City.jpg" alt="Mactan Shrine">
           <div class="card-text-overlay">
             <h3>Mactan Shrine</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Blood Compact Shrine', 'https://placehold.co/400x300/FF5733/FFFFFF?text=Blood+Compact+Shrine', 'Commemorates the Sandugo between Sikatuna and Legazpi.', 'spot-bloodcompact')">
-          <img src="https://placehold.co/400x300/FF5733/FFFFFF?text=Blood+Compact+Shrine" alt="Blood Compact Shrine">
+        <div class="spot-card" onclick="openOverlay('Blood Compact Shrine', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Sandugo_Shrine_Bohol.jpg/1280px-Sandugo_Shrine_Bohol.jpg', 'Commemorates the Sandugo between Sikatuna and Legazpi.', 'spot-bloodcompact')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Sandugo_Shrine_Bohol.jpg/1280px-Sandugo_Shrine_Bohol.jpg" alt="Blood Compact Shrine">
           <div class="card-text-overlay">
             <h3>Blood Compact Shrine</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('San Juanico Bridge', 'https://placehold.co/400x300/33FF57/FFFFFF?text=San+Juanico+Bridge', 'Longest bridge in the Philippines.', 'spot-sanjuanicobridge')">
-          <img src="https://placehold.co/400x300/33FF57/FFFFFF?text=San+Juanico+Bridge" alt="San Juanico Bridge">
+        <div class="spot-card" onclick="openOverlay('San Juanico Bridge', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/San_Juanico_Bridge_Leyte.jpg/1280px-San_Juanico_Bridge_Leyte.jpg', 'Longest bridge in the Philippines.', 'spot-sanjuanicobridge')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/San_Juanico_Bridge_Leyte.jpg/1280px-San_Juanico_Bridge_Leyte.jpg" alt="San Juanico Bridge">
           <div class="card-text-overlay">
             <h3>San Juanico Bridge</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Museo Iloilo', 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Museo_Iloilo.jpg/1280px-Museo_Iloilo.jpg', 'Showcases Iloilo\'s rich cultural heritage.', 'spot-museoiloilo')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Museo_Iloilo.jpg/1280px-Museo_Iloilo.jpg" alt="Museo Iloilo">
+          <div class="card-text-overlay">
+            <h3>Museo Iloilo</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Rizal Park (Cebu)', 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Rizal_Park_Cebu_City.jpg/1280px-Rizal_Park_Cebu_City.jpg', 'A historical park in Cebu City.', 'spot-rizalparkcebu')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Rizal_Park_Cebu_City.jpg/1280px-Rizal_Park_Cebu_City.jpg" alt="Rizal Park (Cebu)">
+          <div class="card-text-overlay">
+            <h3>Rizal Park (Cebu)</h3>
           </div>
         </div>
       </section>
@@ -225,34 +161,132 @@
     <div class="scroll-wrapper">
       <button class="scroll-btn left">&#10094;</button>
       <section class="scroll-row">
-        <div class="card" onclick="openOverlay('Kawasan Falls', 'https://placehold.co/400x300/3357FF/FFFFFF?text=Kawasan+Falls', 'Multi-layered waterfalls in Cebu.', 'spot-kawasanfalls')">
-          <img src="https://placehold.co/400x300/3357FF/FFFFFF?text=Kawasan+Falls" alt="Kawasan Falls">
+        <div class="spot-card" onclick="openOverlay('White Beach, Boracay', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/White_Beach_Boracay_Philippines.jpg/1280px-White_Beach_Boracay_Philippines.jpg', 'East-facing 4km of powdery sand.', 'spot-whitebeach-nature')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/White_Beach_Boracay_Philippines.jpg/1280px-White_Beach_Boracay_Philippines.jpg" alt="White Beach, Boracay">
           <div class="card-text-overlay">
-            <h3>Kawasan Falls</h3>
+            <h3>White Beach, Boracay</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Chocolate Hills', 'https://placehold.co/400x300/FF33A1/FFFFFF?text=Chocolate+Hills', 'Geological formations in Bohol.', 'spot-chocolatehills')">
-          <img src="https://placehold.co/400x300/FF33A1/FFFFFF?text=Chocolate+Hills" alt="Chocolate Hills">
+        <div class="spot-card" onclick="openOverlay('Chocolate Hills', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Chocolate_Hills_Bohol.jpg/1280px-Chocolate_Hills_Bohol.jpg', 'Over 1,200 cone-shaped hills turning brown in dry season.', 'spot-chocolatehills-nature')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Chocolate_Hills_Bohol.jpg/1280px-Chocolate_Hills_Bohol.jpg" alt="Chocolate Hills">
           <div class="card-text-overlay">
             <h3>Chocolate Hills</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Malapascua Island', 'https://placehold.co/400x300/A133FF/FFFFFF?text=Malapascua+Island', 'Diving hotspot for thresher sharks.', 'spot-malapascua')">
-          <img src="https://placehold.co/400x300/A133FF/FFFFFF?text=Malapascua+Island" alt="Malapascua Island">
+        <div class="spot-card" onclick="openOverlay('Tarsier Sanctuary', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Philippine_Tarsier_%28Tarsius_syrichta%29.jpg/1280px-Philippine_Tarsier_%28Tarsius_syrichta%29.jpg', 'Habitat and conserved population of the tiny Philippine tarsier.', 'spot-tarsiersanctuary-nature')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Philippine_Tarsier_%28Tarsius_syrichta%29.jpg/1280px-Philippine_Tarsier_%28Tarsius_syrichta%29.jpg" alt="Tarsier Sanctuary">
+          <div class="card-text-overlay">
+            <h3>Tarsier Sanctuary</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Kawasan Falls', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Kawasan_Falls_Cebu.jpg/1280px-Kawasan_Falls_Cebu.jpg', 'Multi-tiered turquoise waterfalls & popular canyoneering spot.', 'spot-kawasanfalls-nature')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Kawasan_Falls_Cebu.jpg/1280px-Kawasan_Falls_Cebu.jpg" alt="Kawasan Falls">
+          <div class="card-text-overlay">
+            <h3>Kawasan Falls</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Oslob Whale Shark Watching', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Whale_Shark_Oslob.jpg/1280px-Whale_Shark_Oslob.jpg', 'Swim or snorkel with gentle whale sharks.', 'spot-oslobwhaleshark-nature')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Whale_Shark_Oslob.jpg/1280px-Whale_Shark_Oslob.jpg" alt="Oslob Whale Shark Watching">
+          <div class="card-text-overlay">
+            <h3>Oslob Whale Shark Watching</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Pescador Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Pescador_Island_Cebu.jpg/1280px-Pescador_Island_Cebu.jpg', 'Renowned dive site with rich coral walls and marine life.', 'spot-pescadorisland-nature')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Pescador_Island_Cebu.jpg/1280px-Pescador_Island_Cebu.jpg" alt="Pescador Island">
+          <div class="card-text-overlay">
+            <h3>Pescador Island</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Sumilon Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Sumilon_Island_Sandbar.jpg/1280px-Sumilon_Island_Sandbar.jpg', 'Marine sanctuary with sandbar and lighthouse.', 'spot-sumilonisland-nature')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Sumilon_Island_Sandbar.jpg/1280px-Sumilon_Island_Sandbar.jpg" alt="Sumilon Island">
+          <div class="card-text-overlay">
+            <h3>Sumilon Island</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Osmeña Peak', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Osmena_Peak_Cebu.jpg/1280px-Osmena_Peak_Cebu.jpg', 'Highest point in Cebu with panoramic ridges.', 'spot-osmenapeak')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Osmena_Peak_Cebu.jpg/1280px-Osmena_Peak_Cebu.jpg" alt="Osmeña Peak">
+          <div class="card-text-overlay">
+            <h3>Osmeña Peak</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Gigantes Islands', 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Cabugao_Gamay_Island_Gigantes.jpg/1280px-Cabugao_Gamay_Island_Gigantes.jpg', 'Limestone formations, saltwater lagoon, sea caves, seafood feasts.', 'spot-gigantesislands-nature')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Cabugao_Gamay_Island_Gigantes.jpg/1280px-Cabugao_Gamay_Island_Gigantes.jpg" alt="Gigantes Islands">
+          <div class="card-text-overlay">
+            <h3>Gigantes Islands</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Guimaras', 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Guimaras_Island_Philippines.jpg/1280px-Guimaras_Island_Philippines.jpg', 'Mango capital with peaceful beaches and islands.', 'spot-guimaras')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Guimaras_Island_Philippines.jpg/1280px-Guimaras_Island_Philippines.jpg" alt="Guimaras">
+          <div class="card-text-overlay">
+            <h3>Guimaras</h3>
+          </div>
+        </div>
+      </section>
+      <button class="scroll-btn right">&#10095;</button>
+    </div>
+
+    <h2 class="section-title">Other Attractions</h2>
+    <div class="scroll-wrapper">
+      <button class="scroll-btn left">&#10094;</button>
+      <section class="scroll-row">
+        <div class="spot-card" onclick="openOverlay('Siquijor Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Siquijor_Island_Philippines.jpg/1280px-Siquijor_Island_Philippines.jpg', 'Mystical island with Cambugahay Falls, century‑old trees, folk healing.', 'spot-siquijorisland-other')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Siquijor_Island_Philippines.jpg/1280px-Siquijor_Island_Philippines.jpg" alt="Siquijor Island">
+          <div class="card-text-overlay">
+            <h3>Siquijor Island</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Bantayan Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Bantayan_Island_Cebu.jpg/1280px-Bantayan_Island_Cebu.jpg', 'Tranquil fishing island with white beaches.', 'spot-bantayanisland-other')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Bantayan_Island_Cebu.jpg/1280px-Bantayan_Island_Cebu.jpg" alt="Bantayan Island">
+          <div class="card-text-overlay">
+            <h3>Bantayan Island</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Tingkasan Bat Cave', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Tingkasan_Bat_Cave_Camotes.jpg/1280px-Tingkasan_Bat_Cave_Camotes.jpg', 'Eco‑tourism spot home to thousands of bats.', 'spot-tingkasanbatcave')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Tingkasan_Bat_Cave_Camotes.jpg/1280px-Tingkasan_Bat_Cave_Camotes.jpg" alt="Tingkasan Bat Cave">
+          <div class="card-text-overlay">
+            <h3>Tingkasan Bat Cave</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Sumilon Sandbar', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Sumilon_Island_Sandbar.jpg/1280px-Sumilon_Island_Sandbar.jpg', 'Scenic white sand bar revealed at low tide.', 'spot-sumilonsandbar')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Sumilon_Island_Sandbar.jpg/1280px-Sumilon_Island_Sandbar.jpg" alt="Sumilon Sandbar">
+          <div class="card-text-overlay">
+            <h3>Sumilon Sandbar</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Loboc River Cruise', 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Loboc_River_Cruise_Bohol.jpg/1280px-Loboc_River_Cruise_Bohol.jpg', 'Lunchboat cruise through scenic jungle river.', 'spot-lobocrivercruise')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Loboc_River_Cruise_Bohol.jpg/1280px-Loboc_River_Cruise_Bohol.jpg" alt="Loboc River Cruise">
+          <div class="card-text-overlay">
+            <h3>Loboc River Cruise</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Malapascua Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Malapascua_Island_Cebu.jpg/1280px-Malapascua_Island_Cebu.jpg', 'Diving to see thresher sharks.', 'spot-malapascua')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Malapascua_Island_Cebu.jpg/1280px-Malapascua_Island_Cebu.jpg" alt="Malapascua Island">
           <div class="card-text-overlay">
             <h3>Malapascua Island</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Kalanggaman Island', 'https://placehold.co/400x300/33FFA1/FFFFFF?text=Kalanggaman+Island', 'Island with a long sandbar.', 'spot-kalanggaman')">
-          <img src="https://placehold.co/400x300/33FFA1/FFFFFF?text=Kalanggaman+Island" alt="Kalanggaman Island">
+        <div class="spot-card" onclick="openOverlay('Pandanon Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Pandanon_Island_Cebu.jpg/1280px-Pandanon_Island_Cebu.jpg', 'Fine sand island ideal for day trips.', 'spot-pandanonisland')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Pandanon_Island_Cebu.jpg/1280px-Pandanon_Island_Cebu.jpg" alt="Pandanon Island">
           <div class="card-text-overlay">
-            <h3>Kalanggaman Island</h3>
+            <h3>Pandanon Island</h3>
           </div>
         </div>
-        <div class="card" onclick="openOverlay('Bantayan Island', 'https://placehold.co/400x300/FF8833/FFFFFF?text=Bantayan+Island', 'Relaxing island with pristine beaches.', 'spot-bantayan')">
-          <img src="https://placehold.co/400x300/FF8833/FFFFFF?text=Bantayan+Island" alt="Bantayan Island">
+        <div class="spot-card" onclick="openOverlay('Crocodile Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Crocodile_Island_Boracay.jpg/1280px-Crocodile_Island_Boracay.jpg', 'Island for snorkeling and scenic views.', 'spot-crocodileisland')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Crocodile_Island_Boracay.jpg/1280px-Crocodile_Island_Boracay.jpg" alt="Crocodile Island">
           <div class="card-text-overlay">
-            <h3>Bantayan Island</h3>
+            <h3>Crocodile Island</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Tarsier and Chocolate Hills Wilderness', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Bohol_Countryside_Tour.jpg/1280px-Bohol_Countryside_Tour.jpg', 'Combined countryside experience.', 'spot-tarsierchocolate')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Bohol_Countryside_Tour.jpg/1280px-Bohol_Countryside_Tour.jpg" alt="Tarsier and Chocolate Hills Wilderness">
+          <div class="card-text-overlay">
+            <h3>Tarsier and Chocolate Hills Wilderness</h3>
+          </div>
+        </div>
+        <div class="spot-card" onclick="openOverlay('Iloilo City', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Iloilo_City_Hall.jpg/1280px-Iloilo_City_Hall.jpg', 'City of old churches, Spanish colonial architecture and food scene.', 'spot-iloilocity-other')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Iloilo_City_Hall.jpg/1280px-Iloilo_City_Hall.jpg" alt="Iloilo City">
+          <div class="card-text-overlay">
+            <h3>Iloilo City</h3>
           </div>
         </div>
       </section>
@@ -260,18 +294,37 @@
     </div>
   </main>
 
-  <!-- Netflix-style Overlay Modal -->
+  <!-- Overlay Modal -->
   <div id="overlay" class="overlay">
-    <div class="modal">
+    <div class="modal-content">
       <button class="close-btn" onclick="closeOverlay()">&times;</button>
-      <img id="modal-img" src="" alt="Preview" />
-      <h2 id="modal-title">Title</h2>
-      <p id="modal-desc">Description</p>
+      <h2 id="modal-title" class="modal-title"></h2>
+      <img id="modal-img" class="modal-img" src="" alt="Destination Image">
+      <p id="modal-desc" class="modal-desc"></p>
+
       <div class="modal-buttons">
-        <button id="favoriteModalBtn" class="favorite-overlay-btn">♡ Add to Favorites</button>
-        <button id="directionModalBtn" class="direction-overlay-btn">Directions</button>
+        <button id="favoriteModalBtn">♡ Add to Favorites</button>
+        <button id="directionModalBtn">Directions</button>
+        <button id="commentModalBtn">Comments</button>
       </div>
-      <div id="modal-directions" class="modal-directions" style="display: none;"></div>
+
+      <div id="modal-directions" class="modal-directions">
+        <h3>Directions and Tutorial</h3>
+        <!-- Directions content will be loaded here by JavaScript -->
+      </div>
+
+      <div id="modal-comment-section" class="modal-comment-section">
+        <h3>Comments</h3>
+        <div id="comments-display-area" class="comments-display-area">
+          <!-- Comments will be loaded here by JavaScript -->
+          <p style="text-align: center; color: #aaa;">Walang komento pa. Maging una!</p>
+        </div>
+        <div id="comment-message-area" style="display: none;"></div>
+        <div class="comment-input-area">
+          <textarea id="comment-input" placeholder="Isulat ang iyong komento..." disabled></textarea>
+          <button id="submit-comment-btn" disabled>Isumite ang Komento</button>
+        </div>
+      </div>
     </div>
   </div>
 
