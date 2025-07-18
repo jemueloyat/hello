@@ -117,13 +117,10 @@ function showReplyInput(commentElement, parentId) {
   }
 
   const replyInputArea = document.createElement('div');
-<<<<<<< HEAD:codes/luzon.js
   replyInputArea.classList.add('comment-input-area', 'reply-input-area');
   
-=======
   replyInputArea.classList.add('comment-input-area', 'reply-input-area'); // Add reply-input-area class for specific styling
 
->>>>>>> 9582aff54db965aa58eec21bb2fa23c48c46c5b5:codes/script.js
   // Indent the reply input based on its parent's status
   if (parentId) { // If replying to an existing comment (which might already be indented)
       replyInputArea.style.marginLeft = '0px'; // No extra margin, it's already inside an indented commentItem
@@ -630,7 +627,6 @@ burger.addEventListener("click", () => {
   burger.classList.toggle("open");    // Toggles the 'open' class for the spin effect
   dropdown.classList.toggle("show");  // Toggles the 'show' class for the dropdown
 });
-<<<<<<< HEAD:codes/luzon.js
 // --- Search Functionality ---
 document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.querySelector('.search-input');
@@ -675,25 +671,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const leftBtn = wrapper.querySelector('.scroll-btn.left');
     const rightBtn = wrapper.querySelector('.scroll-btn.right');
 
-    if (leftBtn) {
+    if (leftBtn && scrollRow) {
       leftBtn.addEventListener('click', () => {
         scrollRow.scrollBy({
-          left: -scrollRow.offsetWidth / 2, // Scroll half the width
+          left: -300, // Scroll by 300px to the left
           behavior: 'smooth'
         });
       });
     }
 
-    if (rightBtn) {
+    if (rightBtn && scrollRow) {
       rightBtn.addEventListener('click', () => {
         scrollRow.scrollBy({
-          left: scrollRow.offsetWidth / 2, // Scroll half the width
+          left: 300, // Scroll by 300px to the right
           behavior: 'smooth'
         });
       });
     }
   });
-=======
+  });
+
 
   const logoutButton = document.getElementById("logoutBtn");
 
@@ -727,6 +724,5 @@ if (logoutButton) {
 
     document.getElementById("mindanao")?.addEventListener("click", () => {
     window.location.href = "mindanao.html";
-    });
->>>>>>> 9582aff54db965aa58eec21bb2fa23c48c46c5b5:codes/script.js
+  });
 });

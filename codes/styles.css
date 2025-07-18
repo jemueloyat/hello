@@ -540,7 +540,6 @@ h2 {
     width: 100%;
   }
 }
-<<<<<<< HEAD
 
 /* New Styles for Stories Page */
 .stories-main {
@@ -1001,7 +1000,6 @@ h2 {
     padding-top: 10px;
   }
 }
-=======
 /* Styles for index.html specific elements */
 .home-hero {
     margin-top: 100px;
@@ -1217,7 +1215,7 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-left: 40%; /* Push it to right */
+  margin-left: 55%; /* Push it to right */
 }
 
 /* BURGER menu itself */
@@ -1308,4 +1306,3 @@ h2 {
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
->>>>>>> 9582aff54db965aa58eec21bb2fa23c48c46c5b5

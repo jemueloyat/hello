@@ -987,3 +987,16 @@ if (logoutBtn && auth) { // Ensure auth is valid
 document.addEventListener('DOMContentLoaded', () => {
   loadPosts();
 });
+document.addEventListener('DOMContentLoaded', () => {
+  const burger = document.getElementById("burgerMenu");
+  const dropdown = document.getElementById("dropdownMenu");
+
+  if (burger && dropdown) {
+    burger.addEventListener("click", () => {
+      burger.classList.toggle("open");     // Rotate icon
+      dropdown.classList.toggle("show");   // Toggle dropdown menu
+    });
+  } else {
+    console.warn("Burger or Dropdown not found in DOM.");
+  }
+});
