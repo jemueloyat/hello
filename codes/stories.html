@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Philippine Gaze - Stories</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Font Awesome for icons (e.g., heart for like) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header class="transparent-navbar">
+    <div class="logo">Philippine Gaze</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="main.html">Main</a>
+      <a href="stories.html" class="active">Stories</a>
+      <a href="favorites.html">Favorites</a>
+      <a href="login.html" id="logoutBtn" class="logout-button">Logout</a>
+    </nav>
+  </header>
+
+  <main class="stories-main">
+    <h1>Philippine Gaze Stories</h1>
+
+    <!-- Post Creation Section -->
+    <section class="post-creation-section">
+      <h2>Create a New Post</h2>
+      <div class="post-input-area">
+        <textarea id="postContentInput" placeholder="Ano ang nasa isip mo? Ibahagi ang iyong kwento..."></textarea>
+        <input type="file" id="postImageInput" accept="image/*">
+        <button id="createPostBtn">Post</button>
+        <p id="postMessageArea" class="message-area"></p>
+      </div>
+    </section>
+
+    <!-- Stories Feed Section -->
+    <section class="stories-feed-section">
+      <h2>Recent Stories</h2>
+      <div id="storiesFeed" class="stories-feed">
+        <!-- Stories will be loaded here by JavaScript -->
+        <p class="loading-message">Loading stories...</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- The Modal (Overlay) Structure for Image Preview and Comments -->
+  <div id="overlay" class="overlay">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeOverlay()">&times;</button>
+      <h2 id="modal-title" class="modal-title"></h2>
+      <img id="modal-img" class="modal-img" src="" alt="Post Image">
+      <p id="modal-desc" class="modal-desc"></p>
+
+      <div class="modal-buttons">
+        <button id="modalLikeBtn" class="like-button">
+          <i class="fas fa-heart"></i> <span class="like-count">0</span>
+        </button>
+      </div>
+
+      <div id="modal-comment-section" class="modal-comment-section">
+        <h3>Comments</h3>
+        <div id="comments-display-area" class="comments-display-area">
+          <!-- Comments will be loaded here by JavaScript -->
+          <p style="text-align: center; color: #aaa;">Walang komento pa. Maging una!</p>
+        </div>
+        <div id="comment-message-area" class="message-area" style="display: none;"></div>
+        <div class="comment-input-area">
+          <textarea id="comment-input" placeholder="Isulat ang iyong komento..." disabled></textarea>
+          <button id="submit-comment-btn" disabled>Isumite ang Komento</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="stories.js"></script>
+  <script>
+    document.getElementById("logoutBtn")?.addEventListener("click", () => {
+      // Note: Firebase signOut logic will be in stories.js
+      alert("You have been logged out."); // Consider replacing alert with a custom modal for better UX
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>

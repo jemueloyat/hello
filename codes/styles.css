@@ -541,3 +541,463 @@ h2 {
     width: 100%;
   }
 }
+
+/* New Styles for Stories Page */
+.stories-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+  max-width: 800px; /* Limit width for better readability */
+  margin: 100px auto 40px auto; /* Center the main content with top margin */
+  padding: 20px;
+}
+
+.post-creation-section {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 25px;
+  width: 100%;
+  margin-bottom: 40px;
+  box-sizing: border-box; /* Include padding in width */
+}
+
+.post-creation-section h2 {
+  color: #0056b3;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.post-input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.post-input-area textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1em;
+  min-height: 100px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.post-input-area input[type="file"] {
+  padding: 8px 0;
+}
+
+.post-input-area button {
+  background-color: #28a745; /* Green for post button */
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.post-input-area button:hover {
+  background-color: #218838;
+}
+
+.message-area {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+  color: #ff5252; /* Default to error color */
+}
+
+.message-area.success {
+  color: #28a745; /* Green for success messages */
+}
+
+.stories-feed-section {
+  width: 100%;
+}
+
+.stories-feed-section h2 {
+  color: #0056b3;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.stories-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.story-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 25px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.story-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.story-header .user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.story-header .user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ffb300; /* Placeholder avatar color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.story-header .username {
+  font-weight: bold;
+  color: #1a2233;
+  font-size: 1.1em;
+}
+
+.story-header .post-actions button {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1em;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: color 0.2s;
+}
+
+.story-header .post-actions button:hover {
+  color: #0056b3;
+}
+
+.story-content p {
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  white-space: pre-wrap; /* Preserve whitespace and line breaks */
+}
+
+.story-content img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  height: auto;
+  display: block; /* Ensure image takes up full width */
+}
+
+.story-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.like-button {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1.1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s;
+}
+
+.like-button.liked {
+  color: #ff5252; /* Red when liked */
+}
+
+.like-button:hover {
+  color: #ff5252;
+}
+
+.like-button i {
+  margin-right: 5px;
+}
+
+.comment-toggle-button {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 1em;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.comment-toggle-button:hover {
+  color: #0056b3;
+}
+
+.comments-section {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+  display: none; /* Hidden by default, toggled by JS */
+}
+
+.comments-section.active {
+  display: block;
+}
+
+.comments-list {
+  margin-top: 15px;
+}
+
+.comment-item {
+  background-color: #f9f9f9;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #eee;
+}
+
+.comment-item strong {
+  color: #1a2233;
+  font-size: 0.95em;
+}
+
+.comment-item p {
+  margin: 5px 0 0 0;
+  color: #555;
+  font-size: 0.9em;
+}
+
+.comment-input-area {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.comment-input-area textarea {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 0.9em;
+  resize: vertical;
+  min-height: 40px;
+}
+
+.comment-input-area button {
+  padding: 10px 15px;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.comment-input-area button:hover {
+  background-color: #0056b3;
+}
+
+.loading-message {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+/* Responsive adjustments for stories page */
+@media (max-width: 768px) {
+  .stories-main {
+    padding: 15px;
+    margin-top: 80px;
+  }
+  .post-creation-section, .story-card {
+    padding: 15px;
+  }
+  .post-input-area button {
+    padding: 10px 15px;
+    font-size: 1em;
+  }
+  .story-header .user-avatar {
+    width: 35px;
+    height: 35px;
+    font-size: 1em;
+  }
+  .story-header .username {
+    font-size: 1em;
+  }
+  .like-button, .comment-toggle-button {
+    font-size: 0.9em;
+  }
+  .comment-input-area textarea {
+    min-height: 30px;
+  }
+}
+/* Search Bar Styles */
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between input and button */
+  margin-left: 20px; /* Add some space from the navigation links */
+  margin-right: 20px; /* Add some space from the very right edge */
+}
+
+.search-input {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 16px;
+  outline: none;
+  font-size: 1em;
+  background-color: rgba(255, 255, 255, 0.9); /* Bahagyang transparent na puting background */
+  color: #333;
+  width: 180px; /* Ayusin ang lapad kung kinakailangan */
+}
+
+.search-btn {
+  background: #ffb300;
+  border: none;
+  border-radius: 50%; /* Ginagawang bilog */
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: #1a2233; /* Kulay para sa search icon */
+  font-size: 1.1em;
+}
+
+.search-btn:hover {
+  background: #e0a800;
+}
+
+/* Responsive adjustments for search bar */
+@media (max-width: 768px) {
+  .search-container {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .search-input {
+    width: 80%; /* Adjust width for mobile */
+  }
+}
+/* Settings Container */
+.settings-container {
+  position: relative;
+  margin-right: 20px; /* Space from right edge of navbar */
+}
+
+.settings-icon-btn {
+  background: none;
+  border: none;
+  font-size: 1.8em; /* Larger icon */
+  cursor: pointer;
+  color: #fff; /* White color for icon */
+  transition: transform 0.2s ease;
+  padding: 5px; /* Add some padding for easier clicking */
+}
+
+.settings-icon-btn:hover {
+  transform: rotate(30deg); /* Simple hover effect */
+}
+
+.settings-dropdown {
+  position: absolute;
+  top: 50px; /* Position below the icon */
+  right: 0;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 15px;
+  min-width: 180px;
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1001; /* Above navbar */
+}
+
+.settings-dropdown.active {
+  display: flex; /* Show when active */
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffb300; /* Accent border */
+}
+
+#profile-username {
+  font-weight: bold;
+  color: #1a2233;
+}
+
+/* Reusing .logout-button class, but specifically for dropdown */
+.settings-dropdown .logout-button {
+  background-color: #dc3545;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  border: none; /* Ensure no extra border */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%; /* Full width within dropdown */
+  text-align: center;
+}
+
+.settings-dropdown .logout-button:hover {
+  background-color: #c82333;
+}
+
+/* Responsive adjustments for settings container */
+@media (max-width: 768px) {
+  .settings-container {
+    width: 100%;
+    text-align: center;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .settings-dropdown {
+    position: static; /* Allow dropdown to flow naturally */
+    width: 100%;
+    max-width: unset;
+    box-shadow: none;
+    border-top: 1px solid #eee; /* Separator when stacked */
+    border-radius: 0;
+    padding-top: 10px;
+  }
+}

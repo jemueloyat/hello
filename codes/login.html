@@ -3,102 +3,222 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
-  <link rel="stylesheet" href="auth.css">
+  <title>Authentication</title>
+  <link rel="stylesheet" href="login.css">
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
   <div class="auth-container">
-    <h2>Login</h2>
-    <div class="input-group">
-      <label for="email">Email</label>
-      <input type="email" id="email" required>
+    <div class="auth-toggle-buttons">
+      <button id="showLoginBtn" class="active">Login</button>
+      <button id="showSignupBtn">Sign Up</button>
     </div>
-    <div class="input-group">
-      <label for="password">Password</label>
-      <input type="password" id="password" required>
+
+    <!-- Login Form -->
+    <div id="loginForm" class="auth-form">
+      <h2>Login</h2>
+      <div class="input-group">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" required>
+      </div>
+      <div class="input-group">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" required>
+      </div>
+      <button id="loginBtn">Login</button>
+
+      <!-- Google Login Button -->
+      <button id="googleLoginBtn" class="google-btn">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google icon" width="20" height="20">
+        Login with Google
+      </button>
+
+      <p class="auth-link">Wala pang account? <a href="#" id="toggleToSignup">Mag-sign up</a></p>
     </div>
-    <button id="loginBtn">Login</button>
-    <button id="googleLoginBtn" class="google-btn">Login with Google</button>
-    <p class="auth-link">Don't have an account? <a href="signup.html">Sign up</a></p>
+
+    <!-- Sign Up Form -->
+    <div id="signupForm" class="auth-form hidden">
+      <h2>Sign Up</h2>
+      <div class="input-group">
+        <label for="signupEmail">Email</label>
+        <input type="email" id="signupEmail" required>
+      </div>
+      <div class="input-group">
+        <label for="signupPassword">Password</label>
+        <input type="password" id="signupPassword" required>
+      </div>
+      <button id="signupBtn">Create Account</button>
+      <p class="auth-link">Mayroon nang account? <a href="#" id="toggleToLogin">Mag-log In</a></p>
+    </div>
   </div>
 
-  <div id="login-success-msg" style="display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#4caf50;color:#fff;padding:10px 20px;border-radius:5px;z-index:1000;">
-    Login successful!
-  </div>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyDoijFlD_hJ2mp4FstfSZO4qUPKIzEdmPs",
-      authDomain: "hello-e7a6d.firebaseapp.com",
-      projectId: "hello-e7a6d",
-      storageBucket: "hello-e7a6d.appspot.com",
-      messagingSenderId: "693146874206",
-      appId: "1:693146874206:web:d37f7a3c823fcba4401fcf"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+  <div id="auth-message-area" style="display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#4caf50;color:#fff;padding:10px 20px;border-radius:5px;z-index:1000;"></div>
 
-    // Listen for Enter key on email and password fields
-    ["email", "password"].forEach(id => {
-      document.getElementById(id).addEventListener("keydown", function(e) {
-        if (e.key === "Enter") {
-          document.getElementById("loginBtn").click();
-        }
-      });
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDoijFlD_hJ2mp4FstfSZO4qUPKIzEdmPs",
+    authDomain: "hello-e7a6d.firebaseapp.com",
+    projectId: "hello-e7a6d",
+    storageBucket: "hello-e7a6d.appspot.com",
+    messagingSenderId: "693146874206",
+    appId: "1:693146874206:web:d37f7a3c823fcba4401fcf"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  const authMessageArea = document.getElementById('auth-message-area');
+
+  const loginForm = document.getElementById('loginForm');
+  const signupForm = document.getElementById('signupForm');
+  const showLoginBtn = document.getElementById('showLoginBtn');
+  const showSignupBtn = document.getElementById('showSignupBtn');
+  const toggleToSignupLink = document.getElementById('toggleToSignup');
+  const toggleToLoginLink = document.getElementById('toggleToLogin');
+
+  function showMessage(message, isSuccess = false) {
+    authMessageArea.textContent = message;
+    authMessageArea.style.backgroundColor = isSuccess ? '#4caf50' : '#f44336';
+    authMessageArea.style.display = 'block';
+    setTimeout(() => {
+      authMessageArea.style.display = 'none';
+    }, 4000);
+  }
+
+  function showForm(formToShow) {
+    if (formToShow === 'login') {
+      loginForm.classList.remove('hidden');
+      signupForm.classList.add('hidden');
+      showLoginBtn.classList.add('active');
+      showSignupBtn.classList.remove('active');
+    } else {
+      signupForm.classList.remove('hidden');
+      loginForm.classList.add('hidden');
+      showSignupBtn.classList.add('active');
+      showLoginBtn.classList.remove('active');
+    }
+  }
+
+  showLoginBtn.addEventListener('click', () => showForm('login'));
+  showSignupBtn.addEventListener('click', () => showForm('signup'));
+  toggleToSignupLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showForm('signup');
+  });
+  toggleToLoginLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showForm('login');
+  });
+
+  // ------------------------ LOGIN -----------------------
+  const loginEmailInput = document.getElementById('loginEmail');
+  const loginPasswordInput = document.getElementById('loginPassword');
+  const loginBtn = document.getElementById('loginBtn');
+
+  ["loginEmail", "loginPassword"].forEach(id => {
+    document.getElementById(id).addEventListener("keydown", function(e) {
+      if (e.key === "Enter") loginBtn.click();
     });
+  });
 
-    document.getElementById("loginBtn").addEventListener("click", async (event) => {
-      event.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+  loginBtn.addEventListener("click", async (event) => {
+    event.preventDefault();
+    const email = loginEmailInput.value.trim();
+    const password = loginPasswordInput.value;
 
-      try {
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        const uid = userCredential.user.uid;
+    try {
+      const userCredential = await auth.signInWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+      const uid = user.uid;
 
-        // Optional: check if user document exists
-        const userDoc = await db.collection("users").doc(uid).get();
-        if (!userDoc.exists) {
-          await db.collection("users").doc(uid).set({
-            email: email,
-            favorites: []
-          });
-        }
-
-        // Show non-blocking message and redirect after 1 second
-        document.getElementById("login-success-msg").style.display = "block";
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 1000);
-      } catch (error) {
-        alert("Login failed: " + error.message);
+      const userDoc = await db.collection("users").doc(uid).get();
+      if (!userDoc.exists) {
+        await db.collection("users").doc(uid).set({
+          email: email,
+          favorites: []
+        });
       }
-    });
 
-    document.getElementById("googleLoginBtn").addEventListener("click", async () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      try {
-        const result = await auth.signInWithPopup(provider);
-        const user = result.user;
-        const userRef = db.collection("users").doc(user.uid);
-        const doc = await userRef.get();
-
-        if (!doc.exists) {
-          await userRef.set({
-            email: user.email,
-            favorites: []
-          });
-        }
-
-        alert("Google login successful! Redirecting...");
+      showMessage("Matagumpay na pag-log in! Nagre-redirect...", true);
+      setTimeout(() => {
         window.location.href = "index.html";
-      } catch (error) {
-        alert("Google login failed: " + error.message);
-      }
+      }, 1000);
+    } catch (error) {
+      console.error("❌ Login Error:", error);
+      showMessage("Nabigo ang pag-log in: " + error.message, false);
+    }
+  });
+
+  // ------------------------ SIGN UP -----------------------
+  const signupEmailInput = document.getElementById('signupEmail');
+  const signupPasswordInput = document.getElementById('signupPassword');
+  const signupBtn = document.getElementById('signupBtn');
+
+  ["signupEmail", "signupPassword"].forEach(id => {
+    document.getElementById(id).addEventListener("keydown", function(e) {
+      if (e.key === "Enter") signupBtn.click();
     });
-  </script>
+  });
+
+  signupBtn.addEventListener("click", async () => {
+    const email = signupEmailInput.value.trim();
+    const password = signupPasswordInput.value;
+
+    try {
+      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+      const uid = user.uid;
+
+      await db.collection("users").doc(uid).set({
+        email: email,
+        favorites: []
+      });
+
+      showMessage("Account created! Logging in...", true);
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 1000);
+    } catch (error) {
+      console.error("❌ Sign Up Error:", error);
+      if (error.code === "auth/email-already-in-use") {
+        showMessage("Email na ito ay nakarehistro na. Subukan mag-login.", false);
+        showForm("login");
+      } else {
+        showMessage("Nabigo ang pag-sign up: " + error.message, false);
+      }
+    }
+  });
+
+  // ------------------------ GOOGLE LOGIN -----------------------
+  const googleLoginBtn = document.getElementById('googleLoginBtn');
+
+  googleLoginBtn.addEventListener("click", async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    try {
+      const result = await auth.signInWithPopup(provider);
+      const user = result.user;
+      const uid = user.uid;
+
+      const userDoc = await db.collection("users").doc(uid).get();
+      if (!userDoc.exists) {
+        await db.collection("users").doc(uid).set({
+          email: user.email,
+          favorites: []
+        });
+      }
+
+      window.location.href = "index.html";
+    } catch (error) {
+      console.error("Google Login Error:", error);
+      showMessage("Google login failed: " + error.message, false);
+    }
+  });
+
+ 
+</script>
+
 </body>
 </html>

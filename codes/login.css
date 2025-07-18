@@ -1,0 +1,189 @@
+/* auth.css */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  /* Updated background for animation */
+  background: linear-gradient(120deg, #f4f4f4, #ffb300); /* Initial gradient colors */
+  background-size: 400% 400%; /* Makes the background larger for movement */
+  animation: colorChange 15s ease infinite alternate; /* Applies the animation */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-container {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 320px;
+  position: relative; /* Para sa absolute positioning ng toggle buttons */
+  overflow: hidden; /* Itago ang overflow kapag naglilipat ng form */
+}
+
+.auth-container h2 {
+  margin-bottom: 24px;
+  color: #1a2233;
+  text-align: center;
+}
+
+.input-group {
+  margin-bottom: 20px; /* Provides consistent spacing between input groups */
+}
+
+.input-group label {
+  display: block; /* Ensures label is on its own line */
+  font-weight: 600; /* Makes the label text bold */
+  margin-bottom: 6px; /* Spacing between label and input field */
+  color: #333; /* Darker text for readability */
+}
+
+.input-group input {
+  width: 100%; /* Makes input take full width of its container */
+  padding: 12px 15px; /* Slightly more padding for a better feel */
+  border: 1px solid #ccc; /* Default border color */
+  border-radius: 8px; /* Rounded corners for a modern look */
+  font-size: 16px; /* Increased font size for better readability on various devices */
+  color: #333; /* Default text color inside the input */
+  background-color: #fcfcfc; /* Very light background for inputs */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; /* Smooth transitions for hover/focus */
+  outline: none; /* Removes the default browser outline */
+  box-sizing: border-box; /* Ensures padding doesn't increase total width */
+}
+
+.input-group input:hover {
+  border-color: #a0a0a0; /* Slightly darker border on hover */
+}
+
+.input-group input:focus {
+  border-color: #ffb300; /* Highlight border with your theme color */
+  box-shadow: 0 0 0 3px rgba(255, 179, 0, 0.25); /* More pronounced, but still subtle, glow */
+  background-color: #fff; /* White background when focused */
+}
+
+/* Optional: Style for error state */
+.input-group.error input {
+  border-color: #e74c3c; /* Red border for error */
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.25); /* Red glow for error */
+}
+
+.input-group.error label {
+  color: #e74c3c; /* Red text for error label */
+}
+
+button {
+  width: 100%;
+  background-color: #ffb300;
+  border: none;
+  padding: 12px;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-bottom: 12px;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background-color: #e0a800;
+}
+
+.google-btn { /* This class is now commented out in HTML, but kept here for reference */
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #333;
+}
+
+.google-btn:hover {
+  background: #f5f5f5;
+}
+
+.auth-link {
+  text-align: center;
+  font-size: 14px;
+}
+
+.auth-link a {
+  color: #ffb300;
+  text-decoration: none;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+}
+
+/* Keyframe animation for the background color change */
+@keyframes colorChange {
+  0% {
+    background-position: 0% 50%;
+    background: linear-gradient(120deg, #f4f4f4, #ffb300); /* Original colors */
+  }
+  25% {
+    background-position: 25% 75%;
+    background: linear-gradient(120deg, #b3e0ff, #ff8c00); /* Light blue to dark orange */
+  }
+  50% {
+    background-position: 50% 100%;
+    background: linear-gradient(120deg, #ffe0b3, #8cffb3); /* Light orange to light green */
+  }
+  75% {
+    background-position: 75% 25%;
+    background: linear-gradient(120deg, #e0b3ff, #ffb3b3); /* Light purple to light red */
+  }
+  100% {
+    background-position: 100% 0%;
+    background: linear-gradient(120deg, #f4f4f4, #ffb300); /* Back to original colors */
+  }
+}
+
+/* Styles for combined login/signup form */
+.auth-toggle-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.auth-toggle-buttons button {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ffb300;
+  background-color: white;
+  color: #ffb300;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.auth-toggle-buttons button:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-right: -1px; /* Overlap borders */
+}
+
+.auth-toggle-buttons button:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.auth-toggle-buttons button.active {
+  background-color: #ffb300;
+  color: white;
+}
+
+.auth-form {
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.auth-form.hidden {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transform: translateX(100%); /* Ilipat sa kanan para itago */
+  opacity: 0;
+  pointer-events: none; /* Huwag payagan ang interaction kapag nakatago */
+}

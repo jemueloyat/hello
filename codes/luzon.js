@@ -117,7 +117,7 @@ function showReplyInput(commentElement, parentId) {
   }
 
   const replyInputArea = document.createElement('div');
-  replyInputArea.classList.add('comment-input-area', 'reply-input-area'); // Add reply-input-area class for specific styling
+  replyInputArea.classList.add('comment-input-area', 'reply-input-area');
   
   // Indent the reply input based on its parent's status
   if (parentId) { // If replying to an existing comment (which might already be indented)
@@ -351,6 +351,36 @@ window.openOverlay = async (title, imageUrl, description, spotId) => {
       break;
     case 'spot-sagadahanging-other':
       startAddress = "Sagada, Mountain Province, Philippines";
+      break;
+    case 'spot-baguiocity-nature':
+      startAddress = "Baguio City, Benguet, Philippines";
+      break;
+    case 'spot-barasoainchurch-hist':
+      startAddress = "Malolos, Bulacan, Philippines";
+      break;
+    case 'spot-fortsantiago-hist':
+      startAddress = "Intramuros, Manila, Philippines";
+      break;
+    case 'spot-sanagustin-hist':
+      startAddress = "Intramuros, Manila, Philippines";
+      break;
+    case 'spot-nationalmuseum-hist':
+      startAddress = "Manila, Philippines";
+      break;
+    case 'spot-baguiocathedral-other':
+      startAddress = "Baguio City, Benguet, Philippines";
+      break;
+    case 'spot-burnhampark-other':
+      startAddress = "Baguio City, Benguet, Philippines";
+      break;
+    case 'spot-campjohnhay-other':
+      startAddress = "Baguio City, Benguet, Philippines";
+      break;
+    case 'spot-subicbay-other':
+      startAddress = "Subic Bay Freeport Zone, Zambales, Philippines";
+      break;
+    case 'spot-clark-other':
+      startAddress = "Clark Freeport Zone, Pampanga, Philippines";
       break;
   }
 
@@ -586,4 +616,67 @@ document.addEventListener('DOMContentLoaded', async () => {
   } else {
     console.log("No initialAuthToken, relying on onAuthStateChanged for anonymous sign-in.");
   }
+});
+// --- Search Functionality ---
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.querySelector('.search-input');
+  const searchBtn = document.querySelector('.search-btn');
+  const spotCards = document.querySelectorAll('.spot-card'); // Get all spot cards
+
+  /**
+   * Filters the spot cards based on the search input.
+   */
+  const filterSpotCards = () => {
+    const searchTerm = searchInput.value.toLowerCase(); // Convert search term to lowercase
+    
+    spotCards.forEach(card => {
+      const title = card.querySelector('h3').textContent.toLowerCase();
+      const description = card.querySelector('p') ? card.querySelector('p').textContent.toLowerCase() : ''; // Get description if exists
+
+      if (title.includes(searchTerm) || description.includes(searchTerm)) {
+        card.style.display = 'block'; // Show the card
+      } else {
+        card.style.display = 'none'; // Hide the card
+      }
+    });
+  };
+
+  // Event listener for the search button click
+  if (searchBtn) {
+    searchBtn.addEventListener('click', filterSpotCards);
+  }
+
+  // Event listener for 'keyup' on the search input for real-time filtering
+  if (searchInput) {
+    searchInput.addEventListener('keyup', filterSpotCards);
+  }
+});
+
+// --- Scroll Button Functionality (Existing) ---
+document.addEventListener('DOMContentLoaded', () => {
+  const scrollWrappers = document.querySelectorAll('.scroll-wrapper');
+
+  scrollWrappers.forEach(wrapper => {
+    const scrollRow = wrapper.querySelector('.scroll-row');
+    const leftBtn = wrapper.querySelector('.scroll-btn.left');
+    const rightBtn = wrapper.querySelector('.scroll-btn.right');
+
+    if (leftBtn) {
+      leftBtn.addEventListener('click', () => {
+        scrollRow.scrollBy({
+          left: -scrollRow.offsetWidth / 2, // Scroll half the width
+          behavior: 'smooth'
+        });
+      });
+    }
+
+    if (rightBtn) {
+      rightBtn.addEventListener('click', () => {
+        scrollRow.scrollBy({
+          left: scrollRow.offsetWidth / 2, // Scroll half the width
+          behavior: 'smooth'
+        });
+      });
+    }
+  });
 });

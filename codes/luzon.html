@@ -10,79 +10,96 @@
   <header class="transparent-navbar">
     <div class="logo">Philippine Gaze</div>
     <nav>
-      <a href="index.html">Home</a>
+      <a href="index.html" class="active">Home</a>
       <a href="main.html">Main</a>
-      <a href="#stories">Stories</a>
+      <a href="stories.html">Stories</a>
+      <a href="luzon.html" >Luzon</a>
+      <a href="visayas.html">Visayas</a>
+      <a href="mindanao.html">Mindanao</a>
       <a href="favorites.html">Favorites</a>
-      <a href="login.html" id="logoutBtn" class="logout-button">Logout</a>
     </nav>
+    <div class="search-container">
+      <input type="text" placeholder="Maghanap..." class="search-input" />
+      <button class="search-btn">🔍</button>
+    </div>
+    <!-- New settings container -->
+    <div class="settings-container">
+      <button class="settings-icon-btn">⚙️</button>
+      <div class="settings-dropdown">
+        <div class="profile-info">
+          <img src="https://placehold.co/50x50/cccccc/333333?text=User" alt="Profile Picture" class="profile-pic">
+          <span id="profile-username">Guest User</span>
+        </div>
+        <button id="settingsLogoutBtn" class="logout-button">Logout</button>
+      </div>
+    </div>
   </header>
 
   <main>
     <h1>Luzon Destinations</h1>
-
+    
     <!-- Top 10 Destinations Section -->
     <section class="region-section">
       <h2>Top 10 Destinations</h2>
       <div class="scroll-wrapper">
         <button class="scroll-btn left">‹</button>
         <div class="scroll-row">
-          <div class="spot-card" onclick="openOverlay('Banaue Rice Terraces', 'assets/00-5-facts-about-the-puerto-princesa-subterranean-river-adobe-cropped.jpg', 'The Banaue Rice Terraces are 2,000-year-old terraces that were carved into the mountains of Ifugao by ancestors of the indigenous people. They are often referred to as the &quot;Eighth Wonder of the World&quot;.', 'spot-banauerice-nature')">
-            <img src="assets/istockphoto-685040406-612x612.jpg" alt="Banaue Rice Terraces">
+          <div class="spot-card" onclick="openOverlay('Banaue Rice Terraces', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Banaue_Rice_Terraces_in_Ifugao.jpg/1280px-Banaue_Rice_Terraces_in_Ifugao.jpg', 'The Banaue Rice Terraces are 2,000-year-old terraces that were carved into the mountains of Ifugao by ancestors of the indigenous people. They are often referred to as the &quot;Eighth Wonder of the World&quot;.', 'spot-banauerice-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Banaue_Rice_Terraces_in_Ifugao.jpg/1280px-Banaue_Rice_Terraces_in_Ifugao.jpg" alt="Banaue Rice Terraces">
             <div class="card-text-overlay">
               <h3>Banaue Rice Terraces</h3>
             </div>
           </div>
           <div class="spot-card" onclick="openOverlay('Mount Pulag', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Mount_Pulag_Sea_of_Clouds.jpg/1280px-Mount_Pulag_Sea_of_Clouds.jpg', 'Mount Pulag is the third highest mountain in the Philippines and Luzon\'s highest peak. It is famous for its sea of clouds and the stunning sunrise views.', 'spot-mtpulag-nature')">
-            <img src="assets/00-5-facts-about-the-puerto-princesa-subterranean-river-adobe-cropped.jpg" alt="Mount Pulag">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Mount_Pulag_Sea_of_Clouds.jpg/1280px-Mount_Pulag_Sea_of_Clouds.jpg" alt="Mount Pulag">
             <div class="card-text-overlay">
               <h3>Mount Pulag</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Taal Volcano', 'assets/taal-lake.jpg', 'Taal Volcano is a large caldera filled by Taal Lake in Batangas. It is the second most active volcano in the Philippines, with 38 recorded historical eruptions.', 'spot-taal-nature')">
-            <img src="assets/taal-lake.jpg" alt="Taal Volcano">
+          <div class="spot-card" onclick="openOverlay('Taal Volcano', 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Taal_Volcano_and_Lake.jpg/1280px-Taal_Volcano_and_Lake.jpg', 'Taal Volcano is a large caldera filled by Taal Lake in Batangas. It is the second most active volcano in the Philippines, with 38 recorded historical eruptions.', 'spot-taal-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Taal_Volcano_and_Lake.jpg/1280px-Taal_Volcano_and_Lake.jpg" alt="Taal Volcano">
             <div class="card-text-overlay">
               <h3>Taal Volcano</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Hundred Islands National Park', 'assets/Hundred-Islands-Christ-the-Redeemer-Statue-by-AntonNawalangMalay-via-Wikimedia-cc.jpg', 'The Hundred Islands National Park is a protected area located in Alaminos, Pangasinan. It comprises 124 islands at low tide and 123 at high tide, scattered in Lingayen Gulf.', 'spot-hundredislands-nature')">
-            <img src="assets/Hundred-Islands-Christ-the-Redeemer-Statue-by-AntonNawalangMalay-via-Wikimedia-cc.jpg" alt="Hundred Islands National Park">
+          <div class="spot-card" onclick="openOverlay('Hundred Islands National Park', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Hundred_Islands_National_Park.jpg/1280px-Hundred_Islands_National_Park.jpg', 'The Hundred Islands National Park is a protected area located in Alaminos, Pangasinan. It comprises 124 islands at low tide and 123 at high tide, scattered in Lingayen Gulf.', 'spot-hundredislands-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Hundred_Islands_National_Park.jpg/1280px-Hundred_Islands_National_Park.jpg" alt="Hundred Islands National Park">
             <div class="card-text-overlay">
               <h3>Hundred Islands National Park</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Mayon Volcano', 'assets/Mayon Volcano.webp', 'Mayon Volcano is an active stratovolcano in the province of Albay, Bicol Region. It is renowned for its &quot;perfect cone&quot; shape.', 'spot-mayon-nature')">
-            <img src="assets/Mayon Volcano.webp" alt="Mayon Volcano">
+          <div class="spot-card" onclick="openOverlay('Mayon Volcano', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Mayon_Volcano_at_Sunrise.jpg/1280px-Mayon_Volcano_at_Sunrise.jpg', 'Mayon Volcano is an active stratovolcano in the province of Albay, Bicol Region. It is renowned for its &quot;perfect cone&quot; shape.', 'spot-mayon-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Mayon_Volcano_at_Sunrise.jpg/1280px-Mayon_Volcano_at_Sunrise.jpg" alt="Mayon Volcano">
             <div class="card-text-overlay">
               <h3>Mayon Volcano</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Intramuros', 'assets/GettyImages-515030857-599ff63e03f402001100ee1d-6218e3c18a3a4503a2a1fb183ce8ccfb.jpg', 'Intramuros, known as the Walled City, is the oldest district and historic center of Manila. It was the seat of government during the Spanish colonial period.', 'spot-intramuros-hist')">
-            <img src="assets/GettyImages-515030857-599ff63e03f402001100ee1d-6218e3c18a3a4503a2a1fb183ce8ccfb.jpg" alt="Intramuros">
+          <div class="spot-card" onclick="openOverlay('Intramuros', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/San_Agustin_Church_and_Convent_%28Intramuros%29.jpg/1280px-San_Agustin_Church_and_Convent_%28Intramuros%29.jpg', 'Intramuros, known as the Walled City, is the oldest district and historic center of Manila. It was the seat of government during the Spanish colonial period.', 'spot-intramuros-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/San_Agustin_Church_and_Convent_%28Intramuros%29.jpg/1280px-San_Agustin_Church_and_Convent_%28Intramuros%29.jpg" alt="Intramuros">
             <div class="card-text-overlay">
               <h3>Intramuros</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Vigan City', 'assets/HERITAGE-Vigan,_Ilocos_Sur_0.jpg', 'Vigan City is a UNESCO World Heritage site in Ilocos Sur, known for its well-preserved Spanish colonial town. Calle Crisologo is its most famous street.', 'spot-vigan-hist')">
-            <img src="assets/HERITAGE-Vigan,_Ilocos_Sur_0.jpg" alt="Vigan City">
+          <div class="spot-card" onclick="openOverlay('Vigan City', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Vigan_City_Calle_Crisologo.jpg/1280px-Vigan_City_Calle_Crisologo.jpg', 'Vigan City is a UNESCO World Heritage site in Ilocos Sur, known for its well-preserved Spanish colonial town. Calle Crisologo is its most famous street.', 'spot-vigan-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Vigan_City_Calle_Crisologo.jpg/1280px-Vigan_City_Calle_Crisologo.jpg" alt="Vigan City">
             <div class="card-text-overlay">
               <h3>Vigan City</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Corregidor Island', 'assets/12965072353_c27aa18f9c_b.jpg', 'Corregidor Island is a small island located at the entrance of Manila Bay. It was a crucial defense fortress during World War II.', 'spot-corregidor-hist')">
-            <img src="assets/12965072353_c27aa18f9c_b.jpg" alt="Corregidor Island">
+          <div class="spot-card" onclick="openOverlay('Corregidor Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Corregidor_Island_Battery_Hearn.jpg/1280px-Corregidor_Island_Battery_Hearn.jpg', 'Corregidor Island is a small island located at the entrance of Manila Bay. It was a crucial defense fortress during World War II.', 'spot-corregidor-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Corregidor_Island_Battery_Hearn.jpg/1280px-Corregidor_Island_Battery_Hearn.jpg" alt="Corregidor Island">
             <div class="card-text-overlay">
               <h3>Corregidor Island</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Mount Pinatubo', 'assets/aerial-tour-pinatubo.jpg', 'Mount Pinatubo is an active stratovolcano in the Cabusilan Mountains, located on the tripoint boundary of Zambales, Tarlac, and Pampanga. It is famous for its beautiful crater lake.', 'spot-mtpulatubo-nature')">
-            <img src="assets/aerial-tour-pinatubo.jpg" alt="Mount Pinatubo">
+          <div class="spot-card" onclick="openOverlay('Mount Pinatubo', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Mount_Pinatubo_Crater_Lake.jpg/1280px-Mount_Pinatubo_Crater_Lake.jpg', 'Mount Pinatubo is an active stratovolcano in the Cabusilan Mountains, located on the tripoint boundary of Zambales, Tarlac, and Pampanga. It is famous for its beautiful crater lake.', 'spot-mtpulatubo-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Mount_Pinatubo_Crater_Lake.jpg/1280px-Mount_Pinatubo_Crater_Lake.jpg" alt="Mount Pinatubo">
             <div class="card-text-overlay">
               <h3>Mount Pinatubo</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Sabang Beach, Baler', 'assets/sabang-beach.jpg', 'Sabang Beach is a popular surfing spot in Baler, Aurora. It is known for its consistent waves suitable for beginners and experienced surfers alike.', 'spot-sabangbeach-nature')">
-            <img src="assets/sabang-beach.jpg" alt="Sabang Beach, Baler">
+          <div class="spot-card" onclick="openOverlay('Sabang Beach, Baler', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Sabang_Beach_Baler.jpg/1280px-Sabang_Beach_Baler.jpg', 'Sabang Beach is a popular surfing spot in Baler, Aurora. It is known for its consistent waves suitable for beginners and experienced surfers alike.', 'spot-sabangbeach-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Sabang_Beach_Baler.jpg/1280px-Sabang_Beach_Baler.jpg" alt="Sabang Beach, Baler">
             <div class="card-text-overlay">
               <h3>Sabang Beach, Baler</h3>
             </div>
@@ -98,58 +115,64 @@
       <div class="scroll-wrapper">
         <button class="scroll-btn left">‹</button>
         <div class="scroll-row">
-          <div class="spot-card" onclick="openOverlay('Banaue Rice Terraces', 'assets/istockphoto-685040406-612x612.jpg', 'The Banaue Rice Terraces are 2,000-year-old terraces that were carved into the mountains of Ifugao by ancestors of the indigenous people. They are often referred to as the &quot;Eighth Wonder of the World&quot;.', 'spot-banauerice-nature')">
-            <img src="assets/istockphoto-685040406-612x612.jpg" alt="Banaue Rice Terraces">
+          <div class="spot-card" onclick="openOverlay('Banaue Rice Terraces', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Banaue_Rice_Terraces_in_Ifugao.jpg/1280px-Banaue_Rice_Terraces_in_Ifugao.jpg', 'The Banaue Rice Terraces are 2,000-year-old terraces that were carved into the mountains of Ifugao by ancestors of the indigenous people. They are often referred to as the &quot;Eighth Wonder of the World&quot;.', 'spot-banauerice-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Banaue_Rice_Terraces_in_Ifugao.jpg/1280px-Banaue_Rice_Terraces_in_Ifugao.jpg" alt="Banaue Rice Terraces">
             <div class="card-text-overlay">
               <h3>Banaue Rice Terraces</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Mount Pulag', 'assets/cover-photo-mount-pulag.jpg', 'Mount Pulag is the third highest mountain in the Philippines and Luzon\'s highest peak. It is famous for its sea of clouds and the stunning sunrise views.', 'spot-mtpulag-nature')">
-            <img src="assets/cover-photo-mount-pulag.jpg" alt="Mount Pulag">
+          <div class="spot-card" onclick="openOverlay('Mount Pulag', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Mount_Pulag_Sea_of_Clouds.jpg/1280px-Mount_Pulag_Sea_of_Clouds.jpg', 'Mount Pulag is the third highest mountain in the Philippines and Luzon\'s highest peak. It is famous for its sea of clouds and the stunning sunrise views.', 'spot-mtpulag-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Mount_Pulag_Sea_of_Clouds.jpg/1280px-Mount_Pulag_Sea_of_Clouds.jpg" alt="Mount Pulag">
             <div class="card-text-overlay">
               <h3>Mount Pulag</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Taal Volcano', 'assets/taalprofile.jpeg', 'Taal Volcano is a large caldera filled by Taal Lake in Batangas. It is the second most active volcano in the Philippines, with 38 recorded historical eruptions.', 'spot-taal-nature')">
-            <img src="assets/taalprofile.jpeg" alt="Taal Volcano">
+          <div class="spot-card" onclick="openOverlay('Taal Volcano', 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Taal_Volcano_and_Lake.jpg/1280px-Taal_Volcano_and_Lake.jpg', 'Taal Volcano is a large caldera filled by Taal Lake in Batangas. It is the second most active volcano in the Philippines, with 38 recorded historical eruptions.', 'spot-taal-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Taal_Volcano_and_Lake.jpg/1280px-Taal_Volcano_and_Lake.jpg" alt="Taal Volcano">
             <div class="card-text-overlay">
               <h3>Taal Volcano</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Hundred Islands National Park', 'assets/Hundred-Islands-Christ-the-Redeemer-Statue-by-AntonNawalangMalay-via-Wikimedia-cc.jpg', 'The Hundred Islands National Park is a protected area located in Alaminos, Pangasinan. It comprises 124 islands at low tide and 123 at high tide, scattered in Lingayen Gulf.', 'spot-hundredislands-nature')">
-            <img src="assets/Hundred-Islands-Christ-the-Redeemer-Statue-by-AntonNawalangMalay-via-Wikimedia-cc.jpg" alt="Hundred Islands National Park">
+          <div class="spot-card" onclick="openOverlay('Hundred Islands National Park', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Hundred_Islands_National_Park.jpg/1280px-Hundred_Islands_National_Park.jpg', 'The Hundred Islands National Park is a protected area located in Alaminos, Pangasinan. It comprises 124 islands at low tide and 123 at high tide, scattered in Lingayen Gulf.', 'spot-hundredislands-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Hundred_Islands_National_Park.jpg/1280px-Hundred_Islands_National_Park.jpg" alt="Hundred Islands National Park">
             <div class="card-text-overlay">
               <h3>Hundred Islands National Park</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Mayon Volcano', 'assets/Mayon Volcano.webp', 'Mayon Volcano is an active stratovolcano in the province of Albay, Bicol Region. It is renowned for its &quot;perfect cone&quot; shape.', 'spot-mayon-nature')">
-            <img src="assets/Mayon Volcano.webp" alt="Mayon Volcano">
+          <div class="spot-card" onclick="openOverlay('Mayon Volcano', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Mayon_Volcano_at_Sunrise.jpg/1280px-Mayon_Volcano_at_Sunrise.jpg', 'Mayon Volcano is an active stratovolcano in the province of Albay, Bicol Region. It is renowned for its &quot;perfect cone&quot; shape.', 'spot-mayon-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Mayon_Volcano_at_Sunrise.jpg/1280px-Mayon_Volcano_at_Sunrise.jpg" alt="Mayon Volcano">
             <div class="card-text-overlay">
               <h3>Mayon Volcano</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Pagsanjan Falls', 'assets/Pagsanjan Falls.jpg', 'Pagsanjan Falls is one of the most famous waterfalls in the Philippines. It is located in Laguna province and is a popular tourist destination.', 'spot-pagsanjanfalls-nature')">
-            <img src="assets/Pagsanjan Falls.jpg" alt="Pagsanjan Falls">
+          <div class="spot-card" onclick="openOverlay('Pagsanjan Falls', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Pagsanjan_Falls_Laguna_Philippines.jpg/1280px-Pagsanjan_Falls_Laguna_Philippines.jpg', 'Pagsanjan Falls is one of the most famous waterfalls in the Philippines. It is located in Laguna province and is a popular tourist destination.', 'spot-pagsanjanfalls-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Pagsanjan_Falls_Laguna_Philippines.jpg/1280px-Pagsanjan_Falls_Laguna_Philippines.jpg" alt="Pagsanjan Falls">
             <div class="card-text-overlay">
               <h3>Pagsanjan Falls</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Masungi Georeserve', 'assets/rizal-thingstodo-masungi-1554201379.jpg', 'Masungi Georeserve is a conservation area and a geotourism site in Baras, Rizal. It is famous for its unique rock formations and conservation efforts.', 'spot-masungi-nature')">
-            <img src="assets/rizal-thingstodo-masungi-1554201379.jpg" alt="Masungi Georeserve">
+          <div class="spot-card" onclick="openOverlay('Masungi Georeserve', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Masungi_Georeserve_Rope_Course.jpg/1280px-Masungi_Georeserve_Rope_Course.jpg', 'Masungi Georeserve is a conservation area and a geotourism site in Baras, Rizal. It is famous for its unique rock formations and conservation efforts.', 'spot-masungi-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Masungi_Georeserve_Rope_Course.jpg/1280px-Masungi_Georeserve_Rope_Course.jpg" alt="Masungi Georeserve">
             <div class="card-text-overlay">
               <h3>Masungi Georeserve</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Sabang Beach, Baler', 'assets/sabang-beach.jpg', 'Sabang Beach is a popular surfing spot in Baler, Aurora. It is known for its consistent waves suitable for beginners and experienced surfers alike.', 'spot-sabangbeach-nature')">
-            <img src="assets/sabang-beach.jpg" alt="Sabang Beach, Baler">
+          <div class="spot-card" onclick="openOverlay('Sabang Beach, Baler', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Sabang_Beach_Baler.jpg/1280px-Sabang_Beach_Baler.jpg', 'Sabang Beach is a popular surfing spot in Baler, Aurora. It is known for its consistent waves suitable for beginners and experienced surfers alike.', 'spot-sabangbeach-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Sabang_Beach_Baler.jpg/1280px-Sabang_Beach_Baler.jpg" alt="Sabang Beach, Baler">
             <div class="card-text-overlay">
               <h3>Sabang Beach, Baler</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Mount Pinatubo', 'assets/aerial-tour-pinatubo.jpg', 'Mount Pinatubo is an active stratovolcano in the Cabusilan Mountains, located on the tripoint boundary of Zambales, Tarlac, and Pampanga. It is famous for its beautiful crater lake.', 'spot-mtpulatubo-nature')">
-            <img src="assets/aerial-tour-pinatubo.jpg" alt="Mount Pinatubo">
+          <div class="spot-card" onclick="openOverlay('Mount Pinatubo', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Mount_Pinatubo_Crater_Lake.jpg/1280px-Mount_Pinatubo_Crater_Lake.jpg', 'Mount Pinatubo is an active stratovolcano in the Cabusilan Mountains, located on the tripoint boundary of Zambales, Tarlac, and Pampanga. It is famous for its beautiful crater lake.', 'spot-mtpulatubo-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Mount_Pinatubo_Crater_Lake.jpg/1280px-Mount_Pinatubo_Crater_Lake.jpg" alt="Mount Pinatubo">
             <div class="card-text-overlay">
               <h3>Mount Pinatubo</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Baguio City', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Mines_View_Park_Baguio_City.jpg/1280px-Mines_View_Park_Baguio_City.jpg', 'The Summer Capital of the Philippines, known for its cool climate, pine trees, and tourist attractions like Mines View Park and Burnham Park.', 'spot-baguiocity-nature')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Mines_View_Park_Baguio_City.jpg/1280px-Mines_View_Park_Baguio_City.jpg" alt="Baguio City">
+            <div class="card-text-overlay">
+              <h3>Baguio City</h3>
             </div>
           </div>
         </div>
@@ -163,40 +186,64 @@
       <div class="scroll-wrapper">
         <button class="scroll-btn left">‹</button>
         <div class="scroll-row">
-          <div class="spot-card" onclick="openOverlay('Intramuros', 'assets/GettyImages-515030857-599ff63e03f402001100ee1d-6218e3c18a3a4503a2a1fb183ce8ccfb.jpg', 'Intramuros, known as the Walled City, is the oldest district and historic center of Manila. It was the seat of government during the Spanish colonial period.', 'spot-intramuros-hist')">
-            <img src="assets/GettyImages-515030857-599ff63e03f402001100ee1d-6218e3c18a3a4503a2a1fb183ce8ccfb.jpg" alt="Intramuros">
+          <div class="spot-card" onclick="openOverlay('Intramuros', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/San_Agustin_Church_and_Convent_%28Intramuros%29.jpg/1280px-San_Agustin_Church_and_Convent_%28Intramuros%29.jpg', 'Intramuros, known as the Walled City, is the oldest district and historic center of Manila. It was the seat of government during the Spanish colonial period.', 'spot-intramuros-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/San_Agustin_Church_and_Convent_%28Intramuros%29.jpg/1280px-San_Agustin_Church_and_Convent_%28Intramuros%29.jpg" alt="Intramuros">
             <div class="card-text-overlay">
               <h3>Intramuros</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Vigan City', 'assets/HERITAGE-Vigan,_Ilocos_Sur_0.jpg', 'Vigan City is a UNESCO World Heritage site in Ilocos Sur, known for its well-preserved Spanish colonial town. Calle Crisologo is its most famous street.', 'spot-vigan-hist')">
-            <img src="assets/HERITAGE-Vigan,_Ilocos_Sur_0.jpg" alt="Vigan City">
+          <div class="spot-card" onclick="openOverlay('Vigan City', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Vigan_City_Calle_Crisologo.jpg/1280px-Vigan_City_Calle_Crisologo.jpg', 'Vigan City is a UNESCO World Heritage site in Ilocos Sur, known for its well-preserved Spanish colonial town. Calle Crisologo is its most famous street.', 'spot-vigan-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Vigan_City_Calle_Crisologo.jpg/1280px-Vigan_City_Calle_Crisologo.jpg" alt="Vigan City">
             <div class="card-text-overlay">
               <h3>Vigan City</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Corregidor Island', 'assets/12965072353_c27aa18f9c_b.jpg', 'Corregidor Island is a small island located at the entrance of Manila Bay. It was a crucial defense fortress during World War II.', 'spot-corregidor-hist')">
-            <img src="assets/12965072353_c27aa18f9c_b.jpg" alt="Corregidor Island">
+          <div class="spot-card" onclick="openOverlay('Corregidor Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Corregidor_Island_Battery_Hearn.jpg/1280px-Corregidor_Island_Battery_Hearn.jpg', 'Corregidor Island is a small island located at the entrance of Manila Bay. It was a crucial defense fortress during World War II.', 'spot-corregidor-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Corregidor_Island_Battery_Hearn.jpg/1280px-Corregidor_Island_Battery_Hearn.jpg" alt="Corregidor Island">
             <div class="card-text-overlay">
               <h3>Corregidor Island</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Rizal Park', 'assets/rp-02-768x544.jpg', 'Rizal Park, also known as Luneta Park, is a historical urban park located in Ermita, Manila. It is one of the largest urban parks in Asia.', 'spot-rizalpark-hist')">
-            <img src="assets/rp-02-768x544.jpg" alt="Rizal Park">
+          <div class="spot-card" onclick="openOverlay('Rizal Park', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Rizal_Park_Manila.jpg/1280px-Rizal_Park_Manila.jpg', 'Rizal Park, also known as Luneta Park, is a historical urban park located in Ermita, Manila. It is one of the largest urban parks in Asia.', 'spot-rizalpark-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Rizal_Park_Manila.jpg/1280px-Rizal_Park_Manila.jpg" alt="Rizal Park">
             <div class="card-text-overlay">
               <h3>Rizal Park</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Hoyop-Hoyopan Cave', 'assets/Hoyop-Hoyopan-Cave-Camalig.jpg', 'Hoyop-Hoyopan Cave is a natural cave system in Camalig, Albay. It was used as a shelter by locals during World War II.', 'spot-hoyopoyopan-hist')">
-            <img src="assets/Hoyop-Hoyopan-Cave-Camalig.jpg" alt="Hoyop-Hoyopan Cave">
+          <div class="spot-card" onclick="openOverlay('Hoyop-Hoyopan Cave', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Hoyop-Hoyopan_Cave_Entrance.jpg/1280px-Hoyop-Hoyopan_Cave_Entrance.jpg', 'Hoyop-Hoyopan Cave is a natural cave system in Camalig, Albay. It was used as a shelter by locals during World War II.', 'spot-hoyopoyopan-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Hoyop-Hoyopan_Cave_Entrance.jpg/1280px-Hoyop-Hoyopan_Cave_Entrance.jpg" alt="Hoyop-Hoyopan Cave">
             <div class="card-text-overlay">
               <h3>Hoyop-Hoyopan Cave</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Bataan Death March Memorial', 'assets/mt-samat-bataan-peninsula-philippines-600nw-2053649801.webp', 'The Bataan Death March Memorial Shrine is a memorial complex in Pilar, Bataan, commemorating the Bataan Death March during World War II.', 'spot-bataanmemorial-hist')">
-            <img src="assets/mt-samat-bataan-peninsula-philippines-600nw-2053649801.webp" alt="Bataan Death March Memorial">
+          <div class="spot-card" onclick="openOverlay('Bataan Death March Memorial', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Bataan_Death_March_Memorial_Shrine.jpg/1280px-Bataan_Death_March_Memorial_Shrine.jpg', 'The Bataan Death March Memorial Shrine is a memorial complex in Pilar, Bataan, commemorating the Bataan Death March during World War II.', 'spot-bataanmemorial-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Bataan_Death_March_Memorial_Shrine.jpg/1280px-Bataan_Death_March_Memorial_Shrine.jpg" alt="Bataan Death March Memorial">
             <div class="card-text-overlay">
               <h3>Bataan Death March Memorial</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Barasoain Church', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Barasoain_Church_Malolos.jpg/1280px-Barasoain_Church_Malolos.jpg', 'A historic Roman Catholic church in Malolos, Bulacan, known as the Cradle of the First Philippine Republic.', 'spot-barasoainchurch-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Barasoain_Church_Malolos.jpg/1280px-Barasoain_Church_Malolos.jpg" alt="Barasoain Church">
+            <div class="card-text-overlay">
+              <h3>Barasoain Church</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Fort Santiago', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Fort_Santiago_Intramuros.jpg/1280px-Fort_Santiago_Intramuros.jpg', 'A historical citadel within Intramuros, Manila, built by Spanish conquistador Miguel López de Legazpi.', 'spot-fortsantiago-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Fort_Santiago_Intramuros.jpg/1280px-Fort_Santiago_Intramuros.jpg" alt="Fort Santiago">
+            <div class="card-text-overlay">
+              <h3>Fort Santiago</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('San Agustin Church', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/San_Agustin_Church_and_Convent_%28Intramuros%29.jpg/1280px-San_Agustin_Church_and_Convent_%28Intramuros%29.jpg', 'A Roman Catholic church within Intramuros, Manila, a UNESCO World Heritage Site and one of the oldest stone churches in the Philippines.', 'spot-sanagustin-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/San_Agustin_Church_and_Convent_%28Intramuros%29.jpg/1280px-San_Agustin_Church_and_Convent_%28Intramuros%29.jpg" alt="San Agustin Church">
+            <div class="card-text-overlay">
+              <h3>San Agustin Church</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('National Museum of the Philippines', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/National_Museum_of_Fine_Arts_%28Manila%29.jpg/1280px-National_Museum_of_Fine_Arts_%28Manila%29.jpg', 'The premier museum complex in the Philippines, housing significant collections in art, anthropology, and natural history.', 'spot-nationalmuseum-hist')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/National_Museum_of_Fine_Arts_%28Manila%29.jpg/1280px-National_Museum_of_Fine_Arts_%28Manila%29.jpg" alt="National Museum of the Philippines">
+            <div class="card-text-overlay">
+              <h3>National Museum of the Philippines</h3>
             </div>
           </div>
         </div>
@@ -210,34 +257,64 @@
       <div class="scroll-wrapper">
         <button class="scroll-btn left">‹</button>
         <div class="scroll-row">
-          <div class="spot-card" onclick="openOverlay('Binondo Chinatown', 'assets/chinatown.jpg', 'Binondo is the oldest Chinatown in the world, established in 1594. It is a vibrant district known for its authentic Chinese cuisine and cultural landmarks.', 'spot-binondo-other')">
-            <img src="assets/chinatown.jpg" alt="Binondo Chinatown">
+          <div class="spot-card" onclick="openOverlay('Binondo Chinatown', 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Binondo_Arch.jpg/1280px-Binondo_Arch.jpg', 'Binondo is the oldest Chinatown in the world, established in 1594. It is a vibrant district known for its authentic Chinese cuisine and cultural landmarks.', 'spot-binondo-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Binondo_Arch.jpg/1280px-Binondo_Arch.jpg" alt="Binondo Chinatown">
             <div class="card-text-overlay">
               <h3>Binondo Chinatown</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Bangui Windmills', 'assets/morning-view.jpg', 'The Bangui Windmills are a row of 20 wind turbines in Bangui, Ilocos Norte, facing the South China Sea. They are a popular tourist attraction and a source of renewable energy.', 'spot-banguiwindmills-other')">
-            <img src="assets/morning-view.jpg" alt="Bangui Windmills">
+          <div class="spot-card" onclick="openOverlay('Bangui Windmills', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Bangui_Windmills_Ilocos_Norte.jpg/1280px-Bangui_Windmills_Ilocos_Norte.jpg', 'The Bangui Windmills are a row of 20 wind turbines in Bangui, Ilocos Norte, facing the South China Sea. They are a popular tourist attraction and a source of renewable energy.', 'spot-banguiwindmills-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Bangui_Windmills_Ilocos_Norte.jpg/1280px-Bangui_Windmills_Ilocos_Norte.jpg" alt="Bangui Windmills">
             <div class="card-text-overlay">
               <h3>Bangui Windmills</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Villa Escudero Plantations and Resort', 'assets/Villa-Escudero-Waterfalls-Restaurant.jpg', 'Villa Escudero Plantations and Resort is a hacienda-style resort in San Pablo City, Laguna. It offers a unique dining experience at the foot of a waterfall and cultural shows.', 'spot-villaescudero-other')">
-            <img src="assets/Villa-Escudero-Waterfalls-Restaurant.jpg" alt="Villa Escudero Plantations and Resort">
+          <div class="spot-card" onclick="openOverlay('Villa Escudero Plantations and Resort', 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Villa_Escudero_Labasin_Falls_Restaurant.jpg/1280px-Villa_Escudero_Labasin_Falls_Restaurant.jpg', 'Villa Escudero Plantations and Resort is a hacienda-style resort in San Pablo City, Laguna. It offers a unique dining experience at the foot of a waterfall and cultural shows.', 'spot-villaescudero-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Villa_Escudero_Labasin_Falls_Restaurant.jpg/1280px-Villa_Escudero_Labasin_Falls_Restaurant.jpg" alt="Villa Escudero Plantations and Resort">
             <div class="card-text-overlay">
               <h3>Villa Escudero Plantations and Resort</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Sumaguing Cave', 'assets/tourists-exploring-sumaguing-cave-in-sagada.jpg', 'Sumaguing Cave is one of the most popular caves in Sagada, Mountain Province. It is known for its impressive rock formations and challenging spelunking experience.', 'spot-sumaguingcave-other')">
-            <img src="assets/tourists-exploring-sumaguing-cave-in-sagada.jpg" alt="Sumaguing Cave">
+          <div class="spot-card" onclick="openOverlay('Sumaguing Cave', 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Sumaguing_Cave_Entrance.jpg/1280px-Sumaguing_Cave_Entrance.jpg', 'Sumaguing Cave is one of the most popular caves in Sagada, Mountain Province. It is known for its impressive rock formations and challenging spelunking experience.', 'spot-sumaguingcave-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Sumaguing_Cave_Entrance.jpg/1280px-Sumaguing_Cave_Entrance.jpg" alt="Sumaguing Cave">
             <div class="card-text-overlay">
               <h3>Sumaguing Cave</h3>
             </div>
           </div>
-          <div class="spot-card" onclick="openOverlay('Sagada Hanging Coffins', 'assets/hanging-coffins-funerary-practice-Sagada.jpg', 'The hanging coffins of Sagada are an ancient burial practice of the Igorot tribe. Coffins are nailed to the side of cliffs, a unique cultural sight.', 'spot-sagadahanging-other')">
-            <img src="assets/hanging-coffins-funerary-practice-Sagada.jpg" alt="Sagada Hanging Coffins">
+          <div class="spot-card" onclick="openOverlay('Sagada Hanging Coffins', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Sagada_Hanging_Coffins.jpg/1280px-Sagada_Hanging_Coffins.jpg', 'The hanging coffins of Sagada are an ancient burial practice of the Igorot tribe. Coffins are nailed to the side of cliffs, a unique cultural sight.', 'spot-sagadahanging-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Sagada_Hanging_Coffins.jpg/1280px-Sagada_Hanging_Coffins.jpg" alt="Sagada Hanging Coffins">
             <div class="card-text-overlay">
               <h3>Sagada Hanging Coffins</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Baguio Cathedral', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Baguio_Cathedral.jpg/1280px-Baguio_Cathedral.jpg', 'Our Lady of the Atonement Cathedral, also known as Baguio Cathedral, is a Roman Catholic cathedral in Baguio City, Philippines.', 'spot-baguiocathedral-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Baguio_Cathedral.jpg/1280px-Baguio_Cathedral.jpg" alt="Baguio Cathedral">
+            <div class="card-text-overlay">
+              <h3>Baguio Cathedral</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay(' Burnham Park', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Burnham_Park_Baguio.jpg/1280px-Burnham_Park_Baguio.jpg', 'A historic urban park in Baguio City, designed by Daniel Burnham, featuring a man-made lake, gardens, and recreational facilities.', 'spot-burnhampark-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Burnham_Park_Baguio.jpg/1280px-Burnham_Park_Baguio.jpg" alt="Burnham Park">
+            <div class="card-text-overlay">
+              <h3>Burnham Park</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Camp John Hay', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Camp_John_Hay_Baguio.jpg/1280px-Camp_John_Hay_Baguio.jpg', 'A former American military recreation facility in Baguio City, now a popular tourist destination with a golf course, eco-trails, and historical sites.', 'spot-campjohnhay-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Camp_John_Hay_Baguio.jpg/1280px-Camp_John_Hay_Baguio.jpg" alt="Camp John Hay">
+            <div class="card-text-overlay">
+              <h3>Camp John Hay</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Subic Bay Freeport Zone', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Subic_Bay_Freeport_Zone.jpg/1280px-Subic_Bay_Freeport_Zone.jpg', 'A former US Naval Base, now a thriving economic zone and tourist destination offering beaches, wildlife parks, and duty-free shopping.', 'spot-subicbay-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Subic_Bay_Freeport_Zone.jpg/1280px-Subic_Bay_Freeport_Zone.jpg" alt="Subic Bay Freeport Zone">
+            <div class="card-text-overlay">
+              <h3>Subic Bay Freeport Zone</h3>
+            </div>
+          </div>
+          <div class="spot-card" onclick="openOverlay('Clark Freeport Zone', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Clark_Freeport_Zone_Pampanga.jpg/1280px-Clark_Freeport_Zone_Pampanga.jpg', 'A former US Air Force base, now a major economic hub and tourist destination with theme parks, golf courses, and an international airport.', 'spot-clark-other')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Clark_Freeport_Zone_Pampanga.jpg/1280px-Clark_Freeport_Zone_Pampanga.jpg" alt="Clark Freeport Zone">
+            <div class="card-text-overlay">
+              <h3>Clark Freeport Zone</h3>
             </div>
           </div>
         </div>
@@ -256,6 +333,8 @@
 
       <div class="modal-buttons">
         <button id="favoriteModalBtn">♡ Add to Favorites</button>
+        <button id="directionModalBtn">Directions</button>
+        <button id="commentModalBtn">Comments</button>
       </div>
 
       <div id="modal-directions" class="modal-directions">
