@@ -12,13 +12,18 @@
 <body>
   <div class="auth-container">
     <h2>Login</h2>
-    <div class="input-group">
-      <label for="email">Email</label>
-      <input type="email" id="email" required>
-    </div>
-    <div class="input-group">
-      <label for="password">Password</label>
-      <input type="password" id="password" required>
+   <div class="input-group">
+  <input type="email" id="email" required placeholder=" "> <label for="email">Email</label>
+  <span class="error-message" id="email-error"></span> </div>
+<div class="input-group">
+  <input type="password" id="password" required placeholder=" "> <label for="password">Password</label>
+  <span class="error-message" id="password-error"></span> </div>
+  <div class="options-row">
+      <label class="remember-me">
+        <input type="checkbox" id="rememberMe">
+        Remember Me
+      </label>
+      <a href="#" class="forgot-pass">Forgot Password?</a>
     </div>
     <button id="loginBtn">Login</button>
     <button id="googleLoginBtn" class="google-btn">Login with Google</button>
@@ -37,68 +42,216 @@
       messagingSenderId: "693146874206",
       appId: "1:693146874206:web:d37f7a3c823fcba4401fcf"
     };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    // Initialize Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
-    // Listen for Enter key on email and password fields
-    ["email", "password"].forEach(id => {
-      document.getElementById(id).addEventListener("keydown", function(e) {
-        if (e.key === "Enter") {
-          document.getElementById("loginBtn").click();
+  function showError(elementId, message) {
+    const inputElement = document.getElementById(elementId);
+    const errorElement = document.getElementById(elementId + '-error');
+    if (inputElement) {
+      inputElement.classList.add('error');
+    }
+    if (errorElement) {
+      errorElement.textContent = message;
+      errorElement.style.visibility = 'visible'; // Show the element
+      errorElement.style.opacity = '1';       // Fade it in
+    }
+  }
+
+  function clearError(elementId) {
+    const inputElement = document.getElementById(elementId);
+    const errorElement = document.getElementById(elementId + '-error');
+    if (inputElement) {
+      inputElement.classList.remove('error');
+    }
+    if (errorElement) {
+      errorElement.textContent = ''; // Clear text content
+      errorElement.style.visibility = 'hidden'; // Hide the element
+      errorElement.style.opacity = '0';         // Fade it out
+    }
+  }
+  
+  function clearAllErrors() {
+    clearError('email');
+    clearError('password');
+  }
+  // End Helper functions
+
+  // DOMContentLoaded event listener to populate email and rememberMe state
+  window.addEventListener("DOMContentLoaded", () => {
+    const emailInput = document.getElementById("email");
+    const rememberMeCheckbox = document.getElementById("rememberMe");
+
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    const savedRememberMeState = localStorage.getItem("rememberMe"); // Get the saved checkbox state
+
+    if (savedEmail) {
+      emailInput.value = savedEmail;
+    }
+
+    // Set the checkbox state based on localStorage
+    if (rememberMeCheckbox && savedRememberMeState === "true") {
+      rememberMeCheckbox.checked = true;
+    } else if (rememberMeCheckbox) {
+      rememberMeCheckbox.checked = false; // Ensure it's unchecked if not explicitly true
+    }
+
+    // Attach Enter key listeners to input fields
+    const passwordInput = document.getElementById("password");
+    const emailInputForEnter = document.getElementById("email"); // Get email input again for clarity
+
+    if (passwordInput) {
+      passwordInput.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault(); // Prevent default form submission if any
+          handleLogin(); // Call the unified login function
         }
       });
-    });
+    }
 
-    document.getElementById("loginBtn").addEventListener("click", async (event) => {
-      event.preventDefault();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-
-      try {
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        const uid = userCredential.user.uid;
-
-        // Optional: check if user document exists
-        const userDoc = await db.collection("users").doc(uid).get();
-        if (!userDoc.exists) {
-          await db.collection("users").doc(uid).set({
-            email: email,
-            favorites: []
-          });
+    if (emailInputForEnter) { // Also allow Enter from email field to focus password or submit
+      emailInputForEnter.addEventListener("keypress", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          if (passwordInput) {
+            passwordInput.focus(); // Move focus to password
+          } else {
+            handleLogin(); // If no password field (unlikely), try to login
+          }
         }
+      });
+    }
 
-        // Show non-blocking message and redirect after 1 second
-        document.getElementById("login-success-msg").style.display = "block";
-        setTimeout(() => {
-          window.location.href = "index.html";
-        }, 1000);
-      } catch (error) {
-        alert("Login failed: " + error.message);
+  });
+
+
+  // Unified Login handler function
+  async function handleLogin() {
+    clearAllErrors();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const rememberMe = document.getElementById("rememberMe").checked;
+
+    let isValid = true;
+
+    if (!email) {
+      showError('email', 'Email is required.');
+      isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError('email', 'Please enter a valid email address.');
+      isValid = false;
+    }
+
+    if (!password) {
+      showError('password', 'Password is required.');
+      isValid = false;
+    }
+
+    if (!isValid) {
+      return;
+    }
+
+    const loginBtn = document.getElementById("loginBtn");
+    const originalBtnText = loginBtn.textContent;
+    loginBtn.textContent = 'Logging in...';
+    loginBtn.disabled = true;
+
+    try {
+      const userCredential = await auth.signInWithEmailAndPassword(email, password);
+      const uid = userCredential.user.uid;
+
+      if (rememberMe) {
+        localStorage.setItem("rememberedEmail", email);
+        localStorage.setItem("rememberMe", "true");
+      } else {
+        localStorage.removeItem("rememberedEmail");
+        localStorage.setItem("rememberMe", "false");
       }
-    });
 
-    document.getElementById("googleLoginBtn").addEventListener("click", async () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      try {
-        const result = await auth.signInWithPopup(provider);
-        const user = result.user;
-        const userRef = db.collection("users").doc(user.uid);
-        const doc = await userRef.get();
+      const userDoc = await db.collection("users").doc(uid).get();
+      if (!userDoc.exists) {
+        await db.collection("users").doc(uid).set({
+          email: email,
+          favorites: []
+        });
+      }
 
-        if (!doc.exists) {
-          await userRef.set({
-            email: user.email,
-            favorites: []
-          });
-        }
-
-        alert("Google login successful! Redirecting...");
+      const successMsg = document.getElementById("login-success-msg");
+      if (successMsg) {
+        successMsg.textContent = "Login successful! Redirecting...";
+        successMsg.style.display = "block";
+      }
+      setTimeout(() => {
         window.location.href = "index.html";
-      } catch (error) {
-        alert("Google login failed: " + error.message);
+      }, 1000); // 1-second delay for success message
+    } catch (error) {
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        showError('email', 'Invalid email or password.');
+        showError('password', '');
+      } else if (error.code === 'auth/invalid-email') {
+        showError('email', 'Invalid email format.');
+      } else {
+        showError('email', 'Login failed: ' + error.message);
       }
-    });
-  </script>
+    } finally {
+      loginBtn.textContent = originalBtnText;
+      loginBtn.disabled = false;
+    }
+  }
+
+  // Login button handler now calls the unified function
+  document.getElementById("loginBtn").addEventListener("click", handleLogin);
+
+
+  // Forgot password handler
+  document.querySelector('.forgot-pass').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim();
+    if (!email) {
+      alert("Please enter your email in the field above to reset password.");
+      return;
+    }
+    try {
+      await auth.sendPasswordResetEmail(email);
+      alert("Password reset email sent to " + email + ". Please check your inbox.");
+    } catch (error) {
+      alert("Password reset failed: " + error.message);
+    }
+  });
+
+  // Google Login button handler
+  document.getElementById("googleLoginBtn").addEventListener("click", async () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    try {
+      const result = await auth.signInWithPopup(provider);
+      const user = result.user;
+      const userRef = db.collection("users").doc(user.uid);
+      const doc = await userRef.get();
+
+      if (!doc.exists) {
+        await userRef.set({
+          email: user.email,
+          favorites: []
+        });
+      }
+
+      const successMsg = document.getElementById("login-success-msg");
+      if (successMsg) {
+          successMsg.textContent = "Logged in with Google successfully! Redirecting...";
+          successMsg.style.display = "block";
+      }
+      setTimeout(() => {
+          window.location.href = "index.html";
+      }, 1500);
+
+    } catch (error) {
+      alert("Google login failed: " + error.message);
+      console.error("Google login failed:", error);
+    }
+  });
+</script>
 </body>
 </html>

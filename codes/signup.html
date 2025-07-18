@@ -13,80 +13,188 @@
   <div class="auth-container">
     <h2>Sign Up</h2>
     <div class="input-group">
+      <input type="email" id="email" required placeholder=" ">
       <label for="email">Email</label>
-      <input type="email" id="email" required>
+      <span class="error-message" id="email-error"></span>
     </div>
     <div class="input-group">
+      <input type="password" id="password" required placeholder=" ">
       <label for="password">Password</label>
-      <input type="password" id="password" required>
+      <span class="error-message" id="password-error"></span>
     </div>
+    <div class="input-group">
+      <input type="password" id="confirm-password" required placeholder=" ">
+      <label for="confirm-password">Confirm Password</label>
+      <span class="error-message" id="confirm-password-error"></span>
+    </div>
+
+    <div id="signup-success-msg" class="success-message" style="display: none;">
+      Account created successfully!
+    </div>
+
     <button id="signupBtn">Create Account</button>
     <button id="googleSignupBtn" class="google-btn">Sign up with Google</button>
     <p class="auth-link">Already have an account? <a href="login.html">Log In</a></p>
   </div>
-
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
   <script>
+    // Your Firebase configuration (copy from your existing script)
     const firebaseConfig = {
-      apiKey: "AIzaSyDoijFlD_hJ2mp4FstfSZO4qUPKIzEdmPs",
-      authDomain: "hello-e7a6d.firebaseapp.com",
-      projectId: "hello-e7a6d",
-      storageBucket: "hello-e7a6d.appspot.com",
-      messagingSenderId: "693146874206",
-      appId: "1:693146874206:web:d37f7a3c823fcba4401fcf"
+      apiKey: "YOUR_API_KEY", // Replace with your actual API key
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
-    firebase.initializeApp(firebaseConfig);
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // Listen for Enter key on email and password fields
-    ["email", "password"].forEach(id => {
-      document.getElementById(id).addEventListener("keydown", function(e) {
-        if (e.key === "Enter") {
-          document.getElementById("signupBtn").click();
+    // --- Helper functions for error display (from previous steps) ---
+    function showError(elementId, message) {
+        const inputElement = document.getElementById(elementId);
+        const errorElement = document.getElementById(elementId + '-error');
+        if (inputElement) {
+            inputElement.classList.add('error');
         }
-      });
-    });
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+    }
 
+    function clearError(elementId) {
+        const inputElement = document.getElementById(elementId);
+        const errorElement = document.getElementById(elementId + '-error');
+        if (inputElement) {
+            inputElement.classList.remove('error');
+        }
+        if (errorElement) {
+            errorElement.textContent = '';
+            errorElement.style.display = 'none';
+        }
+    }
+
+    function clearAllErrors() {
+        clearError('email');
+        clearError('password');
+        clearError('confirm-password');
+    }
+    // --- End Helper functions ---
+
+    // --- Your signupBtn event listener (from previous steps) ---
     document.getElementById("signupBtn").addEventListener("click", async () => {
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+        clearAllErrors();
 
-      try {
-        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-        const uid = userCredential.user.uid;
-        await db.collection("users").doc(uid).set({
-          email: email,
-          favorites: []
-        });
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const confirmPassword = document.getElementById("confirm-password")?.value.trim();
 
-        alert("Account created successfully! Redirecting to login...");
-        window.location.href = "login.html";
-      } catch (error) {
-        alert("Signup failed: " + error.message);
-      }
-    });
+        let isValid = true;
 
-    document.getElementById("googleSignupBtn").addEventListener("click", async () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      try {
-        const result = await auth.signInWithPopup(provider);
-        const user = result.user;
-        const userRef = db.collection("users").doc(user.uid);
-        const doc = await userRef.get();
-
-        if (!doc.exists) {
-          await userRef.set({
-            email: user.email,
-            favorites: []
-          });
+        if (!email) {
+            showError('email', 'Email is required.');
+            isValid = false;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            showError('email', 'Please enter a valid email address.');
+            isValid = false;
         }
 
-        alert("Signed up with Google successfully! Redirecting...");
-        window.location.href = "index.html";
-      } catch (error) {
-        alert("Google sign-up failed: " + error.message);
-      }
+        if (!password) {
+            showError('password', 'Password is required.');
+            isValid = false;
+        } else if (password.length < 6) {
+            showError('password', 'Password must be at least 6 characters long.');
+            isValid = false;
+        }
+
+        if (confirmPassword !== undefined && password !== confirmPassword) {
+            showError('confirm-password', 'Passwords do not match.');
+            isValid = false;
+        }
+
+        if (!isValid) {
+            return;
+        }
+
+        const signupBtn = document.getElementById("signupBtn");
+        const originalBtnText = signupBtn.textContent;
+        signupBtn.textContent = 'Creating account...';
+        signupBtn.disabled = true;
+
+        try {
+            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+            const uid = userCredential.user.uid;
+            await db.collection("users").doc(uid).set({
+                email: email,
+                favorites: []
+            });
+
+            // Show a success message (consider refining this to a styled toast/modal later)
+            const successMsg = document.getElementById("signup-success-msg");
+            if (successMsg) {
+                successMsg.textContent = "Account created successfully! Redirecting to login...";
+                successMsg.style.display = "block";
+            }
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1500); // Give user a moment to read success message
+
+        } catch (error) {
+            if (error.code === 'auth/email-already-in-use') {
+                showError('email', 'This email is already in use.');
+            } else if (error.code === 'auth/invalid-email') {
+                showError('email', 'Invalid email format.');
+            } else if (error.code === 'auth/weak-password') {
+                showError('password', 'Password is too weak. Please choose a stronger one.');
+            } else {
+                showError('email', 'Signup failed: ' + error.message);
+            }
+        } finally {
+            signupBtn.textContent = originalBtnText;
+            signupBtn.disabled = false;
+        }
     });
+
+    // --- Your googleSignupBtn event listener (from previous steps) ---
+    document.getElementById("googleSignupBtn").addEventListener("click", async () => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        try {
+            const result = await auth.signInWithPopup(provider);
+            const user = result.user;
+            const userRef = db.collection("users").doc(user.uid);
+            const doc = await userRef.get();
+
+            if (!doc.exists) {
+                await userRef.set({
+                    email: user.email,
+                    favorites: []
+                });
+            }
+
+            // Show success message (consider refining this to a styled toast/modal later)
+            const successMsg = document.getElementById("signup-success-msg");
+            if (successMsg) {
+                successMsg.textContent = "Signed up with Google successfully! Redirecting...";
+                successMsg.style.display = "block";
+            }
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 1500); // Give user a moment to read success message
+
+        } catch (error) {
+            // For Google Sign-up, a single error message at the top or bottom of the form might be sufficient
+            // You might add a general error display area if you want more than just an alert.
+            alert("Google sign-up failed: " + error.message); // Keeping alert for simplicity here for now
+            console.error("Google sign-up failed:", error);
+        }
+    });
+
   </script>
 </body>
 </html>
