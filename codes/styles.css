@@ -2,15 +2,10 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
-  background: linear-gradient(to bottom right, #f4f4f4, #ffb300);
+  background: linear-gradient(#ffff);
   min-height: 100vh;
   background-attachment: fixed;
   color: #333; /* Default text color */
-}
-
-main {
-  margin-top: 100px; /* Space for fixed navbar */
-  padding: 32px;
 }
 
 /* Navbar */
@@ -31,7 +26,18 @@ main {
   font-size: 1.7em;
   font-weight: bold;
   color: #ffb300; /* Accent color for logo */
-  margin-right: 40px;
+  margin-right: 100px;
+  display: flex;
+  align-items: center;
+}
+
+
+/* Style for navbar-logo video/image when it's in the navbar */
+.transparent-navbar .logo .navbar-logo {
+  height: 40px; /* Adjust height as needed */
+  width: auto; /* Maintain aspect ratio */
+  display: block; /* Ensures video behaves like a block element */
+  object-fit: contain; /* Ensure the entire video is visible within its bounds */
 }
 
 .transparent-navbar nav {
@@ -474,13 +480,6 @@ h2 {
   background-color: #0056b3;
 }
 
-
-/* Animations */
-@keyframes zoomIn {
-  from { transform: scale(0.85); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .transparent-navbar {
@@ -541,6 +540,7 @@ h2 {
     width: 100%;
   }
 }
+<<<<<<< HEAD
 
 /* New Styles for Stories Page */
 .stories-main {
@@ -1001,3 +1001,311 @@ h2 {
     padding-top: 10px;
   }
 }
+=======
+/* Styles for index.html specific elements */
+.home-hero {
+    margin-top: 100px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.home-hero .logo .navbar-logo {
+    max-width: 400px; /* Adjust this percentage to make it larger or smaller */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 30px; /* Add some space below the video */
+    display: block; /* Ensures proper block behavior for centering */
+    margin-left: auto; /* Center the video horizontally */
+    margin-right: auto; /* Center the video horizontally */
+    border-radius: 15px; /* Optional: Add rounded corners */
+    object-fit: contain;
+}
+
+.home-hero img {
+    width: 120px;
+    margin-bottom: 16px;
+    object-fit: cover; /* Added for hero image */
+}
+.home-hero h1 {
+    font-size: 2.5em;
+    margin-bottom: 12px;
+    color: #1a2233;
+}
+.home-hero p {
+    font-size: 1.2em;
+    color: #444;
+    margin-bottom: 32px;
+}
+.recommended-islands {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+.island-card {
+    background: linear-gradient(to bottom right, #f4f4f4, #ffb300);
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    padding: 24px;
+    width: 260px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+.island-card:hover {
+    transform: translateY(-8px) scale(1.03);
+}
+.island-card img {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    object-fit: cover; /* Added for island card images */
+    height: 180px; /* Set a fixed height for consistency */
+}
+/* Search input and button styles (can be placed near navbar styles or general utility) */
+.search-container { /* Added wrapper for search elements if they are standalone */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center search in home-hero or wherever it applies */
+    margin-bottom: 20px; /* Example spacing */
+    width: 360px; /* Fixed width for search container */
+    max-width: 90%; /* Ensure responsiveness */
+}
+.search-input {
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 999px;
+    outline: none;
+    font-size: 1rem;
+    margin-right: 8px;
+    transition: border 0.3s ease;
+    padding-left: 20px; /* Space for the search icon */
+}
+
+.search-input:focus {
+    border: 1px solid #ffb300; /* Accent color on focus */
+}
+
+.search-btn {
+    background: #ffb300;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    transition: background 0.2s;
+    position: relative; /* Position relative for icon */  
+}
+.search-btn:hover {
+    color: #ffb300;
+}
+
+.search-input {
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  width: 300px;
+  transition: border 0.3s ease;
+}
+.search-input:focus {
+  border: 1px solid #ffb300;
+}
+
+.search-btn {
+  margin-left: -50px; /* position over the right */
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.footer {
+  background: #f4f4f4;
+  text-align: center;
+  padding: 20px;
+  color: #777;
+  font-size: 0.9em;
+}
+
+.travel-pros {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.travel-pros h2 {
+  font-size: 2rem;
+  margin-bottom: 40px;
+  color: #1a2233;
+  font-weight: 600;
+}
+
+.pros-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+
+.pros-card {
+  background: linear-gradient(
+    270deg,
+    #113F67,
+    #34699A,
+    #58A0C8,
+    #ffb300,
+    #113F67 /* Repeat the first color to create a seamless loop */
+  );
+  background-size: 800% 400%; /* Make the background wider than the element */
+  animation: gradientAnimation 30s ease infinite; /* Apply the animation */
+  min-height: 40px; /* Ensure the body takes full height if applied there */
+  background-attachment: fixed; /* Keep background fixed if you scroll */
+  border-radius: 16px;
+  padding: 12px;
+  width: 300px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s;
+}
+
+.pros-card p {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.pros-card:hover {
+  transform: translateY(-6px) scale(1.03);
+}
+
+.pros-card img {
+  width: 300px;
+  margin-bottom: 10px;
+}
+
+.pros-card h3 {
+  font-size: 1.2rem;
+  color: #ffb300;
+  margin-bottom: 10px;
+}
+
+.pros-card p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Animations */
+@keyframes zoomIn {
+  from { transform: scale(0.85); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%; /* Start position */
+  }
+  50% {
+    background-position: 100% 50%; /* Mid position */
+  }
+  100% {
+    background-position: 0% 50%; /* End position, back to start for seamless loop */
+  }
+}
+
+/* WRAPPER of the burger */
+.burger-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: 40%; /* Push it to right */
+}
+
+/* BURGER menu itself */
+.burger-menu {
+  font-size: 28px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  padding: 8px;
+  user-select: none;
+  color: #333;
+}
+.burger-menu.open {
+  transform: rotate(90deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Position right below the burger menu */
+  right: 0;
+  background: white; /* Or your desired background color */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  display: flex; /* Keep flex for column layout, but control visibility with height/opacity */
+  flex-direction: column;
+  z-index: 999;
+  cursor: default;
+  overflow: hidden; /* Crucial: Hides content that exceeds max-height */
+
+  /* Initial state for slide-down animation */
+  max-height: 0; /* Starts hidden */
+  opacity: 0; /* Starts fully transparent */
+  transform: translateY(-10px); /* Slightly move up initially */
+  transition: max-height 0.4s ease-out, opacity 0.4s ease-out, transform 0.4s ease-out; /* Smooth transitions */
+}
+
+.dropdown-menu.show {
+  max-height: 400px; /* OR a larger value like 300px, 500px, or 1000px */
+  opacity: 1;
+  transform: translateY(0);
+}
+.dropdown-menu a {
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer; /* ✅ Adds pointer hand on links */
+}
+.dropdown-menu a:hover {
+  background-color: #f0f0f0;
+}
+
+#luzon, #visayas, #mindanao {
+  cursor: pointer; /* Still indicate clickability */
+  transition: fill 0.3s ease; /* Only smooth fill transitions now */
+  stroke: #ffffff; /* Revert to default SVG stroke */
+  stroke-width: .5; /* Revert to default SVG stroke-width */
+  animation: none; /* Remove pulsation from paths if it was there */
+}
+
+/* Hover effect for clickable paths */
+#luzon:hover, #visayas:hover, #mindanao:hover {
+  fill: rgba(255, 0, 0, 0.1); /* Subtle red tint on hover for the region itself */
+}
+
+/* Style for the red location indicator dot */
+.map-indicator {
+  pointer-events: none; /* Allows clicks to pass through to the circle to the path below */
+  animation: pulseDot 1.5s infinite alternate; /* Subtle pulse animation for the dot */
+}
+
+/* Keyframe animation for the pulsing red dot */
+@keyframes pulseDot {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.2); opacity: 0.7; }
+}
+
+.interactive-map {
+  /* Make it a flex container to center the SVG inside */
+  display: flex;
+  justify-content: center; /* Center SVG horizontally within the section */
+  align-items: center;   /* Center SVG vertically within the section */
+
+  /* Adjust min-height to ensure it takes up enough space for vertical centering,
+     while considering other content like the search form and fixed navbar. */
+  min-height: calc(100vh - 80px - 60px); /* Example: 80px for navbar, 60px for search form height */
+  width: 100%; /* Ensure it takes full width to allow centering by body */
+  /* Optional: max-width for overall layout if your map is exactly 1000px wide and you want it to scale down */
+  /* max-width: 1000px; */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+>>>>>>> 9582aff54db965aa58eec21bb2fa23c48c46c5b5
