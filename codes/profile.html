@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Philippine Gaze - My Profile</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Firebase SDKs - These are loaded in stories.js now, no need to load here again -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js" type="module"></script> -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js" type="module"></script> -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js" type="module"></script> -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js" type="module"></script> -->
+  
+  <style>
+    /* Ilipat ang mga sumusunod na CSS rules sa iyong styles.css file para mas maayos */
+    .profile-header {
+      background-color: #fff;
+      margin-top: 60px; /* Adjust based on your fixed navbar height */
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 20px;
+      text-align: center;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .profile-avatar-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 15px auto;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #ffb300; /* Accent color */
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .profile-avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* REMOVED: .upload-avatar-icon style */
+
+    .profile-info h1 {
+      font-size: 2em;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .profile-info p {
+      color: #777;
+      font-size: 0.9em;
+      margin-bottom: 5px;
+    }
+
+    .profile-actions {
+      margin-top: 15px;
+    }
+
+    .profile-actions button {
+      background-color: #ffb300;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em;
+      margin: 0 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .profile-actions button:hover {
+      background-color: #e69a00;
+    }
+
+    .profile-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .post-creation-section {
+      flex: 1;
+      min-width: 300px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .post-creation-section h2 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 1.5em;
+    }
+
+    .post-creation-section textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+
+    .post-creation-section input[type="file"] {
+      margin-bottom: 15px;
+    }
+
+    .post-creation-section button {
+      width: 100%;
+      background-color: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s ease;
+    }
+
+    .post-creation-section button:hover {
+      background-color: #218838;
+    }
+
+    #profilePostsFeed {
+      flex: 2;
+      min-width: 300px;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    #profilePostsFeed h2 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 1.5em;
+    }
+
+    .post-card {
+      background-color: #f9f9f9;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .post-card .post-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .post-card .post-header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+
+    .post-card .post-author {
+      font-weight: bold;
+      color: #555;
+    }
+
+    .post-card .post-time {
+      font-size: 0.8em;
+      color: #999;
+      margin-left: auto;
+    }
+
+    .post-card .post-content p {
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    .post-card .post-content .post-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .post-card .post-actions-bottom button {
+      background: none;
+      border: none;
+      color: #555;
+      cursor: pointer;
+      font-size: 0.9em;
+      margin-right: 15px;
+      transition: color 0.2s ease;
+    }
+
+    .post-card .post-actions-bottom button:hover {
+      color: #ffb300;
+    }
+
+    .post-card .post-actions-bottom button .fas {
+      margin-right: 5px;
+    }
+
+    .post-card .post-actions {
+      margin-left: auto;
+    }
+
+    .post-card .post-actions button {
+        background-color: #007bff; /* Blue for edit */
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 0.8em;
+        margin-left: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .post-card .post-actions button.delete-post-btn {
+        background-color: #dc3545; /* Red for delete */
+    }
+
+    .post-card .post-actions button:hover {
+        opacity: 0.9;
+    }
+
+    /* Message Area Styling */
+    .message-area {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      text-align: center;
+      display: none; /* Hidden by default */
+    }
+
+    .message-area.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .message-area:not(.success) {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .loading-message {
+      text-align: center;
+      color: #888;
+      font-style: italic;
+      padding: 20px;
+    }
+
+    /* Burger Menu Styles */
+    .burger-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .burger-menu {
+      font-size: 2em;
+      color: white;
+      cursor: pointer;
+      display: none; /* Hidden on desktop */
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      background-color: #333;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      right: 0; /* Align to the right */
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .dropdown-menu a {
+      color: white;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      text-align: left;
+      transition: background-color 0.3s;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #575757;
+    }
+
+    .dropdown-menu.show {
+      display: block;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .profile-content {
+        flex-direction: column;
+      }
+      .burger-menu {
+        display: block; /* Show burger on mobile */
+      }
+      nav {
+        display: none; /* Hide regular nav on mobile */
+      }
+      .transparent-navbar {
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="transparent-navbar">
+    <div class="logo">Philippine Gaze</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="main.html">Main</a>
+      <a href="stories.html">Stories</a>
+      <a href="favorites.html">Favorites</a>
+    </nav>
+    <!-- Burger + Dropdown -->
+    <div class="burger-wrapper">
+      <div class="burger-menu" id="burgerMenu">&#9776;</div>
+      <div class="dropdown-menu" id="dropdownMenu">
+        <a href="profile.html">👤 Profile</a>
+        <a href="support.html">📞 Customer Service</a>
+        <a href="#" id="logoutBtn">🚪 Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="profile-section">
+      <div class="profile-header">
+        <div class="profile-avatar-container">
+          <img id="profileAvatar" class="profile-avatar" src="https://placehold.co/120?text=P" alt="Profile Avatar">
+          <!-- REMOVED: Camera icon for upload -->
+          <!-- <i id="uploadAvatarIcon" class="fas fa-camera upload-avatar-icon"></i> -->
+          <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+        </div>
+        <div class="profile-info">
+          <h1 id="profileUsername">[Your Name Here]</h1>
+          <p id="profileEmail">[your.email@example.com]</p>
+          <p id="profileBio">A short bio about yourself.</p>
+        </div>
+        <div class="profile-actions">
+          <button id="editProfileBtn">Edit Profile</button>
+          <button id="changeAvatarBtn">Change Profile Picture</button> <!-- NEW BUTTON -->
+        </div>
+      </div>
+
+      <div class="profile-content">
+        <div class="post-creation-section">
+          <h2>Create a New Post</h2>
+          <div id="postMessageArea" class="message-area"></div>
+          <textarea id="postContentInput" placeholder="Isulat ang iyong kwento o saloobin..."></textarea>
+          <input type="file" id="postImageInput" accept="image/*" style="margin: 10px 0;">
+          <button id="createPostBtn">Post</button>
+        </div>
+
+        <div id="profilePostsFeed">
+          <h2>Your Posts</h2>
+          <!-- User's posts will be loaded here by JavaScript -->
+          <p class="loading-message">Loading your posts...</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="profile.js"></script>
+  <script>
+    // Burger menu functionality (can also be moved to profile.js)
+    document.addEventListener('DOMContentLoaded', () => {
+      const burger = document.getElementById("burgerMenu");
+      const dropdown = document.getElementById("dropdownMenu");
+
+      if (burger && dropdown) {
+        burger.addEventListener("click", () => {
+          burger.classList.toggle("open");
+          dropdown.classList.toggle("show");
+        });
+      }
+    });
+  </script>
+</body>
+</html>

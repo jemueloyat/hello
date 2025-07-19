@@ -1,15 +1,15 @@
 // stories.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getFirestore, collection, addDoc, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, arrayUnion, arrayRemove, getDoc
+  getFirestore, collection, addDoc, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, arrayUnion, arrayRemove, getDoc, getDocs
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // UI Elements - Declared at the top to ensure they are accessible before any Firebase logic
-const postContentInput = document.getElementById('postContentInput');
-const postImageInput = document.getElementById('postImageInput');
-const createPostBtn = document.getElementById('createPostBtn');
-const postMessageArea = document.getElementById('postMessageArea');
+// Removed: const postContentInput = document.getElementById('postContentInput');
+// Removed: const postImageInput = document.getElementById('postImageInput');
+// Removed: const createPostBtn = document.getElementById('createPostBtn');
+const postMessageArea = document.getElementById('postMessageArea'); // This element might still be used for general messages
 const storiesFeed = document.getElementById('storiesFeed');
 const logoutBtn = document.getElementById('logoutBtn');
 
@@ -89,9 +89,9 @@ console.log("Firebase Config in use:", firebaseConfig);
 if (!firebaseConfig.projectId || !firebaseConfig.apiKey) {
     console.error("Firebase initialization warning: Essential firebaseConfig (projectId/apiKey) might be missing even after fallback. Ensure __firebase_config is correctly provided by the Canvas environment or the hardcoded values are correct. Firebase-dependent features will be disabled.");
     // Disable UI elements that depend on Firebase if config is clearly incomplete
-    if (postContentInput) postContentInput.disabled = true;
-    if (postImageInput) postImageInput.disabled = true;
-    if (createPostBtn) createPostBtn.disabled = true;
+    // if (postContentInput) postContentInput.disabled = true; // Removed
+    // if (postImageInput) postImageInput.disabled = true;     // Removed
+    // if (createPostBtn) createPostBtn.disabled = true;       // Removed
     if (commentInput) commentInput.disabled = true;
     if (submitCommentBtn) submitCommentBtn.disabled = true;
     // Display a user-friendly message on the page
@@ -114,9 +114,9 @@ try {
 } catch (error) {
     console.error("Failed to initialize Firebase:", error);
     // Disable UI elements if Firebase initialization itself fails
-    if (postContentInput) postContentInput.disabled = true;
-    if (postImageInput) postImageInput.disabled = true;
-    if (createPostBtn) createPostBtn.disabled = true;
+    // if (postContentInput) postContentInput.disabled = true; // Removed
+    // if (postImageInput) postImageInput.disabled = true;     // Removed
+    // if (createPostBtn) createPostBtn.disabled = true;       // Removed
     if (commentInput) commentInput.disabled = true;
     if (submitCommentBtn) submitCommentBtn.disabled = true;
     // Display a user-friendly message on the page
@@ -170,14 +170,10 @@ if (auth) {
       currentUserName = user.displayName || user.email || 'Anonymous';
       console.log(`User logged in: ${currentUserName} (${currentUserId})`);
 
-      // Enable post creation and comment input
-      if (postContentInput) postContentInput.disabled = false;
-      if (postImageInput) postImageInput.disabled = false;
-      if (createPostBtn) createPostBtn.disabled = false;
+      // Enable comment input
       if (commentInput) commentInput.disabled = false;
       if (submitCommentBtn) submitCommentBtn.disabled = false;
 
-      if (postContentInput) postContentInput.placeholder = "Ano ang nasa isip mo? Ibahagi ang iyong kwento...";
       if (commentInput) commentInput.placeholder = "Isulat ang iyong komento...";
 
       // If there's a modal open, re-check like state and comments permissions
@@ -197,14 +193,10 @@ if (auth) {
       currentUserName = null;
       console.log('User logged out or not authenticated.');
 
-      // Disable post creation and comment input
-      if (postContentInput) postContentInput.disabled = true;
-      if (postImageInput) postImageInput.disabled = true;
-      if (createPostBtn) createPostBtn.disabled = true;
+      // Disable comment input
       if (commentInput) commentInput.disabled = true;
       if (submitCommentBtn) submitCommentBtn.disabled = true;
 
-      if (postContentInput) postContentInput.placeholder = "Mangyaring mag-log in para mag-post.";
       if (commentInput) commentInput.placeholder = "Mangyaring mag-log in para mag-komento.";
 
       // Attempt anonymous sign-in if no custom token is present
@@ -246,67 +238,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-
-// --- Post Creation ---
-
-if (createPostBtn) { // Listener for createPostBtn
-  createPostBtn.addEventListener('click', async () => {
-    if (!currentUserId || !db) { // Check db as well
-      showMessage(postMessageArea, "Mangyaring mag-log in at tiyakin na konektado ang database para mag-post.", false);
-      return;
-    }
-
-    const content = postContentInput.value.trim();
-    const imageFile = postImageInput.files[0];
-
-    if (!content && !imageFile) {
-      showMessage(postMessageArea, "Mangyaring maglagay ng text o pumili ng larawan.", false);
-      return;
-    }
-
-    let imageUrl = null;
-    if (imageFile) {
-      // Read image as Base64 for storage in Firestore (not ideal for large images)
-      const reader = new FileReader();
-      reader.readAsDataURL(imageFile);
-      reader.onload = async () => {
-        imageUrl = reader.result;
-        await savePostToFirestore(content, imageUrl);
-      };
-      reader.onerror = (error) => {
-        console.error("Error reading file:", error);
-        showMessage(postMessageArea, "Nabigo ang pag-upload ng larawan.", false);
-      };
-    } else {
-      await savePostToFirestore(content, imageUrl);
-    }
-  });
-}
-
-async function savePostToFirestore(content, imageUrl) {
-  if (!db) {
-    console.error("Firestore database is not initialized.");
-    showMessage(postMessageArea, "Database error. Hindi makapag-post.", false);
-    return;
-  }
-  try {
-    await addDoc(collection(db, `artifacts/${appId}/public/data/posts`), {
-      userId: currentUserId,
-      userName: currentUserName,
-      content: content,
-      imageUrl: imageUrl,
-      timestamp: new Date(),
-      likes: [], // Array of user UIDs who liked the post
-      commentsCount: 0 // Count of comments
-    });
-    showMessage(postMessageArea, "Post naidagdag na!", true);
-    if (postContentInput) postContentInput.value = '';
-    if (postImageInput) postImageInput.value = ''; // Clear file input
-  } catch (error) {
-    console.error("Error adding post:", error);
-    showMessage(postMessageArea, "Nabigo ang pagdagdag ng post. Subukang muli.", false);
-  }
-}
 
 // --- Stories Feed Display ---
 
@@ -786,7 +717,7 @@ function toggleEditMode(storyCard, post) {
     textarea.style.minHeight = '100px';
     textarea.style.padding = '10px';
     textarea.style.border = '1px solid #ddd';
-    textarea.style.borderRadius = '8px';
+    textarea.style.borderRadius = '8-px';
     textarea.style.fontSize = '1em';
     textarea.style.marginBottom = '15px';
     textarea.style.boxSizing = 'border-box';
@@ -925,27 +856,6 @@ function updateModalLikeButton(likesArray) {
   if (likeCountSpan) {
     likeCountSpan.textContent = likesArray.length;
   }
-}
-
-// Event listener for modal's like button
-if (modalLikeBtn) { // Removed db check here, as it's checked inside toggleLike
-  modalLikeBtn.addEventListener('click', async () => {
-    if (!currentUserId) { // Only check currentUserId here
-      showMessage(commentMessageArea, "Mangyaring mag-log in para mag-react.", false);
-      return;
-    }
-    if (currentOpenPostId) {
-      await toggleLike(currentOpenPostId, currentUserId);
-      // Re-fetch post data to update modal's like count and state immediately
-      if (db) { // Check db before accessing it
-        const postRef = doc(db, `artifacts/${appId}/public/data/posts`, currentOpenPostId);
-        const postSnap = await getDoc(postRef);
-        if (postSnap.exists()) {
-          updateModalLikeButton(postSnap.data().likes || []);
-        }
-      }
-    }
-  });
 }
 
 // Event listener for modal's comment submit button
