@@ -1,59 +1,59 @@
 // profile.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getFirestore, collection, addDoc, query, where, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDoc, getDocs
+  getFirestore, collection, addDoc, query, where, orderBy, onSnapshot, doc, updateDoc, deleteDoc, getDoc, setDoc, getDocs // Added setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+// TINANGGAL: Firebase Storage imports dahil direktang Base64 na sa Firestore.
+// import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// UI Elements for Profile and Post Creation
+// UI Elements para sa Profile at Paglikha ng Post
 const profileUsername = document.getElementById('profileUsername');
 const profileEmail = document.getElementById('profileEmail');
 const profileBio = document.getElementById('profileBio');
 const editProfileBtn = document.getElementById('editProfileBtn');
 const profileAvatar = document.getElementById('profileAvatar');
 const avatarUpload = document.getElementById('avatarUpload');
-// REMOVED: uploadAvatarIcon as it's no longer in HTML
-// const uploadAvatarIcon = document.getElementById('uploadAvatarIcon'); // Existing icon trigger
-const changeAvatarBtn = document.getElementById('changeAvatarBtn'); // NEW: Button for changing avatar
-const profilePostsFeed = document.getElementById('profilePostsFeed'); // For displaying user's own posts
+const changeAvatarBtn = document.getElementById('changeAvatarBtn'); // Button para sa pagpapalit ng avatar
+const profilePostsFeed = document.getElementById('profilePostsFeed'); // Para sa pagpapakita ng sariling posts ng user
 
-// Post Creation Elements
+// Mga Elemento para sa Paglikha ng Post
 const postContentInput = document.getElementById('postContentInput');
 const postImageInput = document.getElementById('postImageInput');
 const createPostBtn = document.getElementById('createPostBtn');
 const postMessageArea = document.getElementById('postMessageArea');
 const logoutBtn = document.getElementById('logoutBtn');
 
+// Mga seksyon na kailangang i-hide/disable kung hindi sariling profile
+const postCreationSection = document.querySelector('.post-creation-section');
+const profileActionsDiv = document.querySelector('.profile-actions');
 
-// Determine appId from __app_id, which is provided by the Canvas environment.
+
+// Tukuyin ang appId mula sa __app_id, na ibinigay ng Canvas environment.
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 console.log("App ID in use:", appId);
 
-// Use Canvas-provided Firebase config directly, ensuring projectId and apiKey are always set.
+// Gamitin ang Canvas-provided Firebase config nang direkta, siguraduhin na ang projectId at apiKey ay laging nakatakda.
 let firebaseConfig = {};
-const providedApiKey = "AIzaSyDoijFlD_hJ2mp4FstfSZO4qUPKIzEdmPs"; // User provided API Key
-const providedProjectId = "hello-e7a6d"; // User provided Project ID
+const providedApiKey = "AIzaSyDoijFlD_hJ2mp4FstfSZO4qUPKIzEdmPs"; // API Key na ibinigay ng User
+const providedProjectId = "hello-e7a6d"; // Project ID na ibinigay ng User
 
-// Removed the __firebase_config parsing logic to directly use hardcoded values.
-// This addresses the request to not use JSON for config and removes the related warning.
+// Inalis ang __firebase_config parsing logic upang direktang gamitin ang hardcoded values.
+// Ito ay tumutugon sa kahilingan na huwag gumamit ng JSON para sa config at inaalis ang kaugnay na warning.
 firebaseConfig = {
   apiKey: providedApiKey,
   authDomain: `${providedProjectId}.firebaseapp.com`,
   projectId: providedProjectId,
-  storageBucket: `${providedProjectId}.appspot.com`,
+  storageBucket: `${providedProjectId}.appspot.com`, // Kailangan pa rin para sa Firebase init, ngunit hindi para sa direktang pag-imbak ng larawan
   messagingSenderId: "dummy-messaging-sender-id",
   appId: "dummy-app-id"
 };
 console.log("Firebase Config in use: Using hardcoded values.");
 
 
-// Check if essential Firebase config is still missing
+// Suriin kung ang mahahalagang Firebase config ay nawawala pa rin
 if (!firebaseConfig.projectId || !firebaseConfig.apiKey) {
     console.error("Firebase initialization warning: Essential firebaseConfig (projectId/apiKey) might be missing even after fallback. Firebase-dependent features will be disabled.");
-    if (postContentInput) postContentInput.disabled = true;
-    if (postImageInput) postImageInput.disabled = true;
-    if (createPostBtn) createPostBtn.disabled = true;
     if (postMessageArea) showMessage(postMessageArea, "Error: Hindi makakonekta sa database. Pakisuri ang configuration.", false);
 }
 
@@ -63,33 +63,35 @@ console.log("Initial Auth Token status:", initialAuthToken ? "present" : "not pr
 let app;
 let db;
 let auth;
-let storage;
+// TINANGGAL: storage variable dahil hindi na ginagamit ang Firebase Storage para sa mga larawan.
+// let storage;
 
 try {
     app = initializeApp(firebaseConfig);
     db = getFirestore(app);
     auth = getAuth(app);
-    storage = getStorage(app);
+    // TINANGGAL: storage initialization
+    // storage = getStorage(app);
 } catch (error) {
     console.error("Failed to initialize Firebase:", error);
-    if (postContentInput) postContentInput.disabled = true;
-    if (postImageInput) postImageInput.disabled = true;
-    if (createPostBtn) createPostBtn.disabled = true;
     if (postMessageArea) showMessage(postMessageArea, "Error: Hindi makakonekta sa database. Pakisuri ang configuration.", false);
     db = null;
     auth = null;
-    storage = null;
+    // TINANGGAL: storage = null;
 }
 
-let currentUserId = null;
-let currentUserName = null;
+
+let currentUserId = null; // ID ng kasalukuyang naka-authenticate na user
+let currentUserName = null; // Pangalan ng kasalukuyang naka-authenticate na user
 let currentUserEmail = null;
 let currentUserBio = null;
 let currentUserAvatarUrl = null;
 
-let unsubscribeUserPosts = null; // To manage real-time listener for user's own posts
+let targetProfileUserId = null; // ID ng user na kasalukuyang tinitingnan ang profile
 
-// --- Helper Functions ---
+let unsubscribeUserPosts = null; // Upang pamahalaan ang real-time listener para sa sariling posts ng user
+
+// --- Mga Katulong na Function ---
 
 function showMessage(element, message, isSuccess = false) {
   if (!element) return;
@@ -106,38 +108,74 @@ function showMessage(element, message, isSuccess = false) {
   }, 3000);
 }
 
-function getAvatarText(username) {
-  if (!username) return 'Anon';
-  const parts = username.split(' ');
-  if (parts.length > 1) {
-    return (parts[0][0] + parts[1][0]).toUpperCase();
-  }
-  return username[0].toUpperCase();
-}
-
 // --- Firebase Authentication ---
 
 if (auth) {
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       currentUserId = user.uid;
+      // Initialize currentUserName with Firebase display name or email, or 'Anonymous'
       currentUserName = user.displayName || user.email || 'Anonymous';
       currentUserEmail = user.email || '';
       console.log(`User logged in: ${currentUserName} (${currentUserId})`);
 
-      // Update profile info
-      if (profileUsername) profileUsername.textContent = currentUserName;
-      if (profileEmail) profileEmail.textContent = currentUserEmail;
+      // I-load ang profile ng kasalukuyang user para sa sariling impormasyon (username, avatar)
+      const userRef = doc(db, `users`, currentUserId);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        // Prioritize stored username, then Firebase auth display name/email
+        currentUserName = userData.username || user.displayName || user.email || 'Anonymous';
+        currentUserAvatarUrl = userData.avatarUrl || null;
+      } else {
+        // If user document doesn't exist, create it with initial data
+        const initialUsername = user.displayName || user.email || 'Anonymous';
+        await setDoc(userRef, {
+          username: initialUsername,
+          email: user.email || '',
+          bio: "Hello, I'm new to Philippine Gaze!",
+          createdAt: new Date(),
+          avatarUrl: null // No avatar initially
+        }, { merge: true }); // Use merge:true to avoid overwriting if partial data exists
+        currentUserName = initialUsername;
+        currentUserAvatarUrl = null;
+      }
 
-      // Enable post creation inputs
-      if (postContentInput) postContentInput.disabled = false;
-      if (postImageInput) postImageInput.disabled = false;
-      if (createPostBtn) createPostBtn.disabled = false;
+      // Tukuyin kung aling profile ang titingnan
+      const urlParams = new URLSearchParams(window.location.search);
+      targetProfileUserId = urlParams.get('userId') || currentUserId;
 
-      // Load user profile details (bio, custom avatar)
-      await loadUserProfile();
-      // Load user's own posts
-      loadUserPosts();
+      if (db) { // ADDED: Check if db is initialized before loading data
+        await loadProfileData(targetProfileUserId); // I-load ang data ng target na profile
+        loadUserPosts(targetProfileUserId); // I-load ang posts ng target na profile
+      } else {
+        console.error("Firestore DB not available, cannot load profile or posts.");
+        if (profileUsername) profileUsername.textContent = 'Service Unavailable';
+        if (profileEmail) profileEmail.textContent = 'Please try again later.';
+        if (profileBio) profileBio.textContent = 'Database connection failed.';
+        if (profileAvatar) profileAvatar.src = 'https://placehold.co/120?text=Error';
+        if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="message-area">Hindi ma-load ang mga post. Database error.</p>';
+      }
+
+      // I-adjust ang UI batay kung sariling profile o hindi
+      if (targetProfileUserId === currentUserId) {
+        // Sariling profile: paganahin ang pag-edit at paglikha ng post
+        if (postCreationSection) postCreationSection.style.display = 'block';
+        if (profileActionsDiv) profileActionsDiv.style.display = 'block';
+        if (editProfileBtn) editProfileBtn.style.display = 'inline-block'; // Ensure button is visible
+        if (changeAvatarBtn) changeAvatarBtn.style.display = 'inline-block'; // Ensure button is visible
+        if (postContentInput) postContentInput.disabled = false;
+        if (postImageInput) postImageInput.disabled = false;
+        if (createPostBtn) createPostBtn.disabled = false;
+        if (avatarUpload) avatarUpload.disabled = false; // Enable avatar file input
+      } else {
+        // Profile ng ibang user: i-hide/disable ang pag-edit at paglikha ng post
+        if (postCreationSection) postCreationSection.style.display = 'none';
+        if (profileActionsDiv) profileActionsDiv.style.display = 'none';
+        if (editProfileBtn) editProfileBtn.style.display = 'none'; // Hide button
+        if (changeAvatarBtn) changeAvatarBtn.style.display = 'none'; // Hide button
+        if (avatarUpload) avatarUpload.disabled = true; // Disable avatar file input
+      }
 
     } else {
       currentUserId = null;
@@ -147,26 +185,54 @@ if (auth) {
       currentUserAvatarUrl = null;
       console.log('User logged out or not authenticated.');
 
-      // Clear profile info
-      if (profileUsername) profileUsername.textContent = '[Guest User]';
-      if (profileEmail) profileEmail.textContent = '';
-      if (profileBio) profileBio.textContent = 'Please log in to see your profile.';
-      // Changed default avatar path to a reliable placeholder URL
-      if (profileAvatar) profileAvatar.src = 'https://placehold.co/120?text=P';
-      console.log("Using default avatar (fallback)."); // LOG ADDED
+      // Tukuyin kung aling profile ang titingnan (kung may userId sa URL)
+      const urlParams = new URLSearchParams(window.location.search);
+      targetProfileUserId = urlParams.get('userId');
 
-      // Disable post creation inputs
+      if (targetProfileUserId) {
+        // Kung may userId sa URL, i-load ang profile ng user na iyon (read-only)
+        if (db) { // ADDED: Check if db is initialized before loading data
+          await loadProfileData(targetProfileUserId);
+          loadUserPosts(targetProfileUserId);
+        } else {
+          console.error("Firestore DB not available, cannot load profile or posts for target user.");
+          if (profileUsername) profileUsername.textContent = 'Service Unavailable';
+          if (profileEmail) profileEmail.textContent = 'Please try again later.';
+          if (profileBio) profileBio.textContent = 'Database connection failed.';
+          if (profileAvatar) profileAvatar.src = 'https://placehold.co/120?text=Error';
+          if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="message-area">Hindi ma-load ang mga post. Database error.</p>';
+        }
+
+        if (postCreationSection) postCreationSection.style.display = 'none';
+        if (profileActionsDiv) profileActionsDiv.style.display = 'none';
+        if (editProfileBtn) editProfileBtn.style.display = 'none'; // Hide button
+        if (changeAvatarBtn) changeAvatarBtn.style.display = 'none'; // Hide button
+        if (avatarUpload) avatarUpload.disabled = true; // Disable avatar file input
+      } else {
+        // Walang naka-login at walang userId sa URL, ipakita ang guest view
+        if (profileUsername) profileUsername.textContent = '[Guest User]';
+        if (profileEmail) profileEmail.textContent = '';
+        if (profileBio) profileBio.textContent = 'Please log in to see your profile.';
+        if (profileAvatar) profileAvatar.src = 'https://placehold.co/120?text=P';
+        if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="loading-message">Mangyaring mag-log in para makita ang iyong mga post.</p>';
+        if (postCreationSection) postCreationSection.style.display = 'none';
+        if (profileActionsDiv) profileActionsDiv.style.display = 'none';
+        if (editProfileBtn) editProfileBtn.style.display = 'none'; // Hide button
+        if (changeAvatarBtn) changeAvatarBtn.style.display = 'none'; // Hide button
+        if (avatarUpload) avatarUpload.disabled = true; // Disable avatar file input
+      }
+
+      // I-disable ang mga input para sa paglikha ng post
       if (postContentInput) postContentInput.disabled = true;
       if (postImageInput) postImageInput.disabled = true;
       if (createPostBtn) createPostBtn.disabled = true;
-      if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="loading-message">Mangyaring mag-log in para makita ang iyong mga post.</p>';
 
       if (unsubscribeUserPosts) {
         unsubscribeUserPosts();
         unsubscribeUserPosts = null;
       }
 
-      // Attempt anonymous sign-in if no custom token is present
+      // Subukan ang anonymous sign-in kung walang custom token
       if (!initialAuthToken && auth) {
         try {
           await signInAnonymously(auth);
@@ -179,7 +245,7 @@ if (auth) {
   });
 }
 
-// Initial sign-in attempt with custom token
+// Paunang pagtatangka ng sign-in gamit ang custom token
 document.addEventListener('DOMContentLoaded', async () => {
   if (initialAuthToken && auth) {
     try {
@@ -204,142 +270,155 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 // --- Profile Management Functions ---
-async function loadUserProfile() {
-  if (!db || !currentUserId) return;
-  // Use the /users/{userId} path as per your working rules
-  const userRef = doc(db, `users`, currentUserId);
+async function loadProfileData(userIdToLoad) {
+  if (!db || !userIdToLoad) return;
+  const userRef = doc(db, `users`, userIdToLoad);
   try {
     const userSnap = await getDoc(userRef);
     if (userSnap.exists()) {
       const userData = userSnap.data();
-      if (userData.username && profileUsername) profileUsername.textContent = userData.username;
-      if (userData.email && profileEmail) profileEmail.textContent = userData.email;
-      if (userData.bio && profileBio) profileBio.textContent = userData.bio;
+      // Ensure username is displayed correctly, falling back to email or 'Anonymous User'
+      if (profileUsername) profileUsername.textContent = userData.username || userData.email || 'Anonymous User';
+      
+      // HIDE THE EMAIL ELEMENT
+      if (profileEmail) {
+        profileEmail.textContent = ''; // Clear content
+        profileEmail.style.display = 'none'; // Hide the element
+      }
+
+      if (profileBio) profileBio.textContent = userData.bio || 'Walang bio pa.';
       if (userData.avatarUrl && profileAvatar) {
         profileAvatar.src = userData.avatarUrl;
-        currentUserAvatarUrl = userData.avatarUrl;
-        console.log("Loading user avatar from URL:", userData.avatarUrl); // LOG ADDED
       } else {
-        // Changed default avatar path to a reliable placeholder URL
         profileAvatar.src = 'https://placehold.co/120?text=P';
-        currentUserAvatarUrl = null;
-        console.log("Using default avatar (fallback)."); // LOG ADDED
       }
-      currentUserName = userData.username || currentUserName; // Update currentUserName if a custom one exists
-      currentUserBio = userData.bio || currentUserBio;
     } else {
-      // Create a basic user profile if it doesn't exist
-      // Use the /users/{userId} path as per your working rules
-      await updateDoc(userRef, {
-        username: currentUserName,
-        email: currentUserEmail,
-        bio: currentUserBio || "Hello, I'm new to Philippine Gaze!",
-        createdAt: new Date(),
-        avatarUrl: currentUserAvatarUrl // Can be null if no default
-      }, { merge: true }); // Use merge to avoid overwriting other fields if they exist
-      if (profileBio) profileBio.textContent = "Hello, I'm new to Philippine Gaze!";
+      // Kung hindi mahanap ang user, ipakita ang default
+      if (profileUsername) profileUsername.textContent = 'User Not Found';
+      
+      // HIDE THE EMAIL ELEMENT
+      if (profileEmail) {
+        profileEmail.textContent = ''; // Clear content
+        profileEmail.style.display = 'none'; // Hide the element
+      }
+
+      if (profileBio) profileBio.textContent = 'Ang profile na ito ay hindi umiiral o nabura.';
+      if (profileAvatar) profileAvatar.src = 'https://placehold.co/120?text=P';
     }
   } catch (error) {
-    console.error("Error loading user profile:", error);
+    console.error("Error loading user profile data:", error);
+    // Mas specific na mensahe sa console para sa debugging
+    console.error("Firestore error details:", error.code, error.message);
+    if (profileUsername) profileUsername.textContent = 'Error Loading Profile';
+    
+    // HIDE THE EMAIL ELEMENT ON ERROR
+    if (profileEmail) {
+      profileEmail.textContent = ''; // Clear content
+      profileEmail.style.display = 'none'; // Hide the element
+    }
+
+    if (profileBio) profileBio.textContent = 'May problema sa pag-load ng profile. Pakisuri ang console para sa detalye.';
+    if (profileAvatar) profileAvatar.src = 'https://placehold.co/120?text=Error'; // Error placeholder
   }
 }
 
-// Edit Profile Button (basic functionality for now)
+
+// Edit Profile Button (basic functionality sa ngayon)
 if (editProfileBtn) {
   editProfileBtn.addEventListener('click', async () => {
-    if (!currentUserId || !db) {
-      showMessage(postMessageArea, "Mangyaring mag-log in para mag-edit ng profile.", false);
+    if (!currentUserId || !db || targetProfileUserId !== currentUserId) {
+      showMessage(postMessageArea, "Hindi mo maaaring i-edit ang profile na ito.", false);
       return;
     }
     const newUsername = prompt("Enter new username:", profileUsername.textContent);
     const newBio = prompt("Enter new bio:", profileBio.textContent);
 
     if (newUsername !== null || newBio !== null) {
-      // Use the /users/{userId} path as per your working rules
       const userRef = doc(db, `users`, currentUserId);
       const updates = {};
       if (newUsername !== null && newUsername.trim() !== '') {
         updates.username = newUsername.trim();
-        if (profileUsername) profileUsername.textContent = newUsername.trim();
-        currentUserName = newUsername.trim(); // Update global variable
       }
-      if (newBio !== null) { // Allow empty bio
+      if (newBio !== null) { // Payagan ang walang laman na bio
         updates.bio = newBio.trim();
-        if (profileBio) profileBio.textContent = newBio.trim();
-        currentUserBio = newBio.trim(); // Update global variable
       }
 
       if (Object.keys(updates).length > 0) {
         try {
           await updateDoc(userRef, updates);
           showMessage(postMessageArea, "Profile updated successfully!", true);
+          // I-reload ang profile data para ma-reflect ang pagbabago
+          await loadProfileData(currentUserId);
+          // I-update ang global currentUserName kung nagbago
+          if (updates.username) currentUserName = updates.username;
         } catch (error) {
           console.error("Error updating profile:", error);
-          showMessage(postMessageArea, "Failed to update profile.", false);
+          showMessage(postMessageArea, "Nabigo ang pag-update ng profile.", false);
         }
       }
     }
   });
 }
 
-// NEW: Event listener for the "Change Profile Picture" button
+// Event listener para sa "Change Profile Picture" button
 if (changeAvatarBtn && avatarUpload) {
     changeAvatarBtn.addEventListener('click', () => {
-        avatarUpload.click(); // Trigger the hidden file input
+        if (!currentUserId || targetProfileUserId !== currentUserId) {
+            showMessage(postMessageArea, "Hindi mo maaaring palitan ang profile picture na ito.", false);
+            return;
+        }
+        avatarUpload.click(); // I-trigger ang hidden file input
     });
 }
 
 
-// Avatar Upload (existing logic, now can be triggered by uploadAvatarIcon or changeAvatarBtn)
-// REMOVED uploadAvatarIcon from this check as it's no longer in HTML
-if (avatarUpload && profileAvatar && storage && db) {
-  // Removed the uploadAvatarIcon.addEventListener as it's replaced by changeAvatarBtn
-  // uploadAvatarIcon.addEventListener('click', () => {
-  //   avatarUpload.click(); // Trigger the hidden file input
-  // });
-
-  avatarUpload.addEventListener('change', async (event) => {
+// Avatar Upload (umiiral na logic, ngayon ay maaaring i-trigger ng changeAvatarBtn)
+// Ngayon ay direktang nag-iimbak ng Base64 sa Firestore, nilalampasan ang Firebase Storage.
+if (avatarUpload && profileAvatar && db) {
+  avatarUpload.addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    if (!currentUserId) {
-        showMessage(postMessageArea, "Mangyaring mag-log in para mag-upload ng avatar.", false);
+    if (!currentUserId || targetProfileUserId !== currentUserId) {
+        showMessage(postMessageArea, "Hindi mo maaaring i-upload ang avatar para sa profile na ito.", false);
         return;
     }
     showMessage(postMessageArea, "Uploading avatar...", false);
 
-    // Use the /users/{userId} path for avatar storage
-    const avatarRef = ref(storage, `users/${currentUserId}/avatars/${file.name}`);
-    try {
-      const snapshot = await uploadBytes(avatarRef, file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-      console.log("Uploaded avatar URL:", downloadURL); // LOG ADDED
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const base64Image = e.target.result;
+      console.log("Generated Base64 for avatar:", base64Image.substring(0, 50) + "...");
 
-      // Use the /users/{userId} path for user profile update
       const userRef = doc(db, `users`, currentUserId);
-      await updateDoc(userRef, { avatarUrl: downloadURL });
-
-      profileAvatar.src = downloadURL;
-      currentUserAvatarUrl = downloadURL;
-      showMessage(postMessageArea, "Avatar uploaded successfully!", true);
-    } catch (error) {
-      console.error("Error uploading avatar:", error);
-      showMessage(postMessageArea, "Failed to upload avatar.", false);
-    }
+      try {
+        await updateDoc(userRef, { avatarUrl: base64Image });
+        profileAvatar.src = base64Image;
+        currentUserAvatarUrl = base64Image; // Update global variable
+        showMessage(postMessageArea, "Avatar uploaded successfully!", true);
+      } catch (error) {
+        console.error("Error uploading avatar:", error);
+        showMessage(postMessageArea, "Failed to upload avatar.", false);
+      }
+    };
+    reader.onerror = (error) => {
+        console.error("Error reading file:", error);
+        showMessage(postMessageArea, "Nabigo ang pagbasa ng imahe.", false);
+    };
+    reader.readAsDataURL(file);
   });
-} else if (avatarUpload || profileAvatar || !storage || !db) { // Updated this condition
-    console.warn("Avatar upload elements or Firebase Storage/Firestore not fully available. Avatar upload disabled.");
-    // if (uploadAvatarIcon) uploadAvatarIcon.style.display = 'none'; // No longer needed
-    if (changeAvatarBtn) changeAvatarBtn.disabled = true; // Disable the new button too
+} else if (avatarUpload || profileAvatar || !db) {
+    console.warn("Avatar upload elements or Firestore not fully available. Avatar upload disabled.");
+    if (changeAvatarBtn) changeAvatarBtn.disabled = true;
 }
 
 
-// --- Post Creation Functionality ---
-
+// --- Functionality sa Paglikha ng Post ---
+// Ngayon ay direktang nag-iimbak ng Base64 sa Firestore, nilalampasan ang Firebase Storage.
 if (createPostBtn) {
   createPostBtn.addEventListener('click', async () => {
-    if (!currentUserId || !currentUserName || !db || !storage) {
-      showMessage(postMessageArea, "Mangyaring mag-log in at tiyakin na konektado ang database at storage para makapag-post.", false);
+    if (!currentUserId || !currentUserName || !db || targetProfileUserId !== currentUserId) {
+      showMessage(postMessageArea, "Hindi ka maaaring mag-post sa profile na ito.", false);
       return;
     }
 
@@ -352,96 +431,111 @@ if (createPostBtn) {
     }
 
     showMessage(postMessageArea, "Nagpoproseso ng post...", false);
-    createPostBtn.disabled = true; // Disable button to prevent multiple submissions
+    createPostBtn.disabled = true;
 
     let imageUrl = null;
     try {
       if (imageFile) {
-        // Keep this path as per your public data rules for post images
-        const imageRef = ref(storage, `artifacts/${appId}/public/post_images/${currentUserId}/${Date.now()}_${imageFile.name}`);
-        const snapshot = await uploadBytes(imageRef, imageFile);
-        imageUrl = await getDownloadURL(snapshot.ref);
-        console.log("Uploaded post image URL:", imageUrl); // LOG ADDED
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          imageUrl = e.target.result;
+
+          await addDoc(collection(db, `artifacts/${appId}/public/data/posts`), {
+            userId: currentUserId,
+            userName: currentUserName, // Use the most updated currentUserName
+            userAvatarUrl: currentUserAvatarUrl, // Use the most updated currentUserAvatarUrl
+            content: postContent,
+            imageUrl: imageUrl,
+            timestamp: new Date(),
+            likes: [],
+            commentsCount: 0
+          });
+
+          showMessage(postMessageArea, "Post naidagdag na sa Stories!", true);
+          postContentInput.value = '';
+          postImageInput.value = '';
+          createPostBtn.disabled = false;
+        };
+        reader.onerror = (error) => {
+            console.error("Error reading file:", error);
+            showMessage(postMessageArea, "Nabigo ang pagbasa ng imahe.", false);
+            createPostBtn.disabled = false;
+        };
+        reader.readAsDataURL(imageFile);
+      } else {
+        await addDoc(collection(db, `artifacts/${appId}/public/data/posts`), {
+          userId: currentUserId,
+          userName: currentUserName, // Use the most updated currentUserName
+          userAvatarUrl: currentUserAvatarUrl, // Use the most updated currentUserAvatarUrl
+          content: postContent,
+          imageUrl: null,
+          timestamp: new Date(),
+          likes: [],
+          commentsCount: 0
+        });
+        showMessage(postMessageArea, "Post naidagdag na sa Stories!", true);
+        postContentInput.value = '';
+        createPostBtn.disabled = false;
       }
-
-      // Keep this path as per your public data rules for posts
-      await addDoc(collection(db, `artifacts/${appId}/public/data/posts`), {
-        userId: currentUserId,
-        userName: currentUserName,
-        userAvatarUrl: currentUserAvatarUrl, // Store user's current avatar URL with the post
-        content: postContent,
-        imageUrl: imageUrl,
-        timestamp: new Date(),
-        likes: [],
-        commentsCount: 0
-      });
-
-      showMessage(postMessageArea, "Post naidagdag na sa Stories!", true);
-      postContentInput.value = ''; // Clear input
-      postImageInput.value = ''; // Clear file input
-      // loadUserPosts(); // This will be called by the onSnapshot listener naturally
     } catch (error) {
       console.error("Error creating post:", error);
       showMessage(postMessageArea, "Nabigo ang pag-post. Subukang muli.", false);
-    } finally {
-      createPostBtn.disabled = false; // Re-enable button
+      createPostBtn.disabled = false;
     }
   });
 } else {
-  console.warn("Post creation elements or Firebase Storage/Firestore not fully available. Post creation disabled.");
+  console.warn("Post creation elements or Firestore not fully available. Post creation disabled.");
   if (postContentInput) postContentInput.disabled = true;
   if (postImageInput) postImageInput.disabled = true;
   if (createPostBtn) createPostBtn.disabled = true;
 }
 
-// --- Display User's Own Posts ---
-
-function loadUserPosts() {
-  if (!db || !currentUserId) {
-    console.error("Firestore database or current user not initialized. Cannot load user posts.");
-    if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="message-area">Database error. Hindi ma-load ang iyong mga post.</p>';
+// --- Pagpapakita ng Posts ng User (target user) ---
+function loadUserPosts(userIdToLoad) {
+  if (!db || !userIdToLoad) {
+    console.error("Firestore database or target user not initialized. Cannot load user posts.");
+    if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="message-area">Database error. Hindi ma-load ang mga post.</p>';
     return;
   }
 
   if (unsubscribeUserPosts) {
-    unsubscribeUserPosts(); // Unsubscribe from previous listener if exists
+    unsubscribeUserPosts();
   }
 
-  // Keep this path as per your public data rules for posts
   const postsCollectionRef = collection(db, `artifacts/${appId}/public/data/posts`);
-  // Query for posts by the current user, ordered by newest first
-  const q = query(postsCollectionRef, where('userId', '==', currentUserId), orderBy('timestamp', 'desc'));
+  const q = query(postsCollectionRef, where('userId', '==', userIdToLoad), orderBy('timestamp', 'desc'));
 
   unsubscribeUserPosts = onSnapshot(q, (snapshot) => {
-    if (profilePostsFeed) profilePostsFeed.innerHTML = ''; // Clear current feed
+    if (profilePostsFeed) profilePostsFeed.innerHTML = '';
     if (snapshot.empty) {
-      if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="loading-message">Wala ka pang post. Maging una!</p>';
+      if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="loading-message">Walang post pa ang user na ito.</p>';
       return;
     }
 
     snapshot.forEach((doc) => {
       const post = { id: doc.id, ...doc.data() };
-      console.log("Rendering post with image URL:", post.imageUrl); // LOG ADDED
+      console.log("Rendering post with image (Base64):", post.imageUrl ? post.imageUrl.substring(0, 50) + "..." : "No image");
       renderUserPost(post);
     });
   }, (error) => {
     console.error("Error loading user posts:", error);
-    if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="message-area">Error loading your posts.</p>';
+    if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="message-area">Error loading user posts.</p>';
   });
 }
 
 function renderUserPost(post) {
     const postCard = document.createElement('div');
     postCard.classList.add('post-card');
-    postCard.dataset.postId = post.id; // Store post ID for reference
+    postCard.dataset.postId = post.id;
 
     const postDate = post.timestamp ? new Date(post.timestamp.toDate()).toLocaleString() : 'Unknown Date';
-    const isOwner = currentUserId && post.userId === currentUserId; // Should always be true for user's own posts
+    // Check if the post belongs to the currently logged-in user
+    const isOwner = currentUserId && post.userId === currentUserId;
 
     postCard.innerHTML = `
         <div class="post-header">
-            <img src="${post.userAvatarUrl || 'https://placehold.co/40?text=P'}" alt="Profile Pic">
-            <span class="post-author">${post.userName}</span>
+            <img src="${post.userAvatarUrl || 'https://placehold.co/40?text=P'}" alt="Profile Pic" class="profile-pic">
+            <span class="post-author">${post.userName || 'Anonymous User'}</span> <!-- Ensure userName is displayed -->
             <span class="post-time">${postDate}</span>
             <div class="post-actions">
                 ${isOwner ? `<button class="edit-post-btn" data-post-id="${post.id}">Edit</button>` : ''}
@@ -456,7 +550,6 @@ function renderUserPost(post) {
             <button class="like-button" data-post-id="${post.id}">
                 <i class="fas fa-heart"></i> <span class="like-count">${post.likes ? post.likes.length : 0}</span>
             </button>
-            <!-- Comment and Share buttons can be added here if needed, but they don't have functionality in profile for now -->
             <button><i class="fas fa-comment"></i> Comments (${post.commentsCount || 0})</button>
             <button><i class="fas fa-share"></i> Share</button>
         </div>
@@ -464,12 +557,13 @@ function renderUserPost(post) {
 
     if (profilePostsFeed) profilePostsFeed.appendChild(postCard);
 
-    // Attach event listeners for edit and delete buttons
-    attachUserPostEventListeners(postCard, post);
+    // Attach event listeners for edit and delete buttons ONLY if it's the owner's post
+    if (isOwner) {
+        attachUserPostEventListeners(postCard, post);
+    }
 }
 
 function attachUserPostEventListeners(postCard, post) {
-    // Edit Post Button
     const editPostBtn = postCard.querySelector('.edit-post-btn');
     if (editPostBtn) {
         editPostBtn.addEventListener('click', () => {
@@ -477,7 +571,6 @@ function attachUserPostEventListeners(postCard, post) {
         });
     }
 
-    // Delete Post Button
     const deletePostBtn = postCard.querySelector('.delete-post-btn');
     if (deletePostBtn) {
         deletePostBtn.addEventListener('click', async () => {
@@ -485,14 +578,14 @@ function attachUserPostEventListeners(postCard, post) {
                 showMessage(postMessageArea, "Database error. Hindi makabura ng post.", false);
                 return;
             }
-            if (confirm("Sigurado ka bang gusto mong burahin ang post na ito?")) {
-                await deletePost(post.id, post.imageUrl); // Pass imageUrl for storage deletion
-            }
+            // Using a custom modal for confirmation instead of confirm()
+            showConfirmModal("Sigurado ka bang gusto mong burahin ang post na ito?", async () => {
+                await deletePost(post.id);
+            });
         });
     }
 }
 
-// Separate function for toggling edit mode for user's own posts
 function toggleEditModeUserPost(postCard, post) {
     if (!db) {
         console.error("Firestore database is not initialized.");
@@ -503,7 +596,6 @@ function toggleEditModeUserPost(postCard, post) {
     const postActions = postCard.querySelector('.post-actions');
 
     if (postTextElement.dataset.editing === 'true') {
-        // Save changes
         const newContent = postTextElement.value.trim();
         updatePost(post.id, { content: newContent });
         postTextElement.outerHTML = `<p class="post-text" data-original-content="${newContent}">${newContent}</p>`;
@@ -511,9 +603,8 @@ function toggleEditModeUserPost(postCard, post) {
             <button class="edit-post-btn" data-post-id="${post.id}">Edit</button>
             <button class="delete-post-btn" data-post-id="${post.id}">Delete</button>
         `;
-        attachUserPostEventListeners(postCard, post); // Re-attach listeners
+        attachUserPostEventListeners(postCard, post);
     } else {
-        // Enter edit mode
         const currentContent = postTextElement.dataset.originalContent || postTextElement.textContent;
         const textarea = document.createElement('textarea');
         textarea.classList.add('post-text');
@@ -535,7 +626,6 @@ function toggleEditModeUserPost(postCard, post) {
             <button class="cancel-edit-btn" data-post-id="${post.id}">Cancel</button>
         `;
 
-        // Attach listeners for new buttons
         postCard.querySelector('.save-post-btn').addEventListener('click', () => {
             const updatedContent = textarea.value.trim();
             updatePost(post.id, { content: updatedContent });
@@ -576,31 +666,17 @@ async function updatePost(postId, updates) {
   }
 }
 
-async function deletePost(postId, imageUrl) {
-  if (!db || !storage) {
-    console.error("Firestore database or Storage is not initialized.");
+async function deletePost(postId) {
+  if (!db) {
+    console.error("Firestore database is not initialized.");
     showMessage(postMessageArea, "Database error. Hindi makabura ng post.", false);
     return;
   }
   try {
-    // Delete image from storage first if it exists
-    if (imageUrl) {
-      // Keep this path as per your public data rules
-      const imageRef = ref(storage, imageUrl); // imageUrl already contains the full path
-      try {
-        await deleteObject(imageRef);
-        console.log("Image deleted from storage:", imageUrl);
-      } catch (storageError) {
-        console.warn("Could not delete image from storage (might not exist or permissions issue):", storageError);
-      }
-    }
-
     // Delete post document
-    // Keep this path as per your public data rules
     await deleteDoc(doc(db, `artifacts/${appId}/public/data/posts`, postId));
 
     // Delete associated comments
-    // Keep this path as per your public data rules
     const commentsRef = collection(db, `artifacts/${appId}/public/data/comments`);
     const q = query(commentsRef, where('postId', '==', postId));
     const commentsSnapshot = await getDocs(q);
@@ -615,6 +691,46 @@ async function deletePost(postId, imageUrl) {
     console.error("Error deleting post and comments:", error);
     showMessage(postMessageArea, "Nabigo ang pagbura ng post.", false);
   }
+}
+
+// --- Custom Confirmation Modal (instead of alert/confirm) ---
+function showConfirmModal(message, onConfirm) {
+  // Create modal elements dynamically or use existing hidden ones
+  let confirmModal = document.getElementById('customConfirmModal');
+  if (!confirmModal) {
+    confirmModal = document.createElement('div');
+    confirmModal.id = 'customConfirmModal';
+    confirmModal.classList.add('overlay'); // Reuse overlay styling
+    confirmModal.innerHTML = `
+      <div class="modal-content" style="max-width: 400px; padding: 20px; text-align: center;">
+        <p id="confirmMessage" style="font-size: 1.1em; margin-bottom: 20px; color: #333;"></p>
+        <div style="display: flex; justify-content: center; gap: 15px;">
+          <button id="confirmYesBtn" style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Oo</button>
+          <button id="confirmNoBtn" style="background-color: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Hindi</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(confirmModal);
+  }
+
+  document.getElementById('confirmMessage').textContent = message;
+  confirmModal.style.display = 'flex';
+
+  const confirmYesBtn = document.getElementById('confirmYesBtn');
+  const confirmNoBtn = document.getElementById('confirmNoBtn');
+
+  // Clear previous listeners to prevent multiple calls
+  confirmYesBtn.onclick = null;
+  confirmNoBtn.onclick = null;
+
+  confirmYesBtn.onclick = () => {
+    onConfirm();
+    confirmModal.style.display = 'none';
+  };
+
+  confirmNoBtn.onclick = () => {
+    confirmModal.style.display = 'none';
+  };
 }
 
 

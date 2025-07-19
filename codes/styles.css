@@ -659,17 +659,14 @@ h2 {
   gap: 10px;
 }
 
-.story-header .user-avatar {
-  width: 40px;
-  height: 40px;
+/* Specific styling for profile pictures in stories feed */
+.story-header .profile-pic { /* Changed from .user-avatar */
+  width: 40px; /* Consistent size with profile.html */
+  height: 40px; /* Consistent size with profile.html */
   border-radius: 50%;
-  background-color: #ffb300; /* Placeholder avatar color */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  font-size: 1.2em;
+  object-fit: cover;
+  border: 2px solid #ffb300; /* Accent border from profile.html */
+  flex-shrink: 0; /* Prevent shrinking */
 }
 
 .story-header .username {
@@ -775,6 +772,17 @@ h2 {
   border: 1px solid #eee;
 }
 
+/* Specific styling for profile pictures in comments */
+.comment-item .profile-pic { /* Changed from .comment-item strong */
+  width: 30px; /* Slightly smaller for comments */
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ffb300; /* Accent border from profile.html */
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
 .comment-item strong {
   color: #1a2233;
   font-size: 0.95em;
@@ -836,10 +844,9 @@ h2 {
     padding: 10px 15px;
     font-size: 1em;
   }
-  .story-header .user-avatar {
+  .story-header .profile-pic { /* Changed from .user-avatar */
     width: 35px;
     height: 35px;
-    font-size: 1em;
   }
   .story-header .username {
     font-size: 1em;
@@ -849,6 +856,10 @@ h2 {
   }
   .comment-input-area textarea {
     min-height: 30px;
+  }
+  .comment-item .profile-pic { /* Changed from .comment-item strong */
+    width: 25px;
+    height: 25px;
   }
 }
 /* Search Bar Styles */
@@ -1306,3 +1317,387 @@ h2 {
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
+/* Profile Page Specific Styles */
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the entire profile section content */
+  margin-top: 100px; /* Adjust based on navbar height */
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-header {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  text-align: center;
+  margin-bottom: 30px;
+  max-width: 700px; /* Limit width for better appearance */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-avatar-container {
+  margin-bottom: 15px;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ffb300;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.profile-info {
+  margin-bottom: 20px;
+}
+
+.profile-info h1 {
+  font-size: 2.2em;
+  color: #1a2233;
+  margin-bottom: 8px;
+}
+
+/* Hide profile email as requested */
+#profileEmail {
+  display: none;
+}
+
+.profile-info p {
+  font-size: 1.1em;
+  color: #555;
+  line-height: 1.5;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+  justify-content: center; /* Center buttons */
+}
+
+.profile-actions button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+.profile-actions button:hover {
+  background-color: #0056b3;
+}
+
+.profile-content {
+  width: 100%;
+  max-width: 700px; /* Match profile-header max-width for consistency */
+}
+
+/* Post Creation Section (Profile Page) */
+.post-creation-section {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 25px;
+  width: 100%;
+  margin-bottom: 40px;
+  box-sizing: border-box;
+}
+
+.post-creation-section h2 {
+  color: #0056b3;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.post-creation-section textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1em;
+  min-height: 100px;
+  resize: vertical;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+.post-creation-section input[type="file"] {
+  margin-bottom: 15px;
+}
+
+.post-creation-section button {
+  background-color: #28a745;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.post-creation-section button:hover {
+  background-color: #218838;
+}
+
+/* User's Posts Feed */
+#profilePostsFeed {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 40px; /* Space before footer */
+
+  /* Flexbox for centering posts */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* This centers the post-cards horizontally */
+}
+
+#profilePostsFeed h2 {
+  color: #0056b3;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  text-align: center;
+  width: 100%; /* Ensure heading takes full width for centering */
+}
+
+.post-card {
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  padding: 20px;
+  margin-bottom: 20px;
+  width: 100%; /* Take full width of parent */
+  max-width: 600px; /* Limit max width for readability */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-card .post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  justify-content: space-between; /* To push actions to the right */
+}
+
+.post-card .post-header .profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffb300;
+  margin-right: 10px;
+}
+
+.post-card .post-header .post-author {
+  font-weight: bold;
+  color: #1a2233;
+  font-size: 1.1em;
+  flex-grow: 1; /* Allow username to take space */
+}
+
+.post-card .post-header .post-time {
+  font-size: 0.9em;
+  color: #888;
+  margin-left: auto; /* Push time to the right */
+  white-space: nowrap; /* Prevent wrapping */
+}
+
+.post-card .post-header .post-actions {
+  display: flex;
+  gap: 10px;
+  margin-left: 15px; /* Space from time */
+}
+
+.post-card .post-header .post-actions button {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.post-card .post-header .post-actions button:hover {
+  color: #0056b3;
+}
+
+.post-card .post-content p {
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  white-space: pre-wrap;
+}
+
+.post-card .post-content img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  height: auto;
+  display: block;
+}
+
+.post-card .post-actions-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.post-card .like-button {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 1.1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s;
+}
+
+.post-card .like-button.liked {
+  color: #ff5252;
+}
+
+.post-card .like-button:hover {
+  color: #ff5252;
+}
+
+.post-card .like-button i {
+  margin-right: 5px;
+}
+
+.post-card .post-actions-bottom button:not(.like-button) {
+  background: none;
+  border: none;
+  color: #007bff;
+  font-size: 1em;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.post-card .post-actions-bottom button:not(.like-button):hover {
+  color: #0056b3;
+}
+
+/* Custom Modal for Confirmation */
+#customConfirmModal.overlay {
+  background: rgba(0, 0, 0, 0.7); /* Slightly lighter overlay for confirmation */
+}
+
+#customConfirmModal .modal-content {
+  background: #fff;
+  color: #333;
+  padding: 30px;
+  text-align: center;
+}
+
+#customConfirmModal #confirmMessage {
+  font-size: 1.2em;
+  margin-bottom: 25px;
+}
+
+#customConfirmModal button {
+  padding: 10px 25px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+#customConfirmModal #confirmYesBtn {
+  background-color: #dc3545; /* Red for Yes */
+  color: white;
+}
+
+#customConfirmModal #confirmYesBtn:hover {
+  background-color: #c82333;
+}
+
+#customConfirmModal #confirmNoBtn {
+  background-color: #6c757d; /* Gray for No */
+  color: white;
+}
+
+#customConfirmModal #confirmNoBtn:hover {
+  background-color: #5a6268;
+}
+
+/* Responsive adjustments for Profile Page */
+@media (max-width: 768px) {
+  .profile-section {
+    padding: 10px;
+    margin-top: 80px;
+  }
+  .profile-header {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  .profile-info h1 {
+    font-size: 1.8em;
+  }
+  .profile-info p {
+    font-size: 1em;
+  }
+  .profile-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .profile-actions button {
+    width: 100%;
+    padding: 10px;
+  }
+  .post-creation-section, .post-card {
+    padding: 15px;
+  }
+  .post-card .post-header {
+    flex-wrap: wrap; /* Allow elements to wrap */
+    justify-content: center; /* Center header items on small screens */
+    text-align: center;
+  }
+  .post-card .post-header .profile-pic {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+  .post-card .post-header .post-author,
+  .post-card .post-header .post-time {
+    width: 100%; /* Take full width */
+    text-align: center;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .post-card .post-header .post-actions {
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+    margin-left: 0;
+  }
+  .post-card .post-actions-bottom {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .post-card .post-actions-bottom button {
+    width: 100%;
+  }
+}
