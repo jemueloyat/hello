@@ -2,14 +2,11 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getFirestore, collection, addDoc, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, arrayUnion, arrayRemove, getDoc, getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"; // Corrected import for firestore
 import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // UI Elements - Declared at the top to ensure they are accessible before any Firebase logic
-// Removed: const postContentInput = document.getElementById('postContentInput');
-// Removed: const postImageInput = document.getElementById('postImageInput');
-// Removed: const createPostBtn = document.getElementById('createPostBtn');
-const postMessageArea = document.getElementById('postMessageArea'); // This element might still be used for general messages
+const postMessageArea = document.getElementById('postMessageArea');
 const storiesFeed = document.getElementById('storiesFeed');
 const logoutBtn = document.getElementById('logoutBtn');
 
@@ -21,13 +18,12 @@ const modalDesc = document.getElementById('modal-desc'); // This will show post 
 const modalLikeBtn = document.getElementById('modalLikeBtn');
 const modalCommentSection = document.getElementById('modal-comment-section');
 const commentsDisplayArea = document.getElementById('comments-display-area');
-const commentMessageArea = document.getElementById('comment-message-area');
 const commentInput = document.getElementById('comment-input');
 const submitCommentBtn = document.getElementById('submit-comment-btn');
-
+const commentMessageArea = document.getElementById('comment-message-area');
+const modalCloseBtn = document.getElementById('modal-close-btn');
 
 // Determine appId from __app_id, which is provided by the Canvas environment.
-// This is the most reliable source for the project ID in this context.
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 console.log("App ID in use:", appId);
 
@@ -88,13 +84,8 @@ console.log("Firebase Config in use:", firebaseConfig);
 // This check is primarily for logging and disabling UI, not to halt the script.
 if (!firebaseConfig.projectId || !firebaseConfig.apiKey) {
     console.error("Firebase initialization warning: Essential firebaseConfig (projectId/apiKey) might be missing even after fallback. Ensure __firebase_config is correctly provided by the Canvas environment or the hardcoded values are correct. Firebase-dependent features will be disabled.");
-    // Disable UI elements that depend on Firebase if config is clearly incomplete
-    // if (postContentInput) postContentInput.disabled = true; // Removed
-    // if (postImageInput) postImageInput.disabled = true;     // Removed
-    // if (createPostBtn) createPostBtn.disabled = true;       // Removed
     if (commentInput) commentInput.disabled = true;
     if (submitCommentBtn) submitCommentBtn.disabled = true;
-    // Display a user-friendly message on the page
     if (postMessageArea) showMessage(postMessageArea, "Error: Hindi makakonekta sa database. Pakisuri ang configuration.", false);
 }
 
@@ -113,15 +104,9 @@ try {
     auth = getAuth(app);
 } catch (error) {
     console.error("Failed to initialize Firebase:", error);
-    // Disable UI elements if Firebase initialization itself fails
-    // if (postContentInput) postContentInput.disabled = true; // Removed
-    // if (postImageInput) postImageInput.disabled = true;     // Removed
-    // if (createPostBtn) createPostBtn.disabled = true;       // Removed
     if (commentInput) commentInput.disabled = true;
     if (submitCommentBtn) submitCommentBtn.disabled = true;
-    // Display a user-friendly message on the page
     if (postMessageArea) showMessage(postMessageArea, "Error: Hindi makakonekta sa database. Pakisuri ang configuration.", false);
-    // Set dummy functions to prevent further errors
     db = null;
     auth = null;
 }
@@ -129,6 +114,7 @@ try {
 
 let currentUserId = null; // To store the current user's UID
 let currentUserName = null; // To store the current user's display name
+let currentUserAvatarUrl = null; // To store the current user's avatar URL
 let unsubscribePosts = null; // To manage real-time listener for posts
 let unsubscribeComments = null; // To manage real-time listener for comments in modal
 
@@ -151,15 +137,6 @@ function showMessage(element, message, isSuccess = false) {
   }, 3000);
 }
 
-function getAvatarText(username) {
-  if (!username) return 'Anon';
-  const parts = username.split(' ');
-  if (parts.length > 1) {
-    return (parts[0][0] + parts[1][0]).toUpperCase();
-  }
-  return username[0].toUpperCase();
-}
-
 // --- Firebase Authentication ---
 
 // Only proceed with auth state changes if auth object is valid
@@ -170,6 +147,24 @@ if (auth) {
       currentUserName = user.displayName || user.email || 'Anonymous';
       console.log(`User logged in: ${currentUserName} (${currentUserId})`);
 
+      // Load user profile to get avatar URL and ensure username is updated
+      const userRef = doc(db, `users`, currentUserId);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        currentUserAvatarUrl = userData.avatarUrl || null;
+        if (userData.username) currentUserName = userData.username; // Use custom username if available
+      } else {
+        // If user profile doesn't exist, create a basic one
+        await updateDoc(userRef, {
+          username: currentUserName,
+          email: user.email || '',
+          bio: "Hello, I'm new to Philippine Gaze!",
+          createdAt: new Date(),
+          avatarUrl: null // No avatar initially
+        }, { merge: true });
+      }
+
       // Enable comment input
       if (commentInput) commentInput.disabled = false;
       if (submitCommentBtn) submitCommentBtn.disabled = false;
@@ -178,7 +173,7 @@ if (auth) {
 
       // If there's a modal open, re-check like state and comments permissions
       if (currentOpenPostId && db) { // Check db before accessing it
-        loadCommentsForPost(currentOpenPostId);
+        loadCommentsForPost(currentOpenPostId, commentsDisplayArea); // Pass commentsDisplayArea
         // Re-evaluate like button state for the currently open modal post
         const postRef = doc(db, `artifacts/${appId}/public/data/posts`, currentOpenPostId);
         const postSnap = await getDoc(postRef);
@@ -191,6 +186,7 @@ if (auth) {
     } else {
       currentUserId = null;
       currentUserName = null;
+      currentUserAvatarUrl = null; // Reset avatar URL on logout
       console.log('User logged out or not authenticated.');
 
       // Disable comment input
@@ -209,7 +205,7 @@ if (auth) {
         }
       }
     }
-    // Reload posts to update edit/delete visibility
+    // Reload posts to update edit/delete visibility and ensure correct display
     loadPosts();
   });
 }
@@ -256,15 +252,17 @@ function loadPosts() {
   const q = query(postsCollectionRef, orderBy('timestamp', 'desc')); // Order by newest first
 
   unsubscribePosts = onSnapshot(q, (snapshot) => {
-    if (storiesFeed) storiesFeed.innerHTML = ''; // Clear current feed
+    if (storiesFeed) storiesFeed.innerHTML = ''; // Clear current feed COMPLETELY
     if (snapshot.empty) {
       if (storiesFeed) storiesFeed.innerHTML = '<p class="loading-message">Walang post pa. Maging una!</p>';
       return;
     }
 
+    // Re-render all posts from the snapshot
     snapshot.forEach((doc) => {
       const post = { id: doc.id, ...doc.data() };
-      renderPost(post);
+      const postCard = createPostCardElement(post);
+      storiesFeed.appendChild(postCard); // Append to maintain order based on query
     });
   }, (error) => {
     console.error("Error loading posts:", error);
@@ -272,22 +270,27 @@ function loadPosts() {
   });
 }
 
-function renderPost(post) {
-  const storyCard = document.createElement('div');
-  storyCard.classList.add('story-card');
-  storyCard.dataset.postId = post.id;
+// Function to create a post card element
+function createPostCardElement(post) {
+  const postCard = document.createElement('div');
+  postCard.classList.add('story-card'); // Changed to story-card to match styles.css
+  postCard.dataset.postId = post.id;
 
   const postDate = post.timestamp ? new Date(post.timestamp.toDate()).toLocaleString() : 'Unknown Date';
   const isOwner = currentUserId && post.userId === currentUserId;
   const likedByCurrentUser = currentUserId && (post.likes || []).includes(currentUserId);
 
-  storyCard.innerHTML = `
+  // Ensure avatar and username have fallbacks if data is missing from the post document
+  const displayAvatarUrl = post.userAvatarUrl || 'https://placehold.co/40?text=P'; // Use post's stored avatar URL
+  const displayUserName = post.userName || 'Anonymous User'; // Use post's stored username
+
+  postCard.innerHTML = `
     <div class="story-header">
       <div class="user-info">
-        <div class="user-avatar">${getAvatarText(post.userName)}</div>
-        <span class="username">${post.userName}</span>
+        <img src="${displayAvatarUrl}" alt="Profile Pic" class="profile-pic">
+        <span class="username" data-user-id="${post.userId}">${displayUserName}</span>
       </div>
-      <div class="post-actions">
+      <div class="post-actions"> <!-- Renamed from post-actions-top to match styles.css -->
         ${isOwner ? `<button class="edit-post-btn" data-post-id="${post.id}">Edit</button>` : ''}
         ${isOwner ? `<button class="delete-post-btn" data-post-id="${post.id}">Delete</button>` : ''}
       </div>
@@ -300,9 +303,10 @@ function renderPost(post) {
       <button class="like-button ${likedByCurrentUser ? 'liked' : ''}" data-post-id="${post.id}">
         <i class="fas fa-heart"></i> <span class="like-count">${post.likes ? post.likes.length : 0}</span>
       </button>
-      <button class="comment-toggle-button" data-post-id="${post.id}">
-        Comments (${post.commentsCount || 0})
+      <button class="comment-toggle-button" data-post-id="${post.id}" data-post-title="${post.userName}'s Post" data-post-desc="${post.content || ''}" data-post-img="${post.imageUrl || ''}">
+        <i class="fas fa-comment"></i> Comments (${post.commentsCount || 0})
       </button>
+      <button><i class="fas fa-share"></i> Share</button>
     </div>
     <div class="comments-section" id="comments-section-${post.id}">
       <div class="comments-list"></div>
@@ -313,36 +317,42 @@ function renderPost(post) {
     </div>
   `;
 
-  if (storiesFeed) storiesFeed.prepend(storyCard); // Add new posts to the top
-
   // Attach event listeners for the new post card
-  attachPostEventListeners(storyCard, post);
+  attachPostCardEventListeners(postCard, post);
+  return postCard;
 }
 
-function attachPostEventListeners(storyCard, post) {
-  // Like Button
-  const likeButton = storyCard.querySelector('.like-button');
-  if (likeButton) {
-    likeButton.addEventListener('click', async () => {
-      if (!currentUserId || !db) {
-        showMessage(postMessageArea, "Mangyaring mag-log in at tiyakin na konektado ang database para mag-react.", false);
-        return;
+// New function to attach event listeners to a post card
+function attachPostCardEventListeners(postCard, post) {
+  // Add event listener for the post author's name (username in story-card)
+  const postAuthorSpan = postCard.querySelector('.username'); // Changed from .post-author
+  if (postAuthorSpan) {
+    postAuthorSpan.style.cursor = 'pointer'; // Make it look clickable
+    postAuthorSpan.addEventListener('click', () => {
+      const userIdToView = postAuthorSpan.dataset.userId;
+      if (userIdToView) {
+        window.location.href = `profile.html?userId=${userIdToView}`;
       }
-      await toggleLike(post.id, currentUserId);
     });
   }
 
-  // Comment Toggle Button
-  const commentToggleButton = storyCard.querySelector('.comment-toggle-button');
-  const commentsSection = storyCard.querySelector('.comments-section');
-  if (commentToggleButton && commentsSection) {
-    commentToggleButton.addEventListener('click', () => {
+  // Add event listener for like button
+  const likeButton = postCard.querySelector('.like-button');
+  if (likeButton) {
+    likeButton.addEventListener('click', () => toggleLike(post.id, currentUserId));
+  }
+
+  // Add event listener for comment button to open modal
+  const commentButton = postCard.querySelector('.comment-toggle-button'); // Changed to comment-toggle-button
+  const commentsSection = postCard.querySelector(`.comments-section`); // Get the specific comments section for this post
+  if (commentButton && commentsSection) {
+    commentButton.addEventListener('click', () => {
       commentsSection.classList.toggle('active');
       if (commentsSection.classList.contains('active')) {
-        commentToggleButton.textContent = `Hide Comments (${post.commentsCount || 0})`;
+        commentButton.textContent = `Hide Comments (${post.commentsCount || 0})`;
         loadCommentsForPost(post.id, commentsSection.querySelector('.comments-list'));
       } else {
-        commentToggleButton.textContent = `Comments (${post.commentsCount || 0})`;
+        commentButton.textContent = `Comments (${post.commentsCount || 0})`;
       }
     });
   }
@@ -350,51 +360,51 @@ function attachPostEventListeners(storyCard, post) {
   // Submit Comment Button (within each post's comment section)
   const submitCommentBtnPost = commentsSection.querySelector('.submit-comment-btn');
   const commentInputPost = commentsSection.querySelector('.comment-input');
-  if (submitCommentBtnPost) { // Removed check for commentInputPost here, as it's used inside
+  if (submitCommentBtnPost && commentInputPost) {
     submitCommentBtnPost.addEventListener('click', async () => {
       if (!currentUserId || !db) {
         showMessage(postMessageArea, "Mangyaring mag-log in at tiyakin na konektado ang database para mag-komento.", false);
         return;
       }
-      const commentText = commentInputPost ? commentInputPost.value.trim() : '';
+      const commentText = commentInputPost.value.trim();
       if (commentText) {
         await addComment(post.id, commentText);
-        if (commentInputPost) commentInputPost.value = '';
+        commentInputPost.value = ''; // Clear input after submission
       } else {
         showMessage(postMessageArea, "Walang laman ang komento.", false);
       }
     });
   }
 
-  // Edit Post Button
-  const editPostBtn = storyCard.querySelector('.edit-post-btn');
+  // Attach edit/delete listeners ONLY if the current user is the owner
+  const editPostBtn = postCard.querySelector('.edit-post-btn');
+  const deletePostBtn = postCard.querySelector('.delete-post-btn');
+
   if (editPostBtn) {
     editPostBtn.addEventListener('click', () => {
-      toggleEditMode(storyCard, post);
+      toggleEditMode(postCard, post);
     });
   }
 
-  // Delete Post Button
-  const deletePostBtn = storyCard.querySelector('.delete-post-btn');
   if (deletePostBtn) {
     deletePostBtn.addEventListener('click', async () => {
       if (!db) {
         showMessage(postMessageArea, "Database error. Hindi makabura ng post.", false);
         return;
       }
-      if (confirm("Sigurado ka bang gusto mong burahin ang post na ito?")) {
+      // Using a custom modal for confirmation instead of confirm()
+      showConfirmModal("Sigurado ka bang gusto mong burahin ang post na ito?", async () => {
         await deletePost(post.id);
-      }
+      });
     });
   }
 }
 
-// --- Like Functionality ---
 
+// --- Like Functionality ---
 async function toggleLike(postId, userId) {
-  if (!db) {
-    console.error("Firestore database is not initialized.");
-    showMessage(postMessageArea, "Database error. Hindi makapag-react.", false);
+  if (!db || !userId) {
+    showMessage(postMessageArea, "Mangyaring mag-log in para mag-like.", false);
     return;
   }
   const postRef = doc(db, `artifacts/${appId}/public/data/posts`, postId);
@@ -402,287 +412,196 @@ async function toggleLike(postId, userId) {
     const postSnap = await getDoc(postRef);
     if (postSnap.exists()) {
       const postData = postSnap.data();
-      let likes = postData.likes || [];
-      if (likes.includes(userId)) {
+      let currentLikes = postData.likes || [];
+      if (currentLikes.includes(userId)) {
         // User already liked, so unlike
-        likes = likes.filter(id => id !== userId);
-        await updateDoc(postRef, { likes: likes });
+        currentLikes = currentLikes.filter(id => id !== userId);
+        await updateDoc(postRef, { likes: currentLikes });
+        console.log("Unliked post:", postId);
       } else {
         // User hasn't liked, so like
-        likes = [...likes, userId];
-        await updateDoc(postRef, { likes: likes });
+        currentLikes.push(userId);
+        await updateDoc(postRef, { likes: currentLikes });
+        console.log("Liked post:", postId);
       }
     }
   } catch (error) {
     console.error("Error toggling like:", error);
-    showMessage(postMessageArea, "Nabigo ang pag-react. Subukang muli.", false);
+    showMessage(postMessageArea, "Nabigo ang pag-like. Subukang muli.", false);
   }
 }
 
-// --- Comment Functionality (for posts in the feed) ---
+// --- Comment Functionality (Modal and Inline) ---
+// Note: currentOpenPostId and unsubscribeComments are already declared globally
+
+function openModal(postId, title, description, imageUrl) {
+  currentOpenPostId = postId;
+  if (!overlay || !modalTitle || !modalDesc || !modalImg || !modalLikeBtn || !commentsDisplayArea || !commentInput || !submitCommentBtn || !modalCloseBtn) {
+    console.error("Modal elements not found.");
+    return;
+  }
+
+  modalTitle.textContent = title;
+  modalDesc.textContent = description;
+  modalImg.src = imageUrl || 'https://placehold.co/600x400?text=No+Image';
+  modalImg.style.display = imageUrl ? 'block' : 'none'; // Show image only if URL exists
+
+  // Update like count in modal
+  const postRef = doc(db, `artifacts/${appId}/public/data/posts`, postId);
+  onSnapshot(postRef, (docSnap) => {
+    if (docSnap.exists()) {
+      const postData = docSnap.data();
+      const likeCountSpan = modalLikeBtn.querySelector('.like-count');
+      if (likeCountSpan) {
+        likeCountSpan.textContent = postData.likes ? postData.likes.length : 0;
+      }
+      // Highlight like button if current user has liked
+      if (currentUserId && postData.likes && postData.likes.includes(currentUserId)) {
+        modalLikeBtn.classList.add('liked');
+      } else {
+        modalLikeBtn.classList.remove('liked');
+      }
+    }
+  });
+
+  // Attach like functionality to modal like button
+  modalLikeBtn.onclick = () => toggleLike(postId, currentUserId);
+
+  // Load and display comments for this post
+  loadCommentsForPost(postId, commentsDisplayArea); // Pass commentsDisplayArea here
+
+  overlay.style.display = 'flex'; // Show the modal
+}
+
+function closeModal() {
+  if (overlay) {
+    overlay.style.display = 'none';
+  }
+  currentOpenPostId = null;
+  if (unsubscribeComments) {
+    unsubscribeComments(); // Unsubscribe from comments listener
+    unsubscribeComments = null;
+  }
+  if (commentsDisplayArea) commentsDisplayArea.innerHTML = ''; // Clear comments
+  if (commentInput) commentInput.value = ''; // Clear comment input
+  if (commentMessageArea) commentMessageArea.style.display = 'none'; // Hide message area
+}
+
+// Event listener for modal close button
+if (modalCloseBtn) {
+  modalCloseBtn.addEventListener('click', closeModal);
+}
+
+// Event listener for overlay click (to close modal if clicking outside)
+if (overlay) {
+  overlay.addEventListener('click', (event) => {
+    if (event.target === overlay) {
+      closeModal();
+    }
+  });
+}
 
 async function addComment(postId, commentText) {
-  if (!db) {
-    console.error("Firestore database is not initialized.");
-    showMessage(postMessageArea, "Database error. Hindi makapag-komento.", false);
+  if (!db || !currentUserId || !currentUserName) {
+    showMessage(commentMessageArea, "Mangyaring mag-log in para magkomento.", false);
     return;
   }
   try {
+    // Add comment document
     await addDoc(collection(db, `artifacts/${appId}/public/data/comments`), {
       postId: postId,
       userId: currentUserId,
       userName: currentUserName,
-      commentText: commentText,
-      timestamp: new Date(),
-      parentId: null // Top-level comment
+      userAvatarUrl: currentUserAvatarUrl, // Include avatar URL for comments
+      comment: commentText,
+      timestamp: new Date()
     });
 
-    // Increment commentsCount on the post
+    // Update commentsCount on the post document
     const postRef = doc(db, `artifacts/${appId}/public/data/posts`, postId);
     await updateDoc(postRef, {
-      commentsCount: (await getDoc(postRef)).data().commentsCount + 1
+      commentsCount: (await getDoc(postRef)).data().commentsCount + 1 || 1
     });
 
-    showMessage(postMessageArea, "Komento naidagdag na!", true);
+    showMessage(commentMessageArea, "Komento naidagdag na!", true);
+    if (commentInput) commentInput.value = ''; // Clear input
   } catch (error) {
     console.error("Error adding comment:", error);
-    showMessage(postMessageArea, "Nabigo ang pagdagdag ng komento. Subukang muli.", false);
+    showMessage(commentMessageArea, "Nabigo ang pagdagdag ng komento. Subukang muli.", false);
   }
 }
 
-function loadCommentsForPost(postId, commentsListElement) {
+function loadCommentsForPost(postId, commentsDisplayAreaElement) { // Renamed parameter for clarity
   if (!db) {
     console.error("Firestore database is not initialized. Cannot load comments.");
-    if (commentsListElement) commentsListElement.innerHTML = '<p class="message-area">Database error. Hindi ma-load ang mga komento.</p>';
+    if (commentsDisplayAreaElement) commentsDisplayAreaElement.innerHTML = '<p class="message-area">Database error. Hindi ma-load ang mga komento.</p>';
     return;
   }
 
-  // Clear previous comments and unsubscribe if any
-  if (commentsListElement) {
-    commentsListElement.innerHTML = '<p style="text-align: center; color: #aaa;">Loading comments...</p>';
-  }
-
-  // Unsubscribe previous listener if it was for a different post or if called again for the same post
   if (unsubscribeComments) {
-    unsubscribeComments(); // Unsubscribe from previous listener if exists
+    unsubscribeComments(); // Unsubscribe from previous listener
   }
 
-  const commentsRef = collection(db, `artifacts/${appId}/public/data/comments`);
-  const q = query(commentsRef); // Fetch all comments, then filter by postId in client
+  const commentsCollectionRef = collection(db, `artifacts/${appId}/public/data/comments`);
+  const q = query(commentsCollectionRef, where('postId', '==', postId), orderBy('timestamp', 'asc'));
 
   unsubscribeComments = onSnapshot(q, (snapshot) => {
-    const commentsForThisPost = [];
-    snapshot.forEach(doc => {
-      const comment = { id: doc.id, ...doc.data() };
-      if (comment.postId === postId) {
-        commentsForThisPost.push(comment);
-      }
-    });
+    if (commentsDisplayAreaElement) commentsDisplayAreaElement.innerHTML = ''; // Clear comments area
+    if (snapshot.empty) {
+      if (commentsDisplayAreaElement) commentsDisplayAreaElement.innerHTML = '<p style="text-align: center; color: #aaa;">Walang komento pa. Maging una!</p>';
+      return;
+    }
 
-    // Build hierarchical comments
-    const commentsById = new Map();
-    const rootComments = [];
+    snapshot.forEach((doc) => {
+      const comment = doc.data();
+      const commentElement = document.createElement('div');
+      commentElement.classList.add('comment-item');
+      const commentDate = comment.timestamp ? new Date(comment.timestamp.toDate()).toLocaleString() : 'Unknown Date';
+      const displayCommentAvatarUrl = comment.userAvatarUrl || 'https://placehold.co/30?text=P'; // Fallback for comment avatar
+      const displayCommentUserName = comment.userName || 'Anonymous User'; // Fallback for comment username
 
-    commentsForThisPost.forEach(comment => {
-      commentsById.set(comment.id, comment);
-      if (!comment.parentId) {
-        rootComments.push(comment);
-      }
-    });
+      commentElement.innerHTML = `
+        <div class="comment-header">
+          <img src="${displayCommentAvatarUrl}" alt="Avatar" class="profile-pic">
+          <span class="comment-author" data-user-id="${comment.userId}">${displayCommentUserName}</span>
+          <span class="comment-time">${commentDate}</span>
+        </div>
+        <p class="comment-text">${comment.comment}</p>
+      `;
+      if (commentsDisplayAreaElement) commentsDisplayAreaElement.appendChild(commentElement);
 
-    commentsById.forEach(comment => {
-      if (comment.parentId) {
-        const parent = commentsById.get(comment.parentId);
-        if (parent) {
-          if (!parent.replies) {
-            parent.replies = [];
+      // Add event listener for comment author's name
+      const commentAuthorSpan = commentElement.querySelector('.comment-author');
+      if (commentAuthorSpan) {
+        commentAuthorSpan.style.cursor = 'pointer';
+        commentAuthorSpan.addEventListener('click', () => {
+          const userIdToView = commentAuthorSpan.dataset.userId;
+          if (userIdToView) {
+            window.location.href = `profile.html?userId=${userIdToView}`;
+            closeModal(); // Close the modal when redirecting
           }
-          parent.replies.push(comment);
-        }
+        });
       }
     });
-
-    // Sort comments by timestamp
-    rootComments.sort((a, b) => (a.timestamp && b.timestamp) ? a.timestamp.toDate() - b.timestamp.toDate() : 0);
-
-    if (commentsListElement) {
-      commentsListElement.innerHTML = ''; // Clear existing comments before rendering
-      if (rootComments.length > 0) {
-        rootComments.forEach(comment => {
-          renderComment(comment, commentsListElement);
-        });
-      } else {
-        commentsListElement.innerHTML = '<p style="text-align: center; color: #aaa;">Walang komento pa. Maging una!</p>';
-      }
-    }
   }, (error) => {
-    console.error("Error loading comments for post:", error);
-    if (commentsListElement) {
-      commentsListElement.innerHTML = '<p class="message-area">Error loading comments.</p>';
-    }
+    console.error("Error loading comments:", error);
+    if (commentsDisplayAreaElement) commentsDisplayAreaElement.innerHTML = '<p class="message-area">Error loading comments.</p>';
   });
 }
 
-function renderComment(comment, parentElement) {
-  const commentItem = document.createElement('div');
-  commentItem.classList.add('comment-item');
-
-  // Apply indentation and "tali" if it's a reply (i.e., has a parentId)
-  if (comment.parentId) {
-    commentItem.style.marginLeft = '20px'; // Fixed indentation for all replies
-    commentItem.style.borderLeft = '2px solid #ffb300'; // Add "tali" directly to the comment item
-    commentItem.style.paddingLeft = '15px'; // Space for the "tali"
-  }
-
-  const commentDate = comment.timestamp ? new Date(comment.timestamp.toDate()).toLocaleString() : 'Unknown Date';
-  const isCommentOwner = currentUserId && comment.userId === currentUserId;
-
-  commentItem.innerHTML = `
-    <strong>${comment.userName || 'Anonymous'}</strong> <span style="font-size: 0.8em; color: #888;">(${commentDate})</span>
-    <p>${comment.commentText}</p>
-    <button class="reply-button" data-comment-id="${comment.id}">Reply</button>
-    ${isCommentOwner ? `<button class="delete-comment-btn" data-comment-id="${comment.id}" data-post-id="${comment.postId}">Delete</button>` : ''}
-  `;
-  parentElement.appendChild(commentItem);
-
-  // Event listener for reply button
-  const replyButton = commentItem.querySelector('.reply-button');
-  if (replyButton) {
-    replyButton.addEventListener('click', () => {
-      // Remove any existing reply input for this comment
-      const existingReplyInput = commentItem.querySelector('.reply-input-area');
-      if (existingReplyInput) {
-        existingReplyInput.remove();
-      } else {
-        showReplyInputForComment(commentItem, comment.id, comment.postId);
-      }
-    });
-  }
-
-  // Event listener for delete comment button
-  const deleteCommentBtn = commentItem.querySelector('.delete-comment-btn');
-  if (deleteCommentBtn) {
-    deleteCommentBtn.addEventListener('click', async () => {
-      if (!db) {
-        showMessage(postMessageArea, "Database error. Hindi makabura ng komento.", false);
-        return;
-      }
-      if (confirm("Sigurado ka bang gusto mong burahin ang komentong ito?")) {
-        await deleteComment(comment.id, comment.postId);
-      }
-    });
-  }
-
-  // Handle replies recursively
-  if (comment.replies && comment.replies.length > 0) {
-    const repliesContainer = document.createElement('div');
-    repliesContainer.classList.add('replies-container', 'hidden-replies');
-
-    const showRepliesButton = document.createElement('button');
-    showRepliesButton.classList.add('show-replies-button');
-    showRepliesButton.textContent = `Show Replies (${comment.replies.length})`;
-    showRepliesButton.addEventListener('click', () => {
-      repliesContainer.classList.toggle('hidden-replies');
-      if (repliesContainer.classList.contains('hidden-replies')) {
-        showRepliesButton.textContent = `Show Replies (${comment.replies.length})`;
-      } else {
-        showRepliesButton.textContent = `Hide Replies (${comment.replies.length})`;
-      }
-    });
-    commentItem.appendChild(showRepliesButton);
-
-    comment.replies.sort((a, b) => (a.timestamp && b.timestamp) ? a.timestamp.toDate() - b.timestamp.toDate() : 0);
-    comment.replies.forEach(reply => {
-      renderComment(reply, repliesContainer);
-    });
-    commentItem.appendChild(repliesContainer);
-  }
-}
-
-function showReplyInputForComment(commentElement, parentCommentId, postId) {
-  if (!db) {
-    console.error("Firestore database is not initialized.");
-    showMessage(postMessageArea, "Database error. Hindi makapag-reply.", false);
-    return;
-  }
-  const replyInputArea = document.createElement('div');
-  replyInputArea.classList.add('comment-input-area', 'reply-input-area');
-  replyInputArea.style.marginLeft = '0px'; // No extra margin, it's already inside an indented commentItem
-  replyInputArea.style.borderLeft = '2px solid #ffb300';
-  replyInputArea.style.paddingLeft = '15px';
-
-  const textarea = document.createElement('textarea');
-  textarea.placeholder = "Isulat ang iyong reply...";
-  textarea.disabled = !currentUserId;
-
-  const submitButton = document.createElement('button');
-  submitButton.textContent = "Reply";
-  submitButton.disabled = !currentUserId;
-
-  submitButton.addEventListener('click', async () => {
-    const replyText = textarea.value.trim();
-    if (replyText) {
-      if (!db) { // Double check db before addDoc
-        showMessage(postMessageArea, "Database error. Hindi makapag-reply.", false);
-        return;
-      }
-      try {
-        await addDoc(collection(db, `artifacts/${appId}/public/data/comments`), {
-          postId: postId,
-          userId: currentUserId,
-          userName: currentUserName,
-          commentText: replyText,
-          timestamp: new Date(),
-          parentId: parentCommentId
-        });
-        // Increment commentsCount on the post
-        const postRef = doc(db, `artifacts/${appId}/public/data/posts`, postId);
-        await updateDoc(postRef, {
-          commentsCount: (await getDoc(postRef)).data().commentsCount + 1
-        });
-
-        showMessage(postMessageArea, "Reply naidagdag na!", true);
-        replyInputArea.remove(); // Remove the input after submission
-      } catch (error) {
-        console.error("Error adding reply:", error);
-        showMessage(postMessageArea, "Nabigo ang pagdagdag ng reply. Subukang muli.", false);
+// Event listener for comment submission
+if (submitCommentBtn && commentInput && commentMessageArea) {
+  submitCommentBtn.addEventListener('click', async () => {
+    const commentText = commentInput.value.trim();
+    if (commentText) {
+      if (currentOpenPostId) {
+        await addComment(currentOpenPostId, commentText);
       }
     } else {
-      showMessage(postMessageArea, "Walang laman ang reply.", false);
+      showMessage(commentMessageArea, "Walang laman ang komento.", false);
     }
   });
-
-  replyInputArea.appendChild(textarea);
-  replyInputArea.appendChild(submitButton);
-  commentElement.appendChild(replyInputArea);
-  textarea.focus();
 }
-
-async function deleteComment(commentId, postId) {
-  if (!db) {
-    console.error("Firestore database is not initialized.");
-    showMessage(postMessageArea, "Database error. Hindi makabura ng komento.", false);
-    return;
-  }
-  try {
-    await deleteDoc(doc(db, `artifacts/${appId}/public/data/comments`, commentId));
-
-    // Decrement commentsCount on the post
-    const postRef = doc(db, `artifacts/${appId}/public/data/posts`, postId);
-    const postSnap = await getDoc(postRef);
-    if (postSnap.exists() && postSnap.data().commentsCount > 0) {
-      await updateDoc(postRef, {
-        commentsCount: postSnap.data().commentsCount - 1
-      });
-    }
-
-    showMessage(postMessageArea, "Komento nabura na!", true);
-  } catch (error) {
-    console.error("Error deleting comment:", error);
-    showMessage(postMessageArea, "Nabigo ang pagbura ng komento.", false);
-  }
-}
-
 
 // --- Edit/Delete Post Functionality ---
 
@@ -693,31 +612,23 @@ function toggleEditMode(storyCard, post) {
     return;
   }
   const postTextElement = storyCard.querySelector('.post-text');
-  const postImageElement = storyCard.querySelector('.story-content img');
-  const postActions = storyCard.querySelector('.post-actions');
+  const postActions = storyCard.querySelector('.post-actions'); // Get the post-actions div
 
   if (postTextElement.dataset.editing === 'true') {
-    // Save changes
-    const newContent = postTextElement.value.trim();
-    updatePost(post.id, { content: newContent });
-    postTextElement.outerHTML = `<p class="post-text">${newContent}</p>`; // Replace textarea with p
-    postTextElement.dataset.editing = 'false';
-    postActions.innerHTML = `
-      <button class="edit-post-btn" data-post-id="${post.id}">Edit</button>
-      <button class="delete-post-btn" data-post-id="${post.id}">Delete</button>
-    `;
-    attachPostEventListeners(storyCard, post); // Re-attach listeners
+    // This state should ideally not be reached if the buttons are correctly toggled
+    console.warn("Already in edit mode. Exiting.");
+    return;
   } else {
     // Enter edit mode
     const currentContent = postTextElement.textContent;
     const textarea = document.createElement('textarea');
-    textarea.classList.add('post-text');
+    textarea.classList.add('post-text'); // Keep the class for styling
     textarea.value = currentContent;
     textarea.style.width = '100%';
     textarea.style.minHeight = '100px';
     textarea.style.padding = '10px';
     textarea.style.border = '1px solid #ddd';
-    textarea.style.borderRadius = '8-px';
+    textarea.style.borderRadius = '8px';
     textarea.style.fontSize = '1em';
     textarea.style.marginBottom = '15px';
     textarea.style.boxSizing = 'border-box';
@@ -725,6 +636,7 @@ function toggleEditMode(storyCard, post) {
 
     postTextElement.replaceWith(textarea);
 
+    // Change action buttons
     postActions.innerHTML = `
       <button class="save-post-btn" data-post-id="${post.id}">Save</button>
       <button class="cancel-edit-btn" data-post-id="${post.id}">Cancel</button>
@@ -734,23 +646,23 @@ function toggleEditMode(storyCard, post) {
     storyCard.querySelector('.save-post-btn').addEventListener('click', () => {
       const updatedContent = textarea.value.trim();
       updatePost(post.id, { content: updatedContent });
+      // Revert back to p tag and original buttons after save
       textarea.outerHTML = `<p class="post-text">${updatedContent}</p>`;
-      textarea.dataset.editing = 'false';
       postActions.innerHTML = `
         <button class="edit-post-btn" data-post-id="${post.id}">Edit</button>
         <button class="delete-post-btn" data-post-id="${post.id}">Delete</button>
       `;
-      attachPostEventListeners(storyCard, post);
+      attachPostCardEventListeners(storyCard, post); // Re-attach all listeners for the card
     });
 
     storyCard.querySelector('.cancel-edit-btn').addEventListener('click', () => {
-      textarea.outerHTML = `<p class="post-text">${currentContent}</p>`; // Revert to original content
-      textarea.dataset.editing = 'false';
+      // Revert to original content and buttons
+      textarea.outerHTML = `<p class="post-text">${currentContent}</p>`;
       postActions.innerHTML = `
         <button class="edit-post-btn" data-post-id="${post.id}">Edit</button>
         <button class="delete-post-btn" data-post-id="${post.id}">Delete</button>
       `;
-      attachPostEventListeners(storyCard, post);
+      attachPostCardEventListeners(storyCard, post); // Re-attach all listeners for the card
     });
   }
 }
@@ -783,14 +695,12 @@ async function deletePost(postId) {
 
     // Delete associated comments (optional, but good practice for cleanup)
     const commentsRef = collection(db, `artifacts/${appId}/public/data/comments`);
-    const q = query(commentsRef); // Fetch all comments to filter by postId
+    const q = query(commentsRef, where('postId', '==', postId)); // Query comments for this specific post
 
     const commentsToDelete = [];
     const snapshot = await getDocs(q); // Use getDocs to fetch once
     snapshot.forEach(doc => {
-      if (doc.data().postId === postId) {
-        commentsToDelete.push(deleteDoc(doc.ref));
-      }
+      commentsToDelete.push(deleteDoc(doc.ref));
     });
     await Promise.all(commentsToDelete);
 
@@ -801,81 +711,46 @@ async function deletePost(postId) {
   }
 }
 
-// --- Modal Functionality (for showing full post and comments) ---
-
-// This function is called from stories.html when clicking on a post image or content
-window.openOverlay = async (postId, content, imageUrl, userName, likes, commentsCount) => {
-  currentOpenPostId = postId;
-  if (modalTitle) modalTitle.textContent = `${userName}'s Post`;
-  if (modalDesc) modalDesc.textContent = content; // Display post content in modalDesc
-
-  if (modalImg) {
-    if (imageUrl) {
-      modalImg.src = imageUrl;
-      modalImg.style.display = 'block';
-    } else {
-      modalImg.src = '';
-      modalImg.style.display = 'none';
-    }
+// --- Custom Confirmation Modal (instead of alert/confirm) ---
+function showConfirmModal(message, onConfirm) {
+  // Create modal elements dynamically or use existing hidden ones
+  let confirmModal = document.getElementById('customConfirmModal');
+  if (!confirmModal) {
+    confirmModal = document.createElement('div');
+    confirmModal.id = 'customConfirmModal';
+    confirmModal.classList.add('overlay'); // Reuse overlay styling
+    confirmModal.innerHTML = `
+      <div class="modal-content" style="max-width: 400px; padding: 20px; text-align: center;">
+        <p id="confirmMessage" style="font-size: 1.1em; margin-bottom: 20px; color: #333;"></p>
+        <div style="display: flex; justify-content: center; gap: 15px;">
+          <button id="confirmYesBtn" style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Oo</button>
+          <button id="confirmNoBtn" style="background-color: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Hindi</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(confirmModal);
   }
 
+  document.getElementById('confirmMessage').textContent = message;
+  confirmModal.style.display = 'flex';
 
-  // Update modal's like button state
-  updateModalLikeButton(likes || []);
+  const confirmYesBtn = document.getElementById('confirmYesBtn');
+  const confirmNoBtn = document.getElementById('confirmNoBtn');
 
-  // Show comments section in modal
-  if (modalCommentSection) modalCommentSection.style.display = 'block';
-  loadCommentsForPost(postId, commentsDisplayArea);
+  // Clear previous listeners to prevent multiple calls
+  confirmYesBtn.onclick = null;
+  confirmNoBtn.onclick = null;
 
-  if (overlay) overlay.style.display = 'flex';
-};
+  confirmYesBtn.onclick = () => {
+    onConfirm();
+    confirmModal.style.display = 'none';
+  };
 
-window.closeOverlay = () => {
-  if (overlay) overlay.style.display = 'none';
-  currentOpenPostId = null;
-  if (modalImg) modalImg.src = '';
-  if (modalDesc) modalDesc.textContent = '';
-  if (commentsDisplayArea) commentsDisplayArea.innerHTML = ''; // Clear comments
-  if (commentInput) commentInput.value = ''; // Clear comment input
-  if (commentMessageArea) commentMessageArea.textContent = ''; // Clear modal message
-  if (commentMessageArea) commentMessageArea.style.display = 'none';
-  if (modalCommentSection) modalCommentSection.style.display = 'none'; // Hide comments section
-
-  if (unsubscribeComments) {
-    unsubscribeComments(); // Unsubscribe comments listener when modal closes
-    unsubscribeComments = null;
-  }
-};
-
-// Update the modal's like button based on current user's like status
-function updateModalLikeButton(likesArray) {
-  if (!modalLikeBtn) return; // Ensure button exists
-  const likedByCurrentUser = currentUserId && likesArray.includes(currentUserId);
-  modalLikeBtn.classList.toggle('liked', likedByCurrentUser);
-  const likeCountSpan = modalLikeBtn.querySelector('.like-count');
-  if (likeCountSpan) {
-    likeCountSpan.textContent = likesArray.length;
-  }
+  confirmNoBtn.onclick = () => {
+    confirmModal.style.display = 'none';
+  };
 }
 
-// Event listener for modal's comment submit button
-if (submitCommentBtn) { // Removed db check here, as it's checked inside addComment
-  submitCommentBtn.addEventListener('click', async () => {
-    if (!currentUserId) { // Only check currentUserId here
-      showMessage(commentMessageArea, "Mangyaring mag-log in para mag-komento.", false);
-      return;
-    }
-    const commentText = commentInput ? commentInput.value.trim() : '';
-    if (commentText) {
-      if (currentOpenPostId) {
-        await addComment(currentOpenPostId, commentText);
-        // No need to re-fetch post data for commentsCount here, loadCommentsForPost will update via onSnapshot
-      }
-    } else {
-      showMessage(commentMessageArea, "Walang laman ang komento.", false);
-    }
-  });
-}
 
 // --- Logout Functionality ---
 if (logoutBtn && auth) { // Ensure auth is valid
@@ -892,6 +767,22 @@ if (logoutBtn && auth) { // Ensure auth is valid
     }
   });
 }
+
+// For dropdown logout button (if it exists)
+const logoutBtnDropdown = document.getElementById('logoutBtnDropdown');
+if (logoutBtnDropdown && auth) {
+  logoutBtnDropdown.addEventListener("click", async () => {
+    try {
+      await auth.signOut();
+      console.log("User signed out successfully from dropdown.");
+      window.location.href = "login.html";
+    } catch (error) {
+      console.error("Error signing out from dropdown:", error);
+      showMessage(postMessageArea, "Nabigo ang pag-logout. Subukang muli.", false);
+    }
+  });
+}
+
 
 // Initial load of posts when the page loads
 document.addEventListener('DOMContentLoaded', () => {

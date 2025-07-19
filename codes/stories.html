@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Philippine Gaze - Stories</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philippine Gaze - Stories</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Linked to external styles.css -->
 </head>
 <body>
   <header class="transparent-navbar">
@@ -25,104 +25,46 @@
     </div>
   </div>
   </header>
-<style>
-  .burger-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-left: 55%; /* Push it to right */
-  
-  .burger-menu {
-  font-size: 28px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  padding: 8px;
-  user-select: none;
-  color: #333;
-}
-.burger-menu.open {
-  transform: rotate(90deg);
-}
 
-.dropdown-menu {
-  position: absolute;
-  top: 100%; /* Position right below the burger menu */
-  right: 0;
-  background: white; /* Or your desired background color */
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  display: flex; /* Keep flex for column layout, but control visibility with height/opacity */
-  flex-direction: column;
-  z-index: 999;
-  cursor: default;
-  overflow: hidden; /* Crucial: Hides content that exceeds max-height */
+    <main class="stories-main"> <!-- Added stories-main class -->
+        <section class="stories-feed-section"> <!-- Added stories-feed-section class -->
+            <h2>Recent Stories</h2>
+            <div class="stories-feed" id="storiesFeed">
+                <p class="loading-message" style="text-align: center; color: #888;">Loading posts...</p>
+            </div>
+        </section>
+    </main>
 
-  /* Initial state for slide-down animation */
-  max-height: 0; /* Starts hidden */
-  opacity: 0; /* Starts fully transparent */
-  transform: translateY(-10px); /* Slightly move up initially */
-  transition: max-height 0.4s ease-out, opacity 0.4s ease-out, transform 0.4s ease-out; /* Smooth transitions */
-}
-
-.dropdown-menu.show {
-  max-height: 400px; /* OR a larger value like 300px, 500px, or 1000px */
-  opacity: 1;
-  transform: translateY(0);
-}
-.dropdown-menu a {
-  padding: 10px 15px;
-  color: #333;
-  text-decoration: none;
-  cursor: pointer; /* ✅ Adds pointer hand on links */
-}
-}
-</style>
-  <main class="stories-main">
-    <h1>Philippine Gaze Stories</h1>
-
-    <section class="stories-feed-section">
-      <h2>Recent Stories</h2>
-      <div id="storiesFeed" class="stories-feed">
-        <p class="loading-message">Loading stories...</p>
-      </div>
-    </section>
-  </main>
-
-  <div id="overlay" class="overlay">
-    <div class="modal-content">
-      <button class="close-btn" onclick="closeOverlay()">&times;</button>
-      <h2 id="modal-title" class="modal-title"></h2>
-      <img id="modal-img" class="modal-img" src="" alt="Post Image">
-      <p id="modal-desc" class="modal-desc"></p>
-
-      <div class="modal-buttons">
-        <button id="modalLikeBtn" class="like-button">
-          <i class="fas fa-heart"></i> <span class="like-count">0</span>
-        </button>
-      </div>
-
-      <div id="modal-comment-section" class="modal-comment-section">
-        <h3>Comments</h3>
-        <div id="comments-display-area" class="comments-display-area">
-          <p style="text-align: center; color: #aaa;">Walang komento pa. Maging una!</p>
+    <!-- Modal for comments -->
+    <div class="overlay" id="overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+            <div class="modal-header">
+                <h2 id="modal-title">Post Title</h2>
+            </div>
+            <div class="modal-body">
+                <img id="modal-img" src="" alt="Post Image" class="modal-img">
+                <p id="modal-desc">This is the description of the post.</p>
+                <div class="modal-actions">
+                    <button id="modalLikeBtn" class="like-button">
+                        <i class="fas fa-heart"></i> <span class="like-count">0</span>
+                    </button>
+                </div>
+            </div>
+            <div class="comment-section" id="modal-comment-section">
+                <h3>Comments</h3>
+                <div class="comments-display-area" id="comments-display-area">
+                    <!-- Comments will be loaded here -->
+                </div>
+                <div class="comment-input-area">
+                    <textarea id="comment-input" placeholder="Sumulat ng komento..." disabled></textarea>
+                    <button id="submit-comment-btn" disabled>Submit</button>
+                </div>
+                <div id="commentMessageArea" class="message-area"></div>
+            </div>
         </div>
-        <div id="comment-message-area" class="message-area" style="display: none;"></div>
-        <div class="comment-input-area">
-          <textarea id="comment-input" placeholder="Isulat ang iyong komento..." disabled></textarea>
-          <button id="submit-comment-btn" disabled>Isumite ang Komento</button>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <script type="module" src="stories.js"></script>
-  <script>
-    document.getElementById("logoutBtn")?.addEventListener("click", () => {
-      // Note: Firebase signOut logic will be in stories.js
-      alert("You have been logged out."); // Consider replacing alert with a custom modal for better UX
-      window.location.href = "login.html";
-    });
-  </script>
+    <script type="module" src="stories.js"></script>
 </body>
 </html>
