@@ -2,7 +2,7 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', Arial, sans-serif;
-  background: linear-gradient(#ffff);
+  background: linear-gradient(#da3535);
   min-height: 100vh;
   background-attachment: fixed;
   color: #333; /* Default text color */

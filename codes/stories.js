@@ -1,8 +1,8 @@
 // stories.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getFirestore, collection, addDoc, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, arrayUnion, arrayRemove, getDoc, getDocs
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"; // Corrected import for firestore
+  getFirestore, collection, addDoc, query, orderBy, onSnapshot, doc, updateDoc, deleteDoc, arrayUnion, arrayRemove, getDoc, getDocs, where // ADDED 'where' here
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signInWithCustomToken, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // UI Elements - Declared at the top to ensure they are accessible before any Firebase logic
@@ -156,7 +156,7 @@ if (auth) {
         if (userData.username) currentUserName = userData.username; // Use custom username if available
       } else {
         // If user profile doesn't exist, create a basic one
-        await updateDoc(userRef, {
+        await setDoc(userRef, { // Changed to setDoc to create if not exists
           username: currentUserName,
           email: user.email || '',
           bio: "Hello, I'm new to Philippine Gaze!",
