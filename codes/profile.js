@@ -430,7 +430,7 @@ if (createPostBtn) {
       return;
     }
 
-    showMessage(postMessageArea, "Nagpoproseso ng post...", false);
+    showMessage(postMessageArea, "Posting", false);
     createPostBtn.disabled = true;
 
     let imageUrl = null;
@@ -451,7 +451,7 @@ if (createPostBtn) {
             commentsCount: 0
           });
 
-          showMessage(postMessageArea, "Post naidagdag na sa Stories!", true);
+          showMessage(postMessageArea, "Post added to Stories!", true);
           postContentInput.value = '';
           postImageInput.value = '';
           createPostBtn.disabled = false;
@@ -532,7 +532,7 @@ function renderUserPost(post) {
     // Check if the post belongs to the currently logged-in user
     const isOwner = currentUserId && post.userId === currentUserId;
 
-    postCard.innerHTML = `
+   postCard.innerHTML = `
         <div class="post-header">
             <img src="${post.userAvatarUrl || 'https://placehold.co/40?text=P'}" alt="Profile Pic" class="profile-pic">
             <span class="post-author">${post.userName || 'Anonymous User'}</span> <!-- Ensure userName is displayed -->
@@ -550,11 +550,9 @@ function renderUserPost(post) {
             <button class="like-button" data-post-id="${post.id}">
                 <i class="fas fa-heart"></i> <span class="like-count">${post.likes ? post.likes.length : 0}</span>
             </button>
-            <button><i class="fas fa-comment"></i> Comments (${post.commentsCount || 0})</button>
-            <button><i class="fas fa-share"></i> Share</button>
+
         </div>
     `;
-
     if (profilePostsFeed) profilePostsFeed.appendChild(postCard);
 
     // Attach event listeners for edit and delete buttons ONLY if it's the owner's post
@@ -579,7 +577,7 @@ function attachUserPostEventListeners(postCard, post) {
                 return;
             }
             // Using a custom modal for confirmation instead of confirm()
-            showConfirmModal("Sigurado ka bang gusto mong burahin ang post na ito?", async () => {
+            showConfirmModal("Are you sure you want to delete this post?", async () => {
                 await deletePost(post.id);
             });
         });
@@ -659,7 +657,7 @@ async function updatePost(postId, updates) {
   const postRef = doc(db, `artifacts/${appId}/public/data/posts`, postId);
   try {
     await updateDoc(postRef, updates);
-    showMessage(postMessageArea, "Post na-update na!", true);
+    showMessage(postMessageArea, "Post updated", true);
   } catch (error) {
     console.error("Error updating post:", error);
     showMessage(postMessageArea, "Nabigo ang pag-update ng post.", false);
