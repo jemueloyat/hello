@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Service - Philippine Gaze</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+</head>
+<body class="service-page-body">
+    <header class="transparent-navbar">
+        <div class="logo">
+            <a href="index.html" class="logo-link">
+                <img src="assets/logo-removebg-preview.png" alt="Philippine Gaze Logo" class="navbar-logo">
+                <span>Philippine Gaze</span>
+            </a>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="main.html">Main</a>
+            <a href="stories.html">Stories</a>
+            <a href="favorites.html">Favorites</a>
+            <a href="preferences.html">My Dashboard</a>
+        </nav>
+        <div class="burger-wrapper">
+            <div class="burger-menu" id="burgerMenu">&#9776;</div>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="profile.html">Profile</a>
+                <a href="service.html" class="active">Customer Service</a>
+                <a href="#" id="logoutBtn">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="service-main-content">
+        <div id="customerServiceContainer" class="customer-service-container">
+            <div class="chat-header">
+                <h3>Customer Service</h3>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                </div>
+            <div class="chat-input-area" id="chatInputArea">
+                <div class="chat-options" id="initialOptions" style="display: none;"> <button class="chat-button" data-choice="report">Report (Bugs, User, or anything)</button>
+                    <button class="chat-button" data-choice="recommend">Recommendation to improve our site</button>
+                </div>
+                <div class="chat-text-input" style="display: none;">
+                    <textarea id="userInput" placeholder="Type your detailed report or recommendation here..." rows="5"></textarea>
+                    <button id="submitIssueBtn">Submit</button>
+                </div>
+                <button class="chat-button back-button" id="chatBackButton" style="display: none;">Back</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // JavaScript for Burger Menu
+        document.addEventListener('DOMContentLoaded', () => {
+            const burgerMenu = document.getElementById('burgerMenu');
+            const dropdownMenu = document.getElementById('dropdownMenu');
+
+            if (burgerMenu) {
+                burgerMenu.addEventListener('click', () => {
+                    dropdownMenu.classList.toggle('show');
+                });
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (event) => {
+                if (!burgerMenu.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+        });
+
+        // Customer Service Chat Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const customerServiceContainer = document.getElementById('customerServiceContainer');
+            const chatMessages = document.getElementById('chatMessages');
+            const initialOptions = document.getElementById('initialOptions');
+            const chatTextInput = customerServiceContainer.querySelector('.chat-text-input');
+            const chatBackButton = document.getElementById('chatBackButton');
+            const userInput = document.getElementById('userInput');
+            const submitIssueBtn = document.getElementById('submitIssueBtn');
+
+            let currentChatState = 'initial'; // States: 'initial', 'reporting', 'recommending', 'detail'
+            const typingDelay = 1000; // Duration for dots animation
+            const messagePopDelay = 400; // Duration for message pop-in animation (should match CSS animation duration)
+
+            // Helper to create dots element
+            function createDotsElement() {
+                const dot1 = document.createElement('span');
+                const dot2 = document.createElement('span');
+                const dot3 = document.createElement('span');
+                const el = document.createElement('div');
+                el.appendChild(dot1);
+                el.appendChild(dot2);
+                el.appendChild(dot3);
+                el.classList.add('message', 'dots');
+                return el;
+            }
+
+            // Add message with animation
+            function addMessage(text, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', type);
+                messageDiv.textContent = text;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to bottom
+            }
+
+            // Add bot message with typing indicator
+            function addBotMessageWithTyping(text, delay = typingDelay) {
+                const dots = createDotsElement();
+                chatMessages.appendChild(dots);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        dots.remove(); // Remove dots
+                        addMessage(text, 'bot-message'); // Add actual message
+                        resolve();
+                    }, delay);
+                });
+            }
+
+
+            // Handle initial choices (Report/Recommend)
+            initialOptions.addEventListener('click', async (e) => {
+                if (e.target.classList.contains('chat-button')) {
+                    const choice = e.target.dataset.choice;
+                    addMessage(e.target.textContent, 'user-message');
+                    initialOptions.style.display = 'none'; // Hide options immediately
+
+                    await new Promise(resolve => setTimeout(resolve, messagePopDelay + 100)); // Short delay after user message pops
+
+                    if (choice === 'report') {
+                        await showReportOptions();
+                    } else if (choice === 'recommend') {
+                        await showRecommendationInput();
+                    }
+                }
+            });
+
+            // Handle report sub-choices (Bug, User, Other)
+            async function handleReportSubChoice(e) {
+                if (e.target.classList.contains('chat-button')) {
+                    const choice = e.target.dataset.choice;
+                    addMessage(e.target.textContent, 'user-message');
+                    // Remove current report options buttons
+                    const reportOptionsDiv = document.getElementById('reportOptions');
+                    if(reportOptionsDiv) reportOptionsDiv.remove();
+
+                    await new Promise(resolve => setTimeout(resolve, messagePopDelay + 100));
+
+                    await addBotMessageWithTyping(`Please provide more details about the ${choice} report.`);
+                    showTextInput();
+                    currentChatState = 'detail';
+                    // Remove listener on chatMessages to prevent re-triggering for report sub-choices
+                    chatMessages.removeEventListener('click', handleReportSubChoice);
+                }
+            }
+
+            // Back button functionality
+            chatBackButton.addEventListener('click', async () => {
+                // Clear all messages temporarily and restart
+                chatMessages.innerHTML = '';
+                chatTextInput.style.display = 'none';
+                userInput.value = '';
+                chatBackButton.style.display = 'none';
+
+                // Re-add the initial message with typing animation
+                await addBotMessageWithTyping("Hello! How can I assist you today? Please choose an option:");
+                initialOptions.style.display = 'flex'; // Show initial options
+                currentChatState = 'initial';
+            });
+
+            // Submit button for detailed input
+            submitIssueBtn.addEventListener('click', async () => {
+                const userText = userInput.value.trim();
+                if (userText) {
+                    addMessage(userText, 'user-message');
+                    userInput.value = ''; // Clear input
+                    chatTextInput.style.display = 'none'; // Hide input
+
+                    await new Promise(resolve => setTimeout(resolve, messagePopDelay + 100));
+                    await addBotMessageWithTyping("Thank you for your feedback! We will review it.");
+
+                    // After submission message, give a small delay and then reset to initial options
+                    setTimeout(() => {
+                        resetChat();
+                    }, typingDelay + 500); // Wait for the "Thank you" message to appear and then reset
+                } else {
+                    await addBotMessageWithTyping("Please type something before submitting.");
+                }
+            });
+
+            async function showReportOptions() {
+                await addBotMessageWithTyping("What kind of report would you like to make?");
+
+                // Create and append the report options as a bot message
+                const optionsDiv = document.createElement('div');
+                optionsDiv.classList.add('message', 'bot-message', 'chat-options'); // Add message for animation
+                optionsDiv.id = 'reportOptions';
+                optionsDiv.innerHTML = `
+                    <button class="chat-button" data-choice="bug">Bug Report</button>
+                    <button class="chat-button" data-choice="user">User Related Issue</button>
+                    <button class="chat-button" data-choice="other">Other Issue</button>
+                `;
+                chatMessages.appendChild(optionsDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                chatTextInput.style.display = 'none';
+                initialOptions.style.display = 'none';
+                chatBackButton.style.display = 'block';
+                currentChatState = 'reporting';
+                optionsDiv.addEventListener('click', handleReportSubChoice); // Add listener to the new options div
+            }
+
+            async function showRecommendationInput() {
+                await addBotMessageWithTyping("Please provide your recommendation to improve our site.");
+                showTextInput();
+                currentChatState = 'recommending';
+                chatTextInput.style.display = 'flex';
+                initialOptions.style.display = 'none';
+                chatBackButton.style.display = 'block';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function showTextInput() {
+                chatTextInput.style.display = 'flex';
+                userInput.style.display = 'block';
+                submitIssueBtn.style.display = 'block';
+                userInput.focus(); // Focus on the textarea
+            }
+
+            async function resetChat() {
+                chatMessages.innerHTML = ''; // Clear all messages
+                await addBotMessageWithTyping("Hello! How can I assist you today? Please choose an option:");
+                initialOptions.style.display = 'flex';
+                chatTextInput.style.display = 'none';
+                userInput.value = '';
+                chatBackButton.style.display = 'none';
+                currentChatState = 'initial';
+                // Remove existing event listener if any, to prevent multiple bindings
+                const existingReportOptions = document.getElementById('reportOptions');
+                if (existingReportOptions) {
+                    existingReportOptions.removeEventListener('click', handleReportSubChoice);
+                }
+            }
+
+            // Initialize chat on page load with animation
+            resetChat();
+        });
+    </script>
+</body>
+</html>

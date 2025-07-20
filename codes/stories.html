@@ -8,15 +8,17 @@
     <link rel="stylesheet" href="styles.css"> <!-- Linked to external styles.css -->
 </head>
 <body>
-  <header class="transparent-navbar">
-    <div class="logo">Philippine Gaze</div>
+ <header class="transparent-navbar">
+    <div class="logo">
+      <span>Philippine Gaze</span>
+    </div>
     <nav>
       <a href="index.html">Home</a>
       <a href="main.html">Main</a>
       <a href="stories.html" class="active">Stories</a>
       <a href="favorites.html">Favorites</a>
     </nav>
-       <div class="burger-wrapper">
+   <div class="burger-wrapper">
     <div class="burger-menu" id="burgerMenu">&#9776;</div>
     <div class="dropdown-menu" id="dropdownMenu">
       <a href="profile.html">👤 Profile</a>
@@ -24,8 +26,60 @@
       <a href="#" id="logoutBtn">🚪 Logout</a>
     </div>
   </div>
-  </header>
+</header>
+<style>
+  .burger-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: 36.3%; /* Push it to right */
+  
+  .burger-menu {
+  font-size: 28px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  padding: 8px;
+  user-select: none;
+  color: #333;
+}
+.burger-menu.open {
+  transform: rotate(90deg);
+}
 
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* Position right below the burger menu */
+  right: 0;
+  background: white; /* Or your desired background color */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  display: flex; /* Keep flex for column layout, but control visibility with height/opacity */
+  flex-direction: column;
+  z-index: 999;
+  cursor: default;
+  overflow: hidden; /* Crucial: Hides content that exceeds max-height */
+
+  /* Initial state for slide-down animation */
+  max-height: 0; /* Starts hidden */
+  opacity: 0; /* Starts fully transparent */
+  transform: translateY(-10px); /* Slightly move up initially */
+  transition: max-height 0.4s ease-out, opacity 0.4s ease-out, transform 0.4s ease-out; /* Smooth transitions */
+}
+
+.dropdown-menu.show {
+  max-height: 400px; /* OR a larger value like 300px, 500px, or 1000px */
+  opacity: 1;
+  transform: translateY(0);
+}
+.dropdown-menu a {
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+  cursor: pointer; /* ✅ Adds pointer hand on links */
+}
+}
+</style>
     <main class="stories-main"> <!-- Added stories-main class -->
         <section class="stories-feed-section"> <!-- Added stories-feed-section class -->
             <h2>Recent Stories</h2>

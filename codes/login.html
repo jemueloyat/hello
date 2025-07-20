@@ -3,60 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Authentication</title>
+  <title>Login / Sign Up</title>
   <link rel="stylesheet" href="login.css">
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <div class="auth-container">
+  <div id="loaderOverlay" class="loader-overlay hidden">
+      <span class="loader"></span>
+  </div>
+
+  <div id="authContainer" class="auth-container">
     <div class="auth-toggle-buttons">
       <button id="showLoginBtn" class="active">Login</button>
       <button id="showSignupBtn">Sign Up</button>
     </div>
 
-    <!-- Login Form -->
     <div id="loginForm" class="auth-form">
       <h2>Login</h2>
       <div class="input-group">
+        <input type="email" id="loginEmail" required placeholder=" ">
         <label for="loginEmail">Email</label>
-        <input type="email" id="loginEmail" required>
       </div>
       <div class="input-group">
+        <input type="password" id="loginPassword" required placeholder=" ">
         <label for="loginPassword">Password</label>
-        <input type="password" id="loginPassword" required>
       </div>
       <button id="loginBtn">Login</button>
 
-      <!-- Google Login Button -->
+      <p class="auth-link"><a href="#" id="forgotPasswordLink">Forgot Password?</a></p>
+
       <button id="googleLoginBtn" class="google-btn">
         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google icon" width="20" height="20">
         Login with Google
       </button>
 
-      <p class="auth-link">Wala pang account? <a href="#" id="toggleToSignup">Mag-sign up</a></p>
+      <p class="auth-link">Don't have an account? <a href="#" id="toggleToSignup">Sign Up</a></p>
     </div>
 
-    <!-- Sign Up Form -->
     <div id="signupForm" class="auth-form hidden">
       <h2>Sign Up</h2>
       <div class="input-group">
+        <input type="email" id="signupEmail" required placeholder=" ">
         <label for="signupEmail">Email</label>
-        <input type="email" id="signupEmail" required>
       </div>
       <div class="input-group">
+        <input type="password" id="signupPassword" required placeholder=" ">
         <label for="signupPassword">Password</label>
-        <input type="password" id="signupPassword" required>
       </div>
       <button id="signupBtn">Create Account</button>
-      <p class="auth-link">Mayroon nang account? <a href="#" id="toggleToLogin">Mag-log In</a></p>
+      <p class="auth-link">Do you already have an account? <a href="#" id="toggleToLogin">Log In</a></p>
     </div>
   </div>
 
-  <div id="auth-message-area" style="display:none;position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#4caf50;color:#fff;padding:10px 20px;border-radius:5px;z-index:1000;"></div>
+  <div id="auth-message-area" class="message-area" style="display:none;"></div>
+
+  <div id="forgotPasswordModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <span class="close-modal" id="closeForgotModal">&times;</span>
+      <h2>Reset Password</h2>
+      <div class="input-group">
+        <input type="email" id="resetEmail" required placeholder=" ">
+        <label for="resetEmail">Enter your email</label>
+      </div>
+      <button id="sendResetEmailBtn">Send Reset Link</button>
+      <div id="resetMessageArea" class="message-area" style="display:none;"></div>
+    </div>
+  </div>
 
 <script>
+  // Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyDoijFlD_hJ2mp4FstfSZO4qUPKIzEdmPs",
     authDomain: "hello-e7a6d.firebaseapp.com",
@@ -69,8 +86,10 @@
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
   const db = firebase.firestore();
-  const authMessageArea = document.getElementById('auth-message-area');
 
+  // --- UI Elements ---
+  const authContainer = document.getElementById('authContainer');
+  const authMessageArea = document.getElementById('auth-message-area');
   const loginForm = document.getElementById('loginForm');
   const signupForm = document.getElementById('signupForm');
   const showLoginBtn = document.getElementById('showLoginBtn');
@@ -78,45 +97,133 @@
   const toggleToSignupLink = document.getElementById('toggleToSignup');
   const toggleToLoginLink = document.getElementById('toggleToLogin');
 
-  function showMessage(message, isSuccess = false) {
-    authMessageArea.textContent = message;
-    authMessageArea.style.backgroundColor = isSuccess ? '#4caf50' : '#f44336';
-    authMessageArea.style.display = 'block';
-    setTimeout(() => {
-      authMessageArea.style.display = 'none';
-    }, 4000);
-  }
-
-  function showForm(formToShow) {
-    if (formToShow === 'login') {
-      loginForm.classList.remove('hidden');
-      signupForm.classList.add('hidden');
-      showLoginBtn.classList.add('active');
-      showSignupBtn.classList.remove('active');
-    } else {
-      signupForm.classList.remove('hidden');
-      loginForm.classList.add('hidden');
-      showSignupBtn.classList.add('active');
-      showLoginBtn.classList.remove('active');
-    }
-  }
-
-  showLoginBtn.addEventListener('click', () => showForm('login'));
-  showSignupBtn.addEventListener('click', () => showForm('signup'));
-  toggleToSignupLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    showForm('signup');
-  });
-  toggleToLoginLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    showForm('login');
-  });
-
-  // ------------------------ LOGIN -----------------------
   const loginEmailInput = document.getElementById('loginEmail');
   const loginPasswordInput = document.getElementById('loginPassword');
   const loginBtn = document.getElementById('loginBtn');
 
+  const signupEmailInput = document.getElementById('signupEmail');
+  const signupPasswordInput = document.getElementById('signupPassword');
+  const signupBtn = document.getElementById('signupBtn');
+
+  const googleLoginBtn = document.getElementById('googleLoginBtn');
+
+  // Forgot Password Elements
+  const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+  const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+  const closeForgotModal = document.getElementById('closeForgotModal');
+  const resetEmailInput = document.getElementById('resetEmail');
+  const sendResetEmailBtn = document.getElementById('sendResetEmailBtn');
+  const resetMessageArea = document.getElementById('resetMessageArea');
+
+  const loaderOverlay = document.getElementById('loaderOverlay');
+  const MINIMUM_LOAD_TIME = 3000; // 3 seconds
+
+  // --- Helper Functions ---
+  function showMessage(message, isSuccess = false, targetArea = authMessageArea) {
+    targetArea.textContent = message;
+    targetArea.style.backgroundColor = isSuccess ? '#4caf50' : '#f44336';
+    targetArea.style.display = 'block';
+    setTimeout(() => {
+      targetArea.style.display = 'none';
+    }, 4000);
+  }
+
+  function activateLoader() {
+      loaderOverlay.classList.remove('hidden'); // Show loader
+      authContainer.style.display = 'none'; // Hide the auth form container
+  }
+
+  function deactivateLoader() {
+      loaderOverlay.classList.add('hidden'); // Hide loader
+      authContainer.style.display = 'block'; // Show the auth form container again
+  }
+
+  function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // Function to redirect after successful auth, with loader and delay
+  async function redirectToDestination() {
+    const user = auth.currentUser;
+    if (!user) {
+        // This should only happen if somehow the user becomes null after successful auth
+        await delay(MINIMUM_LOAD_TIME);
+        window.location.href = 'login.html';
+        return;
+    }
+
+    const userDocRef = db.collection("users").doc(user.uid);
+    try {
+        const userDoc = await userDocRef.get();
+        const preferences = userDoc.exists && userDoc.data().preferences ? userDoc.data().preferences : [];
+
+        await delay(MINIMUM_LOAD_TIME); // Ensure minimum load time for loader
+
+        if (preferences.length > 0) {
+            window.location.href = 'index.html'; // Redirect to home if preferences are set
+        } else {
+            window.location.href = 'preferences.html'; // Redirect to preferences if not set
+        }
+    } catch (error) {
+        console.error("Error checking user preferences:", error);
+        showMessage("An error occurred. Please try again.", false);
+        deactivateLoader(); // Hide loader on error and re-show form
+    }
+  }
+
+
+  // --- Floating Label Logic ---
+  document.querySelectorAll('.input-group input').forEach(input => {
+    if (input.value) {
+      input.parentNode.classList.add('has-content');
+    }
+
+    input.addEventListener('focus', () => {
+      input.parentNode.classList.add('focused');
+      input.parentNode.classList.add('has-content');
+    });
+
+    input.addEventListener('blur', () => {
+      input.parentNode.classList.remove('focused');
+      if (!input.value) {
+        input.parentNode.classList.remove('has-content');
+      }
+    });
+
+    input.addEventListener('input', () => {
+        if (input.value) {
+            input.parentNode.classList.add('has-content');
+        } else {
+            input.parentNode.classList.remove('has-content');
+        }
+    });
+  });
+
+
+  // --- Form Toggle Event Listeners ---
+  showLoginBtn.addEventListener('click', () => {
+    loginForm.classList.remove('hidden');
+    signupForm.classList.add('hidden');
+    showLoginBtn.classList.add('active');
+    showSignupBtn.classList.remove('active');
+  });
+  showSignupBtn.addEventListener('click', () => {
+    signupForm.classList.remove('hidden');
+    loginForm.classList.add('hidden');
+    showSignupBtn.classList.add('active');
+    showLoginBtn.classList.remove('active');
+  });
+  toggleToSignupLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showSignupBtn.click();
+  });
+  toggleToLoginLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showLoginBtn.click();
+  });
+
+
+  // --- Login Functionality ---
   ["loginEmail", "loginPassword"].forEach(id => {
     document.getElementById(id).addEventListener("keydown", function(e) {
       if (e.key === "Enter") loginBtn.click();
@@ -129,33 +236,19 @@
     const password = loginPasswordInput.value;
 
     try {
-      const userCredential = await auth.signInWithEmailAndPassword(email, password);
-      const user = userCredential.user;
-      const uid = user.uid;
-
-      const userDoc = await db.collection("users").doc(uid).get();
-      if (!userDoc.exists) {
-        await db.collection("users").doc(uid).set({
-          email: email,
-          favorites: []
-        });
-      }
-
-      showMessage("Matagumpay na pag-log in! Nagre-redirect...", true);
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 1000);
+      await auth.signInWithEmailAndPassword(email, password);
+      // If sign-in is successful, activate loader and proceed to redirection
+      activateLoader();
+      redirectToDestination();
     } catch (error) {
       console.error("❌ Login Error:", error);
-      showMessage("Nabigo ang pag-log in: " + error.message, false);
+      showMessage("Failed to log-in: " + error.message, false);
+      // Loader was not activated on failure, so no need to deactivate.
+      // Form remains visible.
     }
   });
 
-  // ------------------------ SIGN UP -----------------------
-  const signupEmailInput = document.getElementById('signupEmail');
-  const signupPasswordInput = document.getElementById('signupPassword');
-  const signupBtn = document.getElementById('signupBtn');
-
+  // --- Sign Up Functionality ---
   ["signupEmail", "signupPassword"].forEach(id => {
     document.getElementById(id).addEventListener("keydown", function(e) {
       if (e.key === "Enter") signupBtn.click();
@@ -171,29 +264,28 @@
       const user = userCredential.user;
       const uid = user.uid;
 
+      // Ensure user document is created BEFORE redirecting
       await db.collection("users").doc(uid).set({
         email: email,
         favorites: []
       });
 
-      showMessage("Account created! Logging in...", true);
-      setTimeout(() => {
-        window.location.href = "index.html";
-      }, 1000);
+      // If sign-up is successful, activate loader and proceed to redirection
+      activateLoader();
+      redirectToDestination();
     } catch (error) {
       console.error("❌ Sign Up Error:", error);
       if (error.code === "auth/email-already-in-use") {
-        showMessage("Email na ito ay nakarehistro na. Subukan mag-login.", false);
-        showForm("login");
+        showMessage("This email is already registered. Please try logging in.", false);
       } else {
-        showMessage("Nabigo ang pag-sign up: " + error.message, false);
+        showMessage("Failed to sign up: " + error.message, false);
       }
+      // Loader was not activated on failure, so no need to deactivate.
+      // Form remains visible.
     }
   });
 
-  // ------------------------ GOOGLE LOGIN -----------------------
-  const googleLoginBtn = document.getElementById('googleLoginBtn');
-
+  // --- Google Login Functionality ---
   googleLoginBtn.addEventListener("click", async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -209,15 +301,54 @@
           favorites: []
         });
       }
-
-      window.location.href = "index.html";
+      // If Google login is successful, activate loader and proceed to redirection
+      activateLoader();
+      redirectToDestination();
     } catch (error) {
       console.error("Google Login Error:", error);
       showMessage("Google login failed: " + error.message, false);
+      // Loader was not activated on failure, so no need to deactivate.
+      // Form remains visible.
     }
   });
 
- 
+  // --- Forgot Password Functionality ---
+  forgotPasswordLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    forgotPasswordModal.classList.remove('hidden');
+    resetEmailInput.value = '';
+    resetMessageArea.style.display = 'none';
+  });
+
+  closeForgotModal.addEventListener('click', () => {
+    forgotPasswordModal.classList.add('hidden');
+  });
+
+  forgotPasswordModal.addEventListener('click', (e) => {
+    if (e.target === forgotPasswordModal) {
+      forgotPasswordModal.classList.add('hidden');
+    }
+  });
+
+  sendResetEmailBtn.addEventListener('click', async () => {
+    const email = resetEmailInput.value.trim();
+    if (email) {
+      try {
+        // Activate loader only for sending the email, then deactivate as we stay on this page
+        activateLoader(); // Show loader and hide form
+        await auth.sendPasswordResetEmail(email);
+        showMessage('Password reset link sent to your email!', true, resetMessageArea);
+        deactivateLoader(); // Hide loader and re-show form
+      } catch (error) {
+        console.error("Password Reset Error:", error);
+        showMessage('Failed to send reset link: ' + error.message, false, resetMessageArea);
+        deactivateLoader(); // Hide loader on error and re-show form
+      }
+    } else {
+      showMessage('Please enter your email address.', false, resetMessageArea);
+    }
+  });
+
 </script>
 
 </body>
