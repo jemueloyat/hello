@@ -306,7 +306,7 @@ function createPostCardElement(post) {
       <button class="comment-toggle-button" data-post-id="${post.id}" data-post-title="${post.userName}'s Post" data-post-desc="${post.content || ''}" data-post-img="${post.imageUrl || ''}">
         <i class="fas fa-comment"></i> Comments (${post.commentsCount || 0})
       </button>
-      <button><i class="fas fa-share"></i> Share</button>
+
     </div>
     <div class="comments-section" id="comments-section-${post.id}">
       <div class="comments-list"></div>

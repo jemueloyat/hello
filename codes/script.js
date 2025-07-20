@@ -763,3 +763,5 @@ if (logoutButton) {
   setInterval(nextSlide, 4000); // 4 seconds
   window.addEventListener("load", () => showSlide(index));
 
+
+

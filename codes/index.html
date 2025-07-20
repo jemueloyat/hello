@@ -1,71 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Philippine Gaze - Home</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philippine Gaze - Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
   <header class="transparent-navbar">
     <div class="logo">
-      Philippine Gaze
+      <img src="assets/logo-removebg-preview.png" alt="Philippine Gaze Logo" class="navbar-logo">
+      <span>Philippine Gaze</span>
     </div>
     <nav>
       <a href="index.html" class="active">Home</a>
       <a href="main.html">Main</a>
       <a href="stories.html">Stories</a>
       <a href="favorites.html">Favorites</a>
-    </nav>
-   <!-- Burger + Dropdown -->
-  <div class="burger-wrapper">
+      <a href="preferences.html">My Dashboard</a>
+      </nav>
+    <div class="burger-wrapper">
     <div class="burger-menu" id="burgerMenu">&#9776;</div>
     <div class="dropdown-menu" id="dropdownMenu">
-      <a href="profile.html">👤 Profile</a>
-      <a href="support.html">📞 Customer Service</a>
-      <a href="#" id="logoutBtn">🚪 Logout</a>
+      <a href="profile.html">Profile</a>
+      <a href="service.html">Customer Service</a> <a href="#" id="logoutBtn">Logout</a>
     </div>
   </div>
-
-  </header>
-  <main>
+   </header>
+<main>
     <section class="home-hero">
-      <div class="logo">
-        <video autoplay loop muted playsinline class="navbar-logo">
-          <source src="assets/Philippines Gaze.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-      <h1>Welcome to the Philippines!</h1>
-      <p>Discover the wonders of the Pearl of the Orient Seas.<br />
-        Explore breathtaking islands, vibrant culture, and warm hospitality.
-      </p>
-      <div class="search-container">
-  <input class="search-input" type="text" placeholder="Where to?">
-  <button class="search-btn">🔍</button>
-</div>
-
+        <div class="main-logo-container">
+             <span id="animatedLogoText" class="animate__animated">Philippine Gaze</span>
+        </div>
+        <h1>Explore the Beauty of the Philippines</h1>
+        <p>Discover breathtaking islands, stunning beaches, and rich culture.</p>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search for a destination...">
+            <button class="search-btn">Search</button>
+        </div>
+        <div class="recommended-islands">
+            <div class="island-card">
+                <img src="https://placehold.co/612x612/ffb300/1a2233?text=Palawan" alt="Palawan">
+                <h3>Palawan</h3>
+                <p>El Nido, Coron, Underground River</p>
+            </div>
+            <div class="island-card">
+                <img src="https://placehold.co/612x612/ffb300/1a2233?text=Boracay" alt="Boracay">
+                <h3>Boracay</h3>
+                <p>White Beach, Diniwid Beach, Puka Beach</p>
+            </div>
+            <div class="island-card">
+                <img src="https://placehold.co/612x612/ffb300/1a2233?text=Siargao" alt="Siargao">
+                <h3>Siargao</h3>
+                <p>Cloud 9, Sugba Lagoon, Magpupungko</p>
+            </div>
+             <div class="island-card">
+                <img src="https://placehold.co/612x612/ffb300/1a2233?text=Cebu" alt="Cebu">
+                <h3>Cebu</h3>
+                <p>Bantayan Island, Moalboal, Kawasan Falls</p>
+            </div>
+        </div>
     </section>
 
-    <section class="recommended-islands">
-      <div class="island-card">
-        <img src="assets/istockphoto-685040406-612x612.jpg" alt="Palawan" />
-        <h3>Palawan</h3>
-        <p>Crystal-clear waters, limestone cliffs, and the world-famous Underground River.</p>
-      </div>
-      <div class="island-card">
-        <img src="assets/istockphoto-685040406-612x612.jpg" alt="Boracay" />
-        <h3>Boracay</h3>
-        <p>Powdery white sand beaches and vibrant nightlife.</p>
-      </div>
-      <div class="island-card">
-        <img src="assets/istockphoto-685040406-612x612.jpg" alt="Siargao" />
-        <h3>Siargao</h3>
-        <p>The surfing capital of the Philippines, also known for its lagoons and island hopping.</p>
-      </div>
-    </section>
-
-    <section class="travel-pros">
+      <section class="travel-pros">
   <h2>For Travel Pros</h2>
   <div class="pros-grid">
     <div class="pros-card">
@@ -85,12 +86,73 @@
     </div>
   </div>
 </section>
+</main>
 
-  </main>
-</body>
-<script type="module" src="script.js"></script>
-<footer class="footer">
-  <p>© 2025 Philippine Gaze | Privacy | Terms</p>
+<footer>
+    <p>&copy; 2024 Philippine Gaze. All rights reserved.</p>
 </footer>
-</html>
 
+<script>
+    // Existing JavaScript for Burger Menu and other functionalities
+    document.addEventListener('DOMContentLoaded', () => {
+        const burgerMenu = document.getElementById('burgerMenu');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        if (burgerMenu) {
+            burgerMenu.addEventListener('click', () => {
+                dropdownMenu.classList.toggle('show');
+            });
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!burgerMenu.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+    });
+
+    // Existing animation script
+    document.addEventListener('DOMContentLoaded', () => {
+      const animatedLogoText = document.getElementById('animatedLogoText');
+      if (!animatedLogoText) {
+        console.warn('animatedLogoText element not found. Animation will not play.');
+        return;
+      }
+
+      // Define default animations
+      const pauseAfterEntrance = 5000; // 5 seconds pause after zoomInDown
+      const pauseBeforeNextCycle = 500; // 0.5 second pause before the next zoomInDown
+
+      function playZoomInDown() {
+        // Ensure element is visible at the start of zoomInDown (it will handle opacity transition)
+        animatedLogoText.style.opacity = '1';
+        animatedLogoText.classList.add('animate__zoomInDown');
+
+        animatedLogoText.addEventListener('animationend', function handler() {
+          animatedLogoText.classList.remove('animate__zoomInDown');
+          animatedLogoText.removeEventListener('animationend', handler); // Clean up listener
+          setTimeout(playFlipOutX, pauseAfterEntrance); // Pause before starting flipOutX
+        }, { once: true });
+      }
+
+      function playFlipOutX() {
+        animatedLogoText.classList.add('animate__flipOutX');
+
+        animatedLogoText.addEventListener('animationend', function handler() {
+          animatedLogoText.classList.remove('animate__flipOutX');
+          animatedLogoText.removeEventListener('animationend', handler); // Clean up listener
+
+          // Ensure element explicitly stays invisible after flipOutX finishes
+          animatedLogoText.style.opacity = '0';
+
+          setTimeout(playZoomInDown, pauseBeforeNextCycle); // Pause before starting the next loop cycle
+        }, { once: true });
+      }
+
+      // Start the animation loop when the page loads
+      playZoomInDown();
+    });
+</script>
+</body>
+</html>

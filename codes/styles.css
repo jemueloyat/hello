@@ -9,17 +9,13 @@ body {
     #58A0C8,
     #ffb300,
     #113F67 /* Repeat the first color to create a seamless loop */
-    );
+  );
   min-height: 100vh;
   background-attachment: fixed;
   color: #333; /* Default text color */
   background-size: 800% 400%; /* Make the background wider than the element */
   animation: gradientAnimation 30s ease infinite; /* Apply the animation */
-  min-height: 100vh;
-  background-attachment: fixed;
-  color: #333; /* Default text color */
 }
-
 /* Navbar */
 .transparent-navbar {
   position: fixed;
@@ -32,29 +28,52 @@ body {
   padding: 16px 40px;
   z-index: 1000; /* Ensure navbar is on top */
   box-shadow: none; /* No shadow as per user's preference */
+  gap: 30px; /* Added: This creates space between the logo and the nav-burger container */
 }
 
 .transparent-navbar .logo {
   font-size: 1.7em;
   font-weight: bold;
   color: #ffb300; /* Accent color for logo */
-  margin-right: 100px;
-  display: flex;
-  align-items: center;
+  display: flex; /* Use flexbox for logo and text */
+  align-items: center; /* Vertically align logo and text */
+  gap: 10px; /* Space between logo image and text */
+  white-space: nowrap; /* Keep "Philippine Gaze" on one line */
 }
 
-
-/* Style for navbar-logo video/image when it's in the navbar */
-.transparent-navbar .logo .navbar-logo {
-  height: 40px; /* Adjust height as needed */
-  width: auto; /* Maintain aspect ratio */
-  display: block; /* Ensures video behaves like a block element */
-  object-fit: contain; /* Ensure the entire video is visible within its bounds */
+.transparent-navbar .logo .navbar-logo { /* Styles for the new logo image */
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Keep aspect ratio */
+  border-radius: 50%; /* Make it round */
+  object-fit: cover; /* Ensure image covers the area */
+  margin-right: 5px; /* Small space between logo image and text */
 }
+
+/* --- STYLES FOR MAIN LOGO TEXT (Animate.css handles animation) --- */
+.main-logo-container {
+    margin-bottom: 30px; /* Space below the animated text */
+    height: 100px; /* Give it a fixed height to prevent content shifting during animation */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#animatedLogoText {
+  display: inline-block; /* Essential for transform animations to work correctly */
+  font-size: 5.5em; /* Made bigger */
+  font-weight: bold; /* Made bold */
+  color: #ffb300; /* Use accent color */
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3); /* Add some shadow for visibility */
+  /* These properties are crucial for Animate.css animations to work as expected */
+  animation-duration: 1s; /* Default duration for each Animate.css animation */
+  animation-fill-mode: both; /* Ensures the element retains its end state (e.g., hidden after flipOutX) */
+}
+
+/* --- END STYLES FOR MAIN LOGO TEXT --- */
 
 .transparent-navbar nav {
   display: flex;
-  gap: 24px;
+  gap: 24px; /* Space between individual nav links */
   position: relative;
   z-index: 1;
 }
@@ -67,6 +86,7 @@ body {
   padding: 8px 16px;
   border-radius: 8px;
   transition: background 0.2s, color 0.2s;
+  white-space: nowrap; /* Add this line */
 }
 
 .transparent-navbar a.home-btn { /* Specific style for home button if used */
@@ -108,7 +128,7 @@ body {
   margin-bottom: 30px; /* Consistent bottom margin */
 }
 h1 {
-    font-size: 2.5rem; /* Larger for main title */
+    font-size: 2.5em; /* Larger for main title */
     color: #0056b3;
 }
 h2 {
@@ -229,7 +249,7 @@ h2 {
   color: #fff; /* White text color */
   font-size: 1.2rem;
   margin: 0; /* Remove default margin */
-  padding: 0 10px 5px; /* Padding for text */
+  padding: 0 10px 5px;
   text-align: center;
 }
 
@@ -275,11 +295,20 @@ h2 {
   max-height: 90vh; /* Max height to allow scrolling */
   overflow-y: auto; /* Enable scrolling for modal content */
   position: relative;
-  animation: zoomIn 0.3s ease-in-out;
+  /* REMOVED: animation: zoomIn 0.3s ease-in-out; */
   padding: 40px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.6); /* Stronger shadow */
   display: flex; /* Use flexbox for internal layout */
   flex-direction: column; /* Stack elements vertically */
+}
+
+/* New slide animations for modal content */
+.modal-content.slide-in {
+  animation: slideInFromBottom 0.45s ease-out forwards;
+}
+
+.modal-content.slide-out {
+  animation: slideOutToBottom 0.45s ease-in forwards;
 }
 
 .modal-img { /* Renamed from .modal img to match luzon.html */
@@ -497,10 +526,19 @@ h2 {
 @media (max-width: 768px) {
   .transparent-navbar {
     padding: 10px 20px;
+    /* On smaller screens, allow content to wrap if needed, or adjust layout */
+    flex-wrap: wrap; /* Allow items to wrap to next line */
+    justify-content: center; /* Center items when wrapped */
   }
   .transparent-navbar .logo {
     font-size: 1.5em;
-    margin-right: 20px;
+    margin-bottom: 10px; /* Add space below logo if nav wraps */
+  }
+  .nav-and-burger-container {
+    width: 100%; /* Take full width to center nav and burger below logo */
+    justify-content: center; /* Center nav and burger within their container */
+    margin-left: 0; /* Remove fixed margin for responsiveness */
+    gap: 15px; /* Adjust gap for smaller screens */
   }
   .transparent-navbar nav {
     gap: 15px;
@@ -673,14 +711,17 @@ h2 {
   gap: 10px;
 }
 
-/* Specific styling for profile pictures in stories feed */
-.story-header .profile-pic { /* Changed from .user-avatar */
-  width: 40px; /* Consistent size with profile.html */
-  height: 40px; /* Consistent size with profile.html */
+.story-header .user-avatar {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #ffb300; /* Accent border from profile.html */
-  flex-shrink: 0; /* Prevent shrinking */
+  background-color: #ffb300; /* Placeholder avatar color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2em;
 }
 
 .story-header .username {
@@ -779,22 +820,11 @@ h2 {
 }
 
 .comment-item {
-  background-color:rgb(5, 5, 5)9;
+  background-color: rgb(5, 5, 59);
   padding: 10px 15px;
   border-radius: 8px;
   margin-bottom: 10px;
   border: 1px solid #eee;
-}
-
-/* Specific styling for profile pictures in comments */
-.comment-item .profile-pic { /* Changed from .comment-item strong */
-  width: 30px; /* Slightly smaller for comments */
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid #ffb300; /* Accent border from profile.html */
-  margin-right: 8px;
-  flex-shrink: 0;
 }
 
 .comment-item strong {
@@ -858,9 +888,10 @@ h2 {
     padding: 10px 15px;
     font-size: 1em;
   }
-  .story-header .profile-pic { /* Changed from .user-avatar */
+  .story-header .user-avatar {
     width: 35px;
     height: 35px;
+    font-size: 1em;
   }
   .story-header .username {
     font-size: 1em;
@@ -870,10 +901,6 @@ h2 {
   }
   .comment-input-area textarea {
     min-height: 30px;
-  }
-  .comment-item .profile-pic { /* Changed from .comment-item strong */
-    width: 25px;
-    height: 25px;
   }
 }
 /* Search Bar Styles */
@@ -973,6 +1000,7 @@ h2 {
   gap: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
+  margin-left: 760px; /* Align with dropdown padding */
 }
 
 .profile-pic {
@@ -1116,12 +1144,17 @@ h2 {
     border-radius: 50%;
     width: 36px;
     height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
     transition: background 0.2s;
-    position: relative; /* Position relative for icon */  
+    color: #1a2233; /* Kulay para sa search icon */
+    font-size: 1.1em;
 }
+
 .search-btn:hover {
-    color: #ffb300;
+  background: #e0a800;
 }
 
 .search-input {
@@ -1172,14 +1205,7 @@ h2 {
 }
 
 .pros-card {
-  background: linear-gradient(
-    270deg,
-    #113F67,
-    #34699A,
-    #58A0C8,
-    #ffb300,
-    #113F67 /* Repeat the first color to create a seamless loop */
-  );
+  background: #ffffff;
   background-size: 800% 400%; /* Make the background wider than the element */
   animation: gradientAnimation 30s ease infinite; /* Apply the animation */
   min-height: 40px; /* Ensure the body takes full height if applied there */
@@ -1217,9 +1243,29 @@ h2 {
 }
 
 /* Animations */
-@keyframes zoomIn {
-  from { transform: scale(0.85); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+/* Removed custom @keyframes zoomIn, comboAnimation as Animate.css provides them */
+/* REMOVED: @keyframes zoomIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } } */
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(100%); /* Start completely below */
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0); /* End at its normal position */
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToBottom {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%); /* Move back down */
+    opacity: 0;
+  }
 }
 
 @keyframes gradientAnimation {
@@ -1240,7 +1286,8 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-left: 55%; /* Push it to right */
+  width: 100%;
+  padding-right: 90px;
 }
 
 /* BURGER menu itself */
@@ -1251,6 +1298,7 @@ h2 {
   padding: 8px;
   user-select: none;
   color: #333;
+  justify-content: flex-end;
 }
 .burger-menu.open {
   transform: rotate(90deg);
@@ -1268,6 +1316,8 @@ h2 {
   z-index: 999;
   cursor: default;
   overflow: hidden; /* Crucial: Hides content that exceeds max-height */
+  max-width: 160px;
+  box-sizing: border-box; /* Include padding and border in width/height calculations */
 
   /* Initial state for slide-down animation */
   max-height: 0; /* Starts hidden */
@@ -1282,10 +1332,15 @@ h2 {
   transform: translateY(0);
 }
 .dropdown-menu a {
-  padding: 10px 15px;
+  padding: 8px 10px;
   color: #333;
   text-decoration: none;
   cursor: pointer; /* ✅ Adds pointer hand on links */
+  word-break: break-word; /* Ensures long words break to fit */
+  white-space: normal;
+  max-width: 100%; /* Ensures links don't overflow */
+  box-sizing: border-box; /* Include padding in width calculations */
+
 }
 .dropdown-menu a:hover {
   background-color: #f0f0f0;
@@ -1331,142 +1386,193 @@ h2 {
   box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
-/* Profile Page Specific Styles */
-.profile-section {
+/* Customer Service Page Specific Styles (Interactive Chat) */
+.service-page-body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.service-main-content {
+    flex-grow: 1;
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    padding: 20px;
+    padding-top: 80px; /* Adjust for fixed header height */
+    box-sizing: border-box;
+    background-color: #1a2233;
+}
+
+/* Main chat container */
+.customer-service-container {
+    background: #2a2a2a;
+    color: #fff;
+    border-radius: 12px;
+    width: 90%; /* Occupy 90% of the width */
+    max-width: 800px; /* Set a reasonable max-width for larger screens */
+    height: 75vh; /* Occupy 80% of the viewport height */
+    min-height: 400px; /* Minimum height for smaller screens */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.chat-header {
+  background: #1a2233;
+  padding: 15px 20px;
+  border-bottom: 1px solid #444;
+  text-align: center;
+}
+
+.chat-header h3 {
+  margin: 0;
+  color: #ffb300;
+  font-size: 1.4em;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center the entire profile section content */
-  margin-top: 100px; /* Adjust based on navbar height */
-  padding: 20px;
-  width: 100%;
-  box-sizing: border-box;
+  gap: 10px;
 }
 
-.profile-header {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column; /* Stack items vertically */
-  align-items: center; /* Center items horizontally */
-  text-align: center;
-  margin-bottom: 30px;
-  max-width: 700px; /* Limit width for better appearance */
-  width: 100%;
-  box-sizing: border-box;
+.message {
+  padding: 10px 15px;
+  border-radius: 15px;
+  max-width: 80%;
+  word-wrap: break-word;
+  opacity: 0; /* Initially hidden for animation */
+  transform: translateY(2em) scale(0.5); /* Start state for animation */
+  animation: mockchat-reply-pop cubic-bezier(0, 0.81, 0.58, 1.2) 0.4s forwards; /* Apply animation */
 }
 
-.profile-avatar-container {
-  margin-bottom: 15px;
+.bot-message {
+  background-color: #3f51b5;
+  align-self: flex-start;
+  color: white;
 }
 
-.profile-avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid #ffb300;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
-.profile-info {
-  margin-bottom: 20px;
-}
-
-.profile-info h1 {
-  font-size: 2.2em;
+.user-message {
+  background-color: #ffb300;
+  align-self: flex-end;
   color: #1a2233;
-  margin-bottom: 8px;
 }
 
-/* Hide profile email as requested */
-#profileEmail {
-  display: none;
+/* Dots for typing indicator */
+.message.dots {
+  transform-origin: 50% 50%;
+  /* Adjust margin for centering dots for bot */
+  margin: 0.25em auto 0.25em 1.5em !important; /* Centered with a left offset for bot */
+  max-width: 30%; /* Make dots smaller */
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1;
+  background: #3f51b5; /* Same background as bot message */
+  padding: 0.75em 1em; /* Padding like other messages */
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.08);
+  opacity: 0; /* Start hidden for animation */
+  transform: translateY(2em) scale(0.5); /* Animation start */
+  animation: mockchat-reply-pop cubic-bezier(0, 0.81, 0.58, 1.2) 0.4s forwards; /* Pop animation */
+  min-height: auto; /* Ensure dots don't have minimum height from message */
 }
 
-.profile-info p {
-  font-size: 1.1em;
-  color: #555;
-  line-height: 1.5;
+.message.dots span {
+  display: block;
+  height: 4px;
+  width: 4px;
+  background: currentColor; /* Inherits color from parent */
+  display: inline-block;
+  border-radius: 99999px;
+  margin: 0.25em 0.15em;
+  opacity: 0;
+  animation: mockchat-dots 0.5s infinite alternate;
+  transform: translateY(0.25em);
 }
 
-.profile-actions {
+.message.dots span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.message.dots span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+
+.chat-input-area {
+  padding: 15px 20px;
+  border-top: 1px solid #444;
+  background: #1a2233;
   display: flex;
-  gap: 15px;
-  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
-  justify-content: center; /* Center buttons */
+  flex-direction: column;
+  gap: 10px;
 }
 
-.profile-actions button {
+.chat-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.chat-button {
   background-color: #007bff;
   color: white;
-  padding: 10px 20px;
   border: none;
+  padding: 12px 18px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1em;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s;
+  flex-grow: 1;
+  min-width: 120px;
 }
 
-.profile-actions button:hover {
+.chat-button:hover {
   background-color: #0056b3;
 }
 
-.profile-content {
+.chat-text-input {
+  display: flex;
+  gap: 10px;
   width: 100%;
   max-width: 1600px; /* Match profile-header max-width for consistency */
+  align-items: flex-end;
 }
 
-/* Post Creation Section (Profile Page) */
-.post-creation-section {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  padding: 25px;
-  width: 100%;
-  margin-bottom: 40px;
-  box-sizing: border-box;
-}
-
-.post-creation-section h2 {
-  color: #0056b3;
-  margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-  text-align: center;
-}
-
-.post-creation-section textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
+.chat-text-input textarea {
+  flex-grow: 1;
+  padding: 10px;
   border-radius: 8px;
-  font-size: 1em;
-  min-height: 100px;
+  border: 1px solid #555;
+  background-color: #3a3a3a;
+  color: #eee;
   resize: vertical;
-  box-sizing: border-box;
-  margin-bottom: 15px;
+  min-height: 80px;
+  font-size: 1em;
 }
 
-.post-creation-section input[type="file"] {
-  margin-bottom: 15px;
+.chat-text-input textarea::placeholder {
+  color: #bbb;
 }
 
-.post-creation-section button {
+.chat-text-input button {
   background-color: #28a745;
   color: white;
-  padding: 12px 20px;
   border: none;
+  padding: 10px 15px;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1.1em;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-  width: 100%;
+  transition: background-color 0.2s;
+  height: fit-content;
 }
 
-.post-creation-section button:hover {
+.chat-text-input button:hover {
   background-color: #218838;
 }
 
@@ -1483,15 +1589,13 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center; /* This centers the post-cards horizontally */
+.back-button {
+    background-color: #6c757d;
+}
 }
 
-#profilePostsFeed h2 {
-  color: #0056b3;
-  margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 1.8rem;
-  text-align: center;
-  width: 100%; /* Ensure heading takes full width for centering */
+.back-button:hover {
+    background-color: #5a6268;
 }
 
 .post-card {
@@ -1792,3 +1896,19 @@ h2 {
   letter-spacing: 0.5px;
 }
 
+/* Animation Keyframes */
+@keyframes mockchat-dots {
+  to {
+    transform: translateY(-0.2em);
+    opacity: 1;
+  }
+}
+
+@keyframes mockchat-reply-pop {
+  to {
+    transform: none;
+    font-size: 1em; /* Ensure correct font size after pop */
+    opacity: 1;
+    max-height: 200px; /* Allow content to grow */
+  }
+}
