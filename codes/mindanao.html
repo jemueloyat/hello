@@ -9,6 +9,7 @@
 <body>
   <header class="transparent-navbar">
     <div class="logo">Philippine Gaze</div>
+    
     <nav>
       <a href="index.html">Home</a>
       <a href="main.html">Main</a>
@@ -18,8 +19,7 @@
       <a href="mindanao.html" class="active">Mindanao</a>
       <a href="favorites.html">Favorites</a>
     </nav>
-  </header>
-         <!-- Burger + Dropdown -->
+             <!-- Burger + Dropdown -->
   <div class="burger-wrapper">
     <div class="burger-menu" id="burgerMenu">&#9776;</div>
     <div class="dropdown-menu" id="dropdownMenu">
@@ -28,6 +28,8 @@
       <a href="#" id="logoutBtn">🚪 Logout</a>
     </div>
   </div>
+  </header>
+
 <style>
   .burger-wrapper {
   position: relative;
@@ -82,77 +84,94 @@
 }
 </style>
   <main>
-    <h1>Mindanao Destinations</h1>
 
-    <section class="region-section">
-    <h2>Top 10 Most Visited</h2>
-    <div class="scroll-wrapper">
-      <button class="scroll-btn left">&#10094;</button>
-      <section class="scroll-row">
-        <div class="spot-card" onclick="openOverlay('Siargao Island', 'assets/siargao.jpg', 'Surfing capital (Cloud 9), island hopping to Naked Island, Daku, Guyam.', 'spot-siargaoisland')">
-          <img src="assets/siargao.jpg" alt="Siargao Island">
-          <div class="card-text-overlay">
-            <h3>Siargao Island</h3>
+    
+    <!-- Top 10 Destinations Section -->
+<section class="top10-section">
+  <h2>Top 10 Destinations</h2>
+  <div class="top10-slider-wrapper">
+    <div class="top10-slider" id="top10Slider">
+
+      <div class="top10-slide">
+        <div class="top10-card" onclick="openOverlay('siargao', 'assets/siargao.jpg', 'The Banaue Rice Terraces are 2,000-year-old terraces that were carved into the mountains of Ifugao by ancestors of the indigenous people.', 'spot-banauerice-nature')">
+          <img src="assets/siargao.jpg" alt="siargao">
+          <div class="top10-caption"><h3>Siargao Island</h3></div>
+        </div>
+      </div>
+
+      <div class="top10-slide">
+        <div class="top10-card" onclick="openOverlay('Mount Pulag', 'assets/hinatuan.jpg', 'Mount Pulag is the third highest mountain in the Philippines and Luzon\'s highest peak.', 'spot-mtpulag-nature')">
+          <img src="assets/hinatuan.jpg" alt="Mount Pulag">
+          <div class="top10-caption"><h3>Hinatuan Enchanted River</h3></div>
+        </div>
+      </div>
+
+      <div class="top10-slide">
+        <div class="top10-card" onclick="openOverlay('Taal Volcano', 'assets/tinuyan.jpg', 'Taal Volcano is a large caldera filled by Taal Lake in Batangas.', 'spot-taal-nature')">
+          <img src="assets/tinuyan.jpg" alt="Taal Volcano">
+          <div class="top10-caption"><h3>Tinuy‑an Falls</h3></div>
+        </div>
+      </div>
+      <div class="top10-slide">
+        <div class="top10-card" onclick="openOverlay('Hundred Islands National Park', 'assets/cdo white water rafting.jpg', 'The Hundred Islands National Park is a protected area located in Alaminos, Pangasinan. It comprises 124 islands at low tide and 123 at high tide, scattered in Lingayen Gulf.', 'spot-hundredislands-nature')">
+          <img src="assets/cdo white water rafting.jpg" alt="Hundred Islands National Park">
+            <div class="top10-caption">
+              <h3>Mount Apo</h3>
+            </div>
+        </div>
+      </div>  
+      <div class="top10-slide">
+          <div class="top10-card" onclick="openOverlay('Mayon Volcano', 'assets/lake sebu.jpg', 'Mayon Volcano is an active stratovolcano in the province of Albay, Bicol Region. It is renowned for its &quot;perfect cone&quot; shape.', 'spot-mayon-nature')">
+            <img src="assets/lake sebu.jpg" alt="Mayon Volcano">
+            <div class="top10-caption">
+              <h3>White Island (Camiguin)</h3>
+            </div>
+          </div>
+      </div>
+      <div class="top10-slide">
+          <div class="top10-card" onclick="openOverlay('Intramuros', 'assets/mt apo.jpg', 'Intramuros, known as the Walled City, is the oldest district and historic center of Manila. It was the seat of government during the Spanish colonial period.', 'spot-intramuros-hist')">
+            <img src="assets/mt apo.jpg" alt="Intramuros">
+            <div class="top10-caption">
+              <h3>Lake Venado</h3>
+            </div>
+          </div>
+      </div>
+      <div class="top10-slide">
+          <div class="top10-card" onclick="openOverlay('Vigan City', 'assets/white island.jpg', 'Vigan City is a UNESCO World Heritage site in Ilocos Sur, known for its well-preserved Spanish colonial town. Calle Crisologo is its most famous street.', 'spot-vigan-hist')">
+            <img src="assets/white island.jpg" alt="Vigan City">
+            <div class="top10-caption">
+              <h3>Maria Cristina Falls</h3>
+            </div>
+          </div>
+      </div>
+      <div class="top10-slide">
+          <div class="top10-card" onclick="openOverlay('Corregidor Island', 'assets/lake venadio.jpg', 'Corregidor Island is a small island located at the entrance of Manila Bay. It was a crucial defense fortress during World War II.', 'spot-corregidor-hist')">
+            <img src="assets/lake venadio.jpg" alt="Corregidor Island">
+            <div class="top10-caption">
+              <h3>Tinago Falls</h3>
+            </div>
+          </div>
+      </div>
+      <div class="top10-slide">    
+          <div class="top10-card" onclick="openOverlay('Mount Pinatubo', 'assets/maria cristina.jpg', 'Mount Pinatubo is an active stratovolcano in the Cabusilan Mountains, located on the tripoint boundary of Zambales, Tarlac, and Pampanga. It is famous for its beautiful crater lake.', 'spot-mtpulatubo-nature')">
+            <img src="assets/maria cristina.jpg" alt="Mount Pinatubo">
+            <div class="top10-caption">
+              <h3>Cagayan de Oro White Water Rafting</h3>
+            </div>
+          </div>
+      </div>
+      <div class="top10-slide">    
+          <div class="top10-card" onclick="openOverlay('Sabang Beach, Baler', 'assets/tinago falls.jpg', 'Sabang Beach is a popular surfing spot in Baler, Aurora. It is known for its consistent waves suitable for beginners and experienced surfers alike.', 'spot-lakesebu')">
+            <img src="assets/tinago falls.jpg" alt="Sabang Beach, Baler">
+            <div class="top10-caption">
+              <h3>Lake Sebu</h3>
+            </div>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Hinatuan Enchanted River', 'assets/hinatuan.jpg', 'Deep clear-blue river with mystical appeal.', 'spot-enchantedriver')">
-          <img src="assets/hinatuan.jpg" alt="Hinatuan Enchanted River">
-          <div class="card-text-overlay">
-            <h3>Hinatuan Enchanted River</h3>
-          </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Tinuy‑an Falls', 'assets/tinuyan.jpg', 'Wide, multi-tiered cascade called “Little Niagara.”', 'spot-tinuyanfalls')">
-          <img src="assets/tinuyan.jpg" alt="Tinuy‑an Falls">
-          <div class="card-text-overlay">
-            <h3>Tinuy‑an Falls</h3>
-          </div>
-        </div>
-        
-        <div class="spot-card" onclick="openOverlay('Cagayan de Oro White Water Rafting', 'assets/cdo white water rafting.jpg', 'Thrilling river rapids adventure in Mindanao’s adventure city.', 'spot-cdorafting')">
-          <img src="assets/cdo white water rafting.jpg" alt="Cagayan de Oro White Water Rafting">
-          <div class="card-text-overlay">
-            <h3>Cagayan de Oro White Water Rafting</h3>
-          </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Lake Sebu', 'assets/lake sebu.jpg', 'Highland lakes with waterfalls, indigenous culture and zip lines.', 'spot-lakesebu')">
-          <img src="assets/lake sebu.jpg" alt="Lake Sebu">
-          <div class="card-text-overlay">
-            <h3>Lake Sebu</h3>
-          </div>
-        </div><div class="spot-card" onclick="openOverlay('Mount Apo', 'assets/mt apo.jpg', 'Philippines’ highest peak with rich biodiversity.', 'spot-mountapo')">
-          <img src="assets/mt apo.jpg" alt="Mount Apo">
-          <div class="card-text-overlay">
-            <h3>Mount Apo</h3>
-          </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('White Island (Camiguin)', 'assets/white island.jpg', 'Sandy sandbar island emerging at low tide.', 'spot-whiteisland')">
-          <img src="assets/white island.jpg" alt="White Island (Camiguin)">
-          <div class="card-text-overlay">
-            <h3>White Island (Camiguin)</h3>
-          </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Lake Venado', 'assets/lake venadio.jpg', 'Crystal-clear highland lake surrounded by pine forest.', 'spot-lakevenado')">
-          <img src="assets/lake venadio.jpg" alt="Lake Venado">
-          <div class="card-text-overlay">
-            <h3>Lake Venado</h3>
-          </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Maria Cristina Falls', 'assets/maria cristina.jpg', 'Twin-plunge falls providing hydroelectric power.', 'spot-mariacristina')">
-          <img src="assets/maria cristina.jpg" alt="Maria Cristina Falls">
-          <div class="card-text-overlay">
-            <h3>Maria Cristina Falls</h3>
-          </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Tinago Falls', 'assets/tinago falls.jpg', 'Hidden deep-ravine waterfall accessed via winding steps.', 'spot-tinagofalls')">
-          <img src="assets/tinago falls.jpg" alt="Tinago Falls">
-          <div class="card-text-overlay">
-            <h3>Tinago Falls</h3>
-          </div>
-        </div>
-      </section>
-      <button class="scroll-btn right">&#10095;</button>
+      </div>
     </div>
-    </section>
+  </section>
+
 
     <section class="region-section">
     <h2>Historical Destinations</h2>
@@ -225,7 +244,7 @@
     </section>  
 
     <section class="region-section">
-    <h2">Nature Escapes</h2>
+    <h2>Nature Escapes</h2>
     <div class="scroll-wrapper">
       <button class="scroll-btn left">&#10094;</button>
       <section class="scroll-row">
@@ -242,7 +261,7 @@
           </div>
         </div>
         
-        </div><div class="spot-card" onclick="openOverlay('Mount Apo', 'assets/mt apo.jpg', 'Philippines’ highest peak with rich biodiversity.', 'spot-mountapo')">
+        <div class="spot-card" onclick="openOverlay('Mount Apo', 'assets/mt apo.jpg', 'Philippines’ highest peak with rich biodiversity.', 'spot-mountapo')">
           <img src="assets/mt apo.jpg" alt="Mount Apo">
           <div class="card-text-overlay">
             <h3>Mount Apo</h3>
@@ -291,11 +310,12 @@
         </div>
       </section>
       <button class="scroll-btn right">&#10095;</button>
-    </div>
+      </div>
+      
     </section>
 
     <section class="region-section">
-    <h2 class="section-title">Other Attractions</h2>
+    <h2>Other Attractions</h2>
     <div class="scroll-wrapper">
       <button class="scroll-btn left">&#10094;</button>
       <section class="scroll-row">
@@ -375,8 +395,7 @@
 
       <div class="modal-buttons">
         <button id="favoriteModalBtn">♡ Add to Favorites</button>
-        <button id="directionModalBtn">Directions</button>
-        <button id="commentModalBtn">Comments</button>
+
       </div>
 
       <div id="modal-directions" class="modal-directions">
