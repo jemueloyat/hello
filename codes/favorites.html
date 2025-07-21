@@ -119,7 +119,8 @@
       <a href="stories.html">Stories</a>
       <a href="favorites.html" class="active">Favorites</a>
     </nav>
-    <div class="burger-wrapper">
+       <!-- Burger + Dropdown -->
+  <div class="burger-wrapper">
     <div class="burger-menu" id="burgerMenu">&#9776;</div>
     <div class="dropdown-menu" id="dropdownMenu">
       <a href="profile.html">👤 Profile</a>
@@ -142,7 +143,13 @@
       <img id="modal-img" src="" alt="Preview" />
       <h2 id="modal-title">Title</h2>
       <p id="modal-desc">Description</p>
+              <div id="modal-directions" class="modal-directions">
+        <h3>Directions and Tutorial</h3>
+        <!-- Directions content will be loaded here by JavaScript -->
+      </div>
     </div>
+
+  
   </div>
 
   <script>
@@ -231,6 +238,8 @@
         container.innerHTML = '<p style="text-align:center; color:red;">Failed to load favorites.</p>';
       }
     });
+
   </script>
+  <script src="script.js" type="module"></script>
 </body>
 </html>

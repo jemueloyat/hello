@@ -1603,29 +1603,6 @@ h2 {
   background-color: #218838;
 }
 
-/* Animation Keyframes */
-@keyframes mockchat-dots {
-  to {
-    transform: translateY(-0.2em);
-    opacity: 1;
-  }
-}
-
-@keyframes mockchat-reply-pop {
-  to {
-    transform: none;
-    font-size: 1em; /* Ensure correct font size after pop */
-    opacity: 1;
-    max-height: 200px; /* Allow content to grow */
-  }
-}
-
-/* Keyframe animation for the pulsing red dot */
-@keyframes pulseDot {
-  0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(1.2); opacity: 0.7; }
-}
-
 /* User's Posts Feed */
 #profilePostsFeed {
   background-color: #fff;
@@ -1976,3 +1953,4 @@ h2 {
     font-size: 1rem;
   }
 }
+

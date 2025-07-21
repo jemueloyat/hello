@@ -391,6 +391,27 @@ window.openOverlay = async (title, imageUrl, description, spotId) => {
 
   // Load comments immediately as well
   loadComments(currentSpotId);
+  // Check if the current spot is favorited and update the button
+const user = auth.currentUser;
+const favoriteModalBtn = document.getElementById("favoriteModalBtn");
+
+if (user && favoriteModalBtn) {
+  try {
+    const userDocRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userDocRef);
+    const favorites = userDoc.exists() ? userDoc.data().favorites || [] : [];
+    const isFavorited = favorites.some(f => f.id === currentSpotId);
+    updateFavoriteButtonState(favoriteModalBtn, isFavorited);
+    favoriteModalBtn.disabled = false;
+    favoriteModalBtn.title = "";
+  } catch (error) {
+    console.error("Error checking favorite status in openOverlay:", error);
+    updateFavoriteButtonState(favoriteModalBtn, false);
+    favoriteModalBtn.disabled = true;
+    favoriteModalBtn.title = "May error habang kinukuha ang estado ng paborito.";
+  }
+}
+
 };
 
 window.closeOverlay = () => {
@@ -726,3 +747,21 @@ if (logoutButton) {
     window.location.href = "mindanao.html";
   });
 });
+  const slider = document.getElementById("top10Slider");
+  const slides = slider.querySelectorAll(".top10-slide");
+  let index = 0;
+
+  function showSlide(i) {
+    slider.style.transform = `translateX(-${i * 100}%)`;
+  }
+
+  function nextSlide() {
+    index = (index + 1) % slides.length;
+    showSlide(index);
+  }
+
+  setInterval(nextSlide, 4000); // 4 seconds
+  window.addEventListener("load", () => showSlide(index));
+
+
+

@@ -430,7 +430,7 @@ if (createPostBtn) {
       return;
     }
 
-    showMessage(postMessageArea, "Nagpoproseso ng post...", false);
+    showMessage(postMessageArea, "Posting", false);
     createPostBtn.disabled = true;
 
     let imageUrl = null;
@@ -451,14 +451,14 @@ if (createPostBtn) {
             commentsCount: 0
           });
 
-          showMessage(postMessageArea, "Post naidagdag na sa Stories!", true);
+          showMessage(postMessageArea, "Post added to Stories!", true);
           postContentInput.value = '';
           postImageInput.value = '';
           createPostBtn.disabled = false;
         };
         reader.onerror = (error) => {
             console.error("Error reading file:", error);
-            showMessage(postMessageArea, "Nabigo ang pagbasa ng imahe.", false);
+            showMessage(postMessageArea, "Failed to load picture", false);
             createPostBtn.disabled = false;
         };
         reader.readAsDataURL(imageFile);
@@ -473,13 +473,13 @@ if (createPostBtn) {
           likes: [],
           commentsCount: 0
         });
-        showMessage(postMessageArea, "Post naidagdag na sa Stories!", true);
+        showMessage(postMessageArea, "Post have been added to stories", true);
         postContentInput.value = '';
         createPostBtn.disabled = false;
       }
     } catch (error) {
       console.error("Error creating post:", error);
-      showMessage(postMessageArea, "Nabigo ang pag-post. Subukang muli.", false);
+      showMessage(postMessageArea, "Failed to post", false);
       createPostBtn.disabled = false;
     }
   });
@@ -494,7 +494,7 @@ if (createPostBtn) {
 function loadUserPosts(userIdToLoad) {
   if (!db || !userIdToLoad) {
     console.error("Firestore database or target user not initialized. Cannot load user posts.");
-    if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="message-area">Database error. Hindi ma-load ang mga post.</p>';
+    if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="message-area">Database error</p>';
     return;
   }
 
@@ -508,7 +508,7 @@ function loadUserPosts(userIdToLoad) {
   unsubscribeUserPosts = onSnapshot(q, (snapshot) => {
     if (profilePostsFeed) profilePostsFeed.innerHTML = '';
     if (snapshot.empty) {
-      if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="loading-message">Walang post pa ang user na ito.</p>';
+      if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="loading-message">This user does not have a post</p>';
       return;
     }
 
@@ -532,7 +532,7 @@ function renderUserPost(post) {
     // Check if the post belongs to the currently logged-in user
     const isOwner = currentUserId && post.userId === currentUserId;
 
-    postCard.innerHTML = `
+   postCard.innerHTML = `
         <div class="post-header">
             <img src="${post.userAvatarUrl || 'https://placehold.co/40?text=P'}" alt="Profile Pic" class="profile-pic">
             <span class="post-author">${post.userName || 'Anonymous User'}</span> <!-- Ensure userName is displayed -->
@@ -550,11 +550,9 @@ function renderUserPost(post) {
             <button class="like-button" data-post-id="${post.id}">
                 <i class="fas fa-heart"></i> <span class="like-count">${post.likes ? post.likes.length : 0}</span>
             </button>
-            <button><i class="fas fa-comment"></i> Comments (${post.commentsCount || 0})</button>
-            <button><i class="fas fa-share"></i> Share</button>
+
         </div>
     `;
-
     if (profilePostsFeed) profilePostsFeed.appendChild(postCard);
 
     // Attach event listeners for edit and delete buttons ONLY if it's the owner's post
@@ -575,11 +573,11 @@ function attachUserPostEventListeners(postCard, post) {
     if (deletePostBtn) {
         deletePostBtn.addEventListener('click', async () => {
             if (!db) {
-                showMessage(postMessageArea, "Database error. Hindi makabura ng post.", false);
+                showMessage(postMessageArea, "Database error", false);
                 return;
             }
             // Using a custom modal for confirmation instead of confirm()
-            showConfirmModal("Sigurado ka bang gusto mong burahin ang post na ito?", async () => {
+            showConfirmModal("Are you sure you want to delete this post?", async () => {
                 await deletePost(post.id);
             });
         });
@@ -589,7 +587,7 @@ function attachUserPostEventListeners(postCard, post) {
 function toggleEditModeUserPost(postCard, post) {
     if (!db) {
         console.error("Firestore database is not initialized.");
-        showMessage(postMessageArea, "Database error. Hindi makapag-edit ng post.", false);
+        showMessage(postMessageArea, "Database error", false);
         return;
     }
     const postTextElement = postCard.querySelector('.post-text');
@@ -653,23 +651,23 @@ function toggleEditModeUserPost(postCard, post) {
 async function updatePost(postId, updates) {
   if (!db) {
     console.error("Firestore database is not initialized.");
-    showMessage(postMessageArea, "Database error. Hindi makapag-update ng post.", false);
+    showMessage(postMessageArea, "Database error", false);
     return;
   }
   const postRef = doc(db, `artifacts/${appId}/public/data/posts`, postId);
   try {
     await updateDoc(postRef, updates);
-    showMessage(postMessageArea, "Post na-update na!", true);
+    showMessage(postMessageArea, "Post updated", true);
   } catch (error) {
     console.error("Error updating post:", error);
-    showMessage(postMessageArea, "Nabigo ang pag-update ng post.", false);
+    showMessage(postMessageArea, "Failed to update post.", false);
   }
 }
 
 async function deletePost(postId) {
   if (!db) {
     console.error("Firestore database is not initialized.");
-    showMessage(postMessageArea, "Database error. Hindi makabura ng post.", false);
+    showMessage(postMessageArea, "Database error", false);
     return;
   }
   try {
@@ -686,10 +684,10 @@ async function deletePost(postId) {
     });
     await Promise.all(deletePromises);
 
-    showMessage(postMessageArea, "Post at mga komento nabura na!", true);
+    showMessage(postMessageArea, "Post and comments already deleted", true);
   } catch (error) {
     console.error("Error deleting post and comments:", error);
-    showMessage(postMessageArea, "Nabigo ang pagbura ng post.", false);
+    showMessage(postMessageArea, "Failed to remove a post", false);
   }
 }
 
@@ -743,7 +741,7 @@ if (logoutBtn && auth) {
       window.location.href = "login.html";
     } catch (error) {
       console.error("Error signing out:", error);
-      showMessage(postMessageArea, "Nabigo ang pag-logout. Subukang muli.", false);
+      showMessage(postMessageArea, "failed to log out. please try again", false);
     }
   });
 }
