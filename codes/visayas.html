@@ -17,18 +17,18 @@
       <a href="visayas.html"class="active">Visayas</a>
       <a href="mindanao.html">Mindanao</a>
       <a href="favorites.html">Favorites</a>
-      <a href="login.html" id="logoutBtn" class="logout-button">Logout</a>
     </nav>
-  </header>
-         <!-- Burger + Dropdown -->
+             <!-- Burger + Dropdown -->
   <div class="burger-wrapper">
     <div class="burger-menu" id="burgerMenu">&#9776;</div>
     <div class="dropdown-menu" id="dropdownMenu">
       <a href="profile.html">👤 Profile</a>
-      <a href="support.html">📞 Customer Service</a>
+      <a href="service.html">📞 Customer Service</a>
       <a href="#" id="logoutBtn">🚪 Logout</a>
     </div>
   </div>
+  </header>
+
 <style>
   .burger-wrapper {
   position: relative;
@@ -83,76 +83,90 @@
 }
 </style>
   <main>
-    <h1>Visayas Destinations</h1>
-    <section class="region-section">
-    <h2>Top 10 Most Visited</h2>
-    <div class="scroll-wrapper">
-      <button class="scroll-btn left">&#10094;</button>
-      <section class="scroll-row">
-        <div class="spot-card" onclick="openOverlay('Boracay Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Boracay_Island_Philippines.jpg/1280px-Boracay_Island_Philippines.jpg', 'Famous white sand beaches, vibrant nightlife, water sports.', 'spot-boracayisland')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Boracay_Island_Philippines.jpg/1280px-Boracay_Island_Philippines.jpg" alt="Boracay Island">
-          <div class="card-text-overlay">
-            <h3>Boracay Island</h3>
-          </div>
+  <section class="top10-section">
+  <h2>Top 10 Destinations</h2>
+  <div class="top10-slider-wrapper">
+    <div class="top10-slider" id="top10Slider">
+
+      <div class="top10-slide">
+        <div class="top10-card" onclick="openOverlay('Banaue Rice Terraces', 'assets/istockphoto-685040406-612x612.jpg', 'The Banaue Rice Terraces are 2,000-year-old terraces that were carved into the mountains of Ifugao by ancestors of the indigenous people.', 'spot-banauerice-nature')">
+          <img src="assets/istockphoto-685040406-612x612.jpg" alt="Banaue Rice Terraces">
+          <div class="top10-caption"><h3>White Beach, Boracay</h3></div>
         </div>
-        <div class="spot-card" onclick="openOverlay('White Beach, Boracay', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/White_Beach_Boracay_Philippines.jpg/1280px-White_Beach_Boracay_Philippines.jpg', 'East-facing 4km of powdery sand.', 'spot-whitebeach')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/White_Beach_Boracay_Philippines.jpg/1280px-White_Beach_Boracay_Philippines.jpg" alt="White Beach, Boracay">
-          <div class="card-text-overlay">
-            <h3>White Beach, Boracay</h3>
-          </div>
+      </div>
+
+      <div class="top10-slide">
+        <div class="top10-card" onclick="openOverlay('Mount Pulag', 'assets/cover-photo-mount-pulag.jpg', 'Mount Pulag is the third highest mountain in the Philippines and Luzon\'s highest peak.', 'spot-mtpulag-nature')">
+          <img src="assets/cover-photo-mount-pulag.jpg" alt="Mount Pulag">
+          <div class="top10-caption"><h3>Boracay Island</h3></div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Chocolate Hills', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Chocolate_Hills_Bohol.jpg/1280px-Chocolate_Hills_Bohol.jpg', 'Over 1,200 cone-shaped hills turning brown in dry season.', 'spot-chocolatehills')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Chocolate_Hills_Bohol.jpg/1280px-Chocolate_Hills_Bohol.jpg" alt="Chocolate Hills">
-          <div class="card-text-overlay">
-            <h3>Chocolate Hills</h3>
-          </div>
+      </div>
+
+      <div class="top10-slide">
+        <div class="top10-card" onclick="openOverlay('Taal Volcano', 'assets/taalprofile.jpeg', 'Taal Volcano is a large caldera filled by Taal Lake in Batangas.', 'spot-taal-nature')">
+          <img src="assets/taalprofile.jpeg" alt="Taal Volcano">
+          <div class="top10-caption"><h3>Chocolate Hills</h3></div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Tarsier Sanctuary', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Philippine_Tarsier_%28Tarsius_syrichta%29.jpg/1280px-Philippine_Tarsier_%28Tarsius_syrichta%29.jpg', 'Habitat and conserved population of the tiny Philippine tarsier.', 'spot-tarsiersanctuary')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Philippine_Tarsier_%28Tarsius_syrichta%29.jpg/1280px-Philippine_Tarsier_%28Tarsius_syrichta%29.jpg" alt="Tarsier Sanctuary">
-          <div class="card-text-overlay">
-            <h3>Tarsier Sanctuary</h3>
-          </div>
+      </div>
+      <div class="top10-slide">
+        <div class="top10-card" onclick="openOverlay('Hundred Islands National Park', 'assets/Hundred-Islands-Christ-the-Redeemer-Statue-by-AntonNawalangMalay-via-Wikimedia-cc.jpg', 'The Hundred Islands National Park is a protected area located in Alaminos, Pangasinan. It comprises 124 islands at low tide and 123 at high tide, scattered in Lingayen Gulf.', 'spot-hundredislands-nature')">
+          <img src="assets/Hundred-Islands-Christ-the-Redeemer-Statue-by-AntonNawalangMalay-via-Wikimedia-cc.jpg" alt="Hundred Islands National Park">
+            <div class="top10-caption">
+              <h3>Tarsier Sanctuar</h3>
+            </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Kawasan Falls', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Kawasan_Falls_Cebu.jpg/1280px-Kawasan_Falls_Cebu.jpg', 'Multi-tiered turquoise waterfalls & popular canyoneering spot.', 'spot-kawasanfalls')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Kawasan_Falls_Cebu.jpg/1280px-Kawasan_Falls_Cebu.jpg" alt="Kawasan Falls">
-          <div class="card-text-overlay">
-            <h3>Kawasan Falls</h3>
+      </div>  
+      <div class="top10-slide">
+          <div class="top10-card" onclick="openOverlay('Mayon Volcano', 'assets/Mayon Volcano.webp', 'Mayon Volcano is an active stratovolcano in the province of Albay, Bicol Region. It is renowned for its &quot;perfect cone&quot; shape.', 'spot-mayon-nature')">
+            <img src="assets/Mayon Volcano.webp" alt="Mayon Volcano">
+            <div class="top10-caption">
+              <h3>Kawasan Falls</h3>
+            </div>
           </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Oslob Whale Shark Watching', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Whale_Shark_Oslob.jpg/1280px-Whale_Shark_Oslob.jpg', 'Swim or snorkel with gentle whale sharks.', 'spot-oslobwhaleshark')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Whale_Shark_Oslob.jpg/1280px-Whale_Shark_Oslob.jpg" alt="Oslob Whale Shark Watching">
-          <div class="card-text-overlay">
-            <h3>Oslob Whale Shark Watching</h3>
+      </div>
+      <div class="top10-slide">
+          <div class="top10-card" onclick="openOverlay('Intramuros', 'assets/GettyImages-515030857-599ff63e03f402001100ee1d-6218e3c18a3a4503a2a1fb183ce8ccfb.jpg', 'Intramuros, known as the Walled City, is the oldest district and historic center of Manila. It was the seat of government during the Spanish colonial period.', 'spot-intramuros-hist')">
+            <img src="assets/GettyImages-515030857-599ff63e03f402001100ee1d-6218e3c18a3a4503a2a1fb183ce8ccfb.jpg" alt="Intramuros">
+            <div class="top10-caption">
+              <h3>Oslob Whale Shark Watching</h3>
+            </div>
           </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Pescador Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Pescador_Island_Cebu.jpg/1280px-Pescador_Island_Cebu.jpg', 'Renowned dive site with rich coral walls and marine life.', 'spot-pescadorisland')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Pescador_Island_Cebu.jpg/1280px-Pescador_Island_Cebu.jpg" alt="Pescador Island">
-          <div class="card-text-overlay">
-            <h3>Pescador Island</h3>
+      </div>
+      <div class="top10-slide">
+          <div class="top10-card" onclick="openOverlay('Vigan City', 'assets/HERITAGE-Vigan,_Ilocos_Sur_0.jpg', 'Vigan City is a UNESCO World Heritage site in Ilocos Sur, known for its well-preserved Spanish colonial town. Calle Crisologo is its most famous street.', 'spot-vigan-hist')">
+            <img src="assets/HERITAGE-Vigan,_Ilocos_Sur_0.jpg" alt="Vigan City">
+            <div class="top10-caption">
+              <h3>Pescador Island</h3>
+            </div>
           </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Sumilon Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Sumilon_Island_Sandbar.jpg/1280px-Sumilon_Island_Sandbar.jpg', 'Marine sanctuary with sandbar and lighthouse.', 'spot-sumilonisland')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Sumilon_Island_Sandbar.jpg/1280px-Sumilon_Island_Sandbar.jpg" alt="Sumilon Island">
-          <div class="card-text-overlay">
-            <h3>Sumilon Island</h3>
+      </div>
+      <div class="top10-slide">
+          <div class="top10-card" onclick="openOverlay('Corregidor Island', 'assets/12965072353_c27aa18f9c_b.jpg', 'Corregidor Island is a small island located at the entrance of Manila Bay. It was a crucial defense fortress during World War II.', 'spot-corregidor-hist')">
+            <img src="assets/12965072353_c27aa18f9c_b.jpg" alt="Corregidor Island">
+            <div class="top10-caption">
+              <h3>Sumilon Island</h3>
+            </div>
           </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Magellan’s Cross', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Magellan%27s_Cross_Cebu.jpg/1280px-Magellan%27s_Cross_Cebu.jpg', 'Historic Christian landmark planted by Ferdinand Magellan.', 'spot-magellanscross')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Magellan%27s_Cross_Cebu.jpg/1280px-Magellan%27s_Cross_Cebu.jpg" alt="Magellan’s Cross">
-          <div class="card-text-overlay">
-            <h3>Magellan’s Cross</h3>
+      </div>
+      <div class="top10-slide">    
+          <div class="top10-card" onclick="openOverlay('Mount Pinatubo', 'assets/c7e34e674d92419983d25c2eb6536646.jpg', 'Mount Pinatubo is an active stratovolcano in the Cabusilan Mountains, located on the tripoint boundary of Zambales, Tarlac, and Pampanga. It is famous for its beautiful crater lake.', 'spot-mtpulatubo-nature')">
+            <img src="assets/c7e34e674d92419983d25c2eb6536646.jpg" alt="Mount Pinatubo">
+            <div class="top10-caption">
+              <h3>Magellan’s Cross</h3>
+            </div>
           </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Heritage of Cebu Monument/Cathedral', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Heritage_of_Cebu_Monument.jpg/1280px-Heritage_of_Cebu_Monument.jpg', 'Bronze sculptures and centuries‑old church.', 'spot-cebumonument')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Heritage_of_Cebu_Monument.jpg/1280px-Heritage_of_Cebu_Monument.jpg" alt="Heritage of Cebu Monument/Cathedral">
-          <div class="card-text-overlay">
-            <h3>Heritage of Cebu Monument/Cathedral</h3>
+      </div>
+      <div class="top10-slide">    
+          <div class="top10-card" onclick="openOverlay('Sabang Beach, Baler', 'assets/sabang-beach.jpg', 'Sabang Beach is a popular surfing spot in Baler, Aurora. It is known for its consistent waves suitable for beginners and experienced surfers alike.', 'spot-sabangbeach-nature')">
+            <img src="assets/sabang-beach.jpg" alt="Sabang Beach, Baler">
+            <div class="top10-caption">
+              <h3>Heritage of Cebu Monument/Cathedral</h3>
+            </div>
           </div>
-        </div>
-      </section>
-      <button class="scroll-btn right">&#10095;</button>
     </div>
-    </section>
+  </div>
+</section>
+    
     <section class="region-section">
     <h2>Historical Destinations</h2>
     <div class="scroll-wrapper">
@@ -222,6 +236,7 @@
       <button class="scroll-btn right">&#10095;</button>
     </div>
     </section>
+    
     <section class="region-section">
     <h2>Nature Escapes</h2>
     <div class="scroll-wrapper">
@@ -360,6 +375,7 @@
       </section>
       <button class="scroll-btn right">&#10095;</button>
     </div>
+    </section>
   </main>
 
   <!-- Overlay Modal -->
@@ -372,8 +388,7 @@
 
       <div class="modal-buttons">
         <button id="favoriteModalBtn">♡ Add to Favorites</button>
-        <button id="directionModalBtn">Directions</button>
-        <button id="commentModalBtn">Comments</button>
+
       </div>
 
       <div id="modal-directions" class="modal-directions">

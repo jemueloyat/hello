@@ -1,293 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Preferences / Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Dashboard - Preferences</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .preferences-container {
+      max-width: 800px;
+      margin: 120px auto 40px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .preference-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .preference-option {
+      padding: 14px 22px;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+      background-color: white;
+      color: #333;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .preference-option.selected {
+      background-color: #ffb300;
+      color: white;
+      border-color: #ffb300;
+    }
+
+    .save-btn {
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .recommendations {
+      text-align: left;
+      margin-top: 30px;
+    }
+
+    .recommendation-card {
+      border: 1px solid #ccc;
+      padding: 16px;
+      margin-bottom: 16px;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+    }
+
+    .recommendation-card h3 {
+      margin: 0;
+    }
+
+    .recommendation-card p {
+      margin: 4px 0;
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 <body>
-    <style>
-        /* LOADER STYLES (for both login.html and preferences.html) */
-        .loader-overlay {
-            position: fixed; /* Crucial: Covers the entire viewport */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000; /* Solid black to fully obscure */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999; /* Ensure it's on top of everything */
-            opacity: 1; /* Starts fully opaque */
-            visibility: visible; /* Starts visible */
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
+  <main class="preferences-container">
+    <h1>My Travel Preferences</h1>
+    <p id="instructionText">Choose up to 4 travel preferences:</p>
+    <div class="preference-options" id="optionsContainer"></div>
+    <button id="savePreferencesBtn" class="save-btn" style="display: none;">Save Preferences</button>
 
-        /* This is for when the loader needs to disappear */
-        .loader-overlay.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
+    <div class="recommendations" id="recommendations"></div>
 
-        .loader {
-            position: relative;
-            width: 64px;
-            height: 64px;
-            background-color: rgba(255, 255, 255, 0.5); /* White for contrast against black overlay */
-            transform: rotate(45deg);
-            overflow: hidden;
-        }
-        .loader:after{
-            content: '';
-            position: absolute;
-            inset: 8px;
-            margin: auto;
-            background: #222b32;
-        }
-        .loader:before{
-            content: '';
-            position: absolute;
-            inset: -15px;
-            margin: auto;
-            background: #de3500;
-            animation: diamondLoader 2s linear infinite;
-        }
-        @keyframes diamondLoader {
-            0% ,10% {
-                transform: translate(-64px , -64px) rotate(-45deg)
-            }
-            90% , 100% {
-                transform: translate(0px , 0px) rotate(-45deg)
-            }
-        }
-    </style>
-    <div id="loaderOverlay" class="loader-overlay">
-        <span class="loader"></span>
+    <!-- Button Container (outside recommendations) -->
+    <div style="margin-top: 30px;">
+      <button id="backHomeBtn" class="save-btn" style="background-color: #4CAF50;">← Back to Home</button>
+      <button id="changePrefsBtn" class="save-btn" style="background-color: #e53935;">Change Preferences</button>
     </div>
+  </main>
 
-    <header class="transparent-navbar">
-        <div class="logo">
-            <img src="assets/logo-removebg-preview.png" alt="Philippine Gaze Logo" class="navbar-logo">
-            <span>Philippine Gaze</span>
-        </div>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="main.html">Main</a>
-            <a href="stories.html">Stories</a>
-            <a href="favorites.html">Favorites</a>
-            <a href="preferences.html" class="active">My Dashboard</a>
-        </nav>
-        <div class="burger-wrapper">
-            <div class="burger-menu" id="burgerMenu">&#9776;</div>
-            <div class="dropdown-menu" id="dropdownMenu">
-                <a href="profile.html">Profile</a>
-                <a href="support.html">Customer Service</a>
-                <a href="#" id="logoutBtn">Logout</a>
-            </div>
-        </div>
-    </header>
+  <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDoijFlD_hJ2mp4FstfSZO4qUPKIzEdmPs",
+    authDomain: "hello-e7a6d.firebaseapp.com",
+    projectId: "hello-e7a6d",
+  };
 
-    <main id="preferencesContent" style="display: none;"> <section class="preferences-section">
-            <h1>User Dashboard</h1>
-            <p>Welcome to your personalized dashboard! Here you can manage your preferences and settings.</p>
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
 
-            <div class="preference-item">
-                <h2>Favorite Travel Types</h2>
-                <div class="checkbox-group">
-                    <label><input type="checkbox" id="adventureCb"> Adventure</label>
-                    <label><input type="checkbox" id="relaxationCb"> Relaxation</label>
-                    <label><input type="checkbox" id="culturalCb"> Cultural</label>
-                    <label><input type="checkbox" id="foodCb"> Food Exploration</label>
-                    <label><input type="checkbox" id="natureCb"> Nature & Wildlife</label>
-                </div>
-            </div>
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
-            <div class="preference-item">
-                <h2>Preferred Regions</h2>
-                <div class="checkbox-group">
-                    <label><input type="checkbox" id="luzonCb"> Luzon</label>
-                    <label><input type="checkbox" id="visayasCb"> Visayas</label>
-                    <label><input type="checkbox" id="mindanaoCb"> Mindanao</label>
-                </div>
-            </div>
+  const allOptions = [
+    { label: "Adventure Seeker", value: "adventure", destination: "Siargao", cost: "₱10,000 - ₱20,000" },
+    { label: "Beach Lover", value: "beach", destination: "Boracay", cost: "₱9,000 - ₱18,000" },
+    { label: "Culture Explorer", value: "culture", destination: "Vigan", cost: "₱6,000 - ₱10,000" },
+    { label: "Foodie Traveler", value: "food", destination: "Pampanga", cost: "₱4,000 - ₱7,000" },
+    { label: "Nature Enthusiast", value: "nature", destination: "Palawan", cost: "₱12,000 - ₱20,000" },
+    { label: "History Buff", value: "history", destination: "Intramuros", cost: "₱3,000 - ₱6,000" },
+    { label: "Relaxation & Wellness", value: "relaxation", destination: "Bohol", cost: "₱8,000 - ₱14,000" },
+    { label: "Festival Goer", value: "festival", destination: "Cebu", cost: "₱9,000 - ₱15,000" },
+    { label: "Spiritual Trips", value: "spiritual", destination: "Siquijor", cost: "₱5,000 - ₱9,000" },
+    { label: "Mountain Trekker", value: "mountains", destination: "Sagada", cost: "₱7,000 - ₱12,000" },
+  ];
 
-            <button id="savePreferencesBtn" class="save-btn">Save Preferences</button>
-            <div id="messageArea" class="message-area" style="display: none;"></div>
-        </section>
-    </main>
+  const selectedPreferences = new Set();
+  const maxSelections = 4;
+  const optionsContainer = document.getElementById('optionsContainer');
+  const saveBtn = document.getElementById('savePreferencesBtn');
+  const recommendationsEl = document.getElementById('recommendations');
+  const instructionText = document.getElementById('instructionText');
 
-    <footer class="footer">
-        <p>&copy; 2024 Philippine Gaze. All rights reserved.</p>
-    </footer>
+  const reset = localStorage.getItem("resetPrefs");
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDoijFlD_hJ2mp4FstfSZO4qUPKIzEdmPs",
-            authDomain: "hello-e7a6d.firebaseapp.com",
-            projectId: "hello-e7a6d",
-            storageBucket: "hello-e7a6d.appspot.com",
-            messagingSenderId: "693146874206",
-            appId: "1:693146874206:web:d37f7a3c823fcba4401fcf"
-        };
+  auth.onAuthStateChanged(async (user) => {
+    if (!user) {
+      window.location.href = "login.html";
+      return;
+    }
 
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+    const doc = await db.collection("users").doc(user.uid).get();
+    const saved = doc.exists ? doc.data().preferences || [] : [];
+
+    if (reset === "true") {
+      localStorage.removeItem("resetPrefs");
+    }
+
+    if (saved.length > 0 && reset !== "true") {
+      instructionText.innerText = "Your Selected Preferences:";
+      saved.forEach(value => {
+        const pref = allOptions.find(opt => opt.value === value);
+        if (pref) {
+          const el = document.createElement("div");
+          el.className = "preference-option selected";
+          el.textContent = pref.label;
+          optionsContainer.appendChild(el);
+
+          const rec = document.createElement("div");
+          rec.className = "recommendation-card";
+          rec.innerHTML = `
+            <h3>${pref.destination}</h3>
+            <p>For: ${pref.label}</p>
+            <p>Estimated Cost: ${pref.cost}</p>
+          `;
+          recommendationsEl.appendChild(rec);
         }
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+      });
+    } else {
+      instructionText.innerText = "Choose up to 4 travel preferences:";
+      allOptions.forEach(opt => {
+        const div = document.createElement("div");
+        div.className = "preference-option";
+        div.textContent = opt.label;
+        div.dataset.value = opt.value;
 
-        // Loader Elements and Functions
-        const loaderOverlay = document.getElementById('loaderOverlay');
-        const preferencesContent = document.getElementById('preferencesContent');
-        const MINIMUM_LOAD_TIME = 1000; // 1 second for content display on destination page
-
-        function activateLoader() {
-            loaderOverlay.classList.remove('hidden');
-            preferencesContent.style.display = 'none'; // Ensure content is hidden
-        }
-
-        function deactivateLoader() {
-            loaderOverlay.classList.add('hidden');
-            preferencesContent.style.display = 'block'; // Show content after loading
-        }
-
-        function delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const logoutBtn = document.getElementById('logoutBtn');
-            const burgerMenu = document.getElementById('burgerMenu');
-            const dropdownMenu = document.getElementById('dropdownMenu');
-
-            // --- Firebase Auth State Listener for preferences.html ---
-            auth.onAuthStateChanged(async (user) => {
-                if (user) {
-                    // Loader is already visible by default due to HTML structure
-                    // We just need to load data and then deactivate it.
-                    await populatePreferences(user.uid);
-                    await delay(MINIMUM_LOAD_TIME); // Ensure loader is displayed for min time
-                    deactivateLoader(); // Hide loader and show content
-                } else {
-                    // Not authenticated, redirect to login
-                    window.location.href = 'login.html';
-                }
-            });
-
-
-            // --- Existing Functionality (retained) ---
-            if (burgerMenu) {
-                burgerMenu.addEventListener('click', function() {
-                    dropdownMenu.classList.toggle('show');
-                    burgerMenu.classList.toggle('open');
-                });
+        div.addEventListener('click', () => {
+          if (selectedPreferences.has(opt.value)) {
+            selectedPreferences.delete(opt.value);
+            div.classList.remove('selected');
+          } else {
+            if (selectedPreferences.size < maxSelections) {
+              selectedPreferences.add(opt.value);
+              div.classList.add('selected');
+            } else {
+              alert("Only 4 preferences allowed.");
             }
-
-            document.addEventListener('click', function(event) {
-                if (burgerMenu && dropdownMenu && !burgerMenu.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                    dropdownMenu.classList.remove('show');
-                    burgerMenu.classList.remove('open');
-                }
-            });
-
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', async function(event) {
-                    event.preventDefault();
-                    activateLoader(); // Show loader on logout (just in case it was hidden)
-                    try {
-                        await auth.signOut();
-                        await delay(MINIMUM_LOAD_TIME); // Ensure loader is displayed for min time
-                        alert('You have been logged out!');
-                        window.location.href = 'login.html';
-                    } catch (error) {
-                        console.error("Logout Error:", error);
-                        alert("Logout failed: " + error.message);
-                        deactivateLoader(); // Hide loader if logout fails
-                    }
-                });
-            }
-
-            const messageArea = document.getElementById('messageArea');
-            function showMessage(message, isSuccess = false) {
-                messageArea.textContent = message;
-                messageArea.style.backgroundColor = isSuccess ? '#4CAF50' : '#f44336';
-                messageArea.style.display = 'block';
-                setTimeout(() => {
-                    messageArea.style.display = 'none';
-                }, 3000);
-            }
-
-            const adventureCb = document.getElementById('adventureCb');
-            const relaxationCb = document.getElementById('relaxationCb');
-            const culturalCb = document.getElementById('culturalCb');
-            const foodCb = document.getElementById('foodCb');
-            const natureCb = document.getElementById('natureCb');
-
-            const luzonCb = document.getElementById('luzonCb');
-            const visayasCb = document.getElementById('visayasCb');
-            const mindanaoCb = document.getElementById('mindanaoCb');
-
-            const savePreferencesBtn = document.getElementById('savePreferencesBtn');
-
-            async function populatePreferences(uid) {
-                try {
-                    const userDoc = await db.collection("users").doc(uid).get();
-                    if (userDoc.exists) {
-                        const userData = userDoc.data();
-                        const preferences = userData.preferences || [];
-
-                        // Populate travel types
-                        adventureCb.checked = preferences.includes('adventure');
-                        relaxationCb.checked = preferences.includes('relaxation');
-                        culturalCb.checked = preferences.includes('cultural');
-                        foodCb.checked = preferences.includes('food');
-                        natureCb.checked = preferences.includes('nature');
-
-                        // Populate regions
-                        luzonCb.checked = preferences.includes('luzon');
-                        visayasCb.checked = preferences.includes('visayas');
-                        mindanaoCb.checked = preferences.includes('mindanao');
-                    }
-                } catch (error) {
-                    console.error("Error populating preferences:", error);
-                    showMessage("Error loading preferences.", false);
-                }
-            }
-
-            savePreferencesBtn.addEventListener('click', async () => {
-                const user = auth.currentUser;
-                if (!user) {
-                    showMessage("You must be logged in to save preferences.", false);
-                    return;
-                }
-
-                const selectedPreferences = [];
-                if (adventureCb.checked) selectedPreferences.push('adventure');
-                if (relaxationCb.checked) selectedPreferences.push('relaxation');
-                if (culturalCb.checked) selectedPreferences.push('cultural');
-                if (foodCb.checked) selectedPreferences.push('food');
-                if (natureCb.checked) selectedPreferences.push('nature');
-
-                if (luzonCb.checked) selectedPreferences.push('luzon');
-                if (visayasCb.checked) selectedPreferences.push('visayas');
-                if (mindanaoCb.checked) selectedPreferences.push('mindanao');
-
-                try {
-                    await db.collection("users").doc(user.uid).update({
-                        preferences: selectedPreferences
-                    });
-                    showMessage("Preferences saved successfully!", true);
-                } catch (error) {
-                    console.error("Error saving preferences:", error);
-                    showMessage("Error saving preferences: " + error.message, false);
-                }
-            });
+          }
+          saveBtn.style.display = selectedPreferences.size > 0 ? "inline-block" : "none";
         });
-    </script>
+
+        optionsContainer.appendChild(div);
+      });
+
+      saveBtn.addEventListener("click", async () => {
+        const prefsArray = Array.from(selectedPreferences);
+        await db.collection("users").doc(user.uid).update({
+          preferences: prefsArray
+        });
+        console.log("✅ Preferences saved:", prefsArray);
+        window.location.href = "index.html";
+      });
+    }
+
+    document.getElementById("backHomeBtn").addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+
+    document.getElementById("changePrefsBtn").addEventListener("click", () => {
+      localStorage.setItem("resetPrefs", "true");
+      window.location.reload();
+    });
+  });
+</script>
+
 </body>
 </html>

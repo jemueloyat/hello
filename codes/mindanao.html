@@ -9,6 +9,7 @@
 <body>
   <header class="transparent-navbar">
     <div class="logo">Philippine Gaze</div>
+    
     <nav>
       <a href="index.html">Home</a>
       <a href="main.html">Main</a>
@@ -18,16 +19,17 @@
       <a href="mindanao.html" class="active">Mindanao</a>
       <a href="favorites.html">Favorites</a>
     </nav>
-  </header>
-         <!-- Burger + Dropdown -->
+             <!-- Burger + Dropdown -->
   <div class="burger-wrapper">
     <div class="burger-menu" id="burgerMenu">&#9776;</div>
     <div class="dropdown-menu" id="dropdownMenu">
       <a href="profile.html">👤 Profile</a>
-      <a href="support.html">📞 Customer Service</a>
+      <a href="service.html">📞 Customer Service</a>
       <a href="#" id="logoutBtn">🚪 Logout</a>
     </div>
   </div>
+  </header>
+
 <style>
   .burger-wrapper {
   position: relative;
@@ -82,139 +84,156 @@
 }
 </style>
   <main>
-    <h1>Mindanao Destinations</h1>
 
-    <section class="region-section">
-    <h2>Top 10 Most Visited</h2>
-    <div class="scroll-wrapper">
-      <button class="scroll-btn left">&#10094;</button>
-      <section class="scroll-row">
-        <div class="spot-card" onclick="openOverlay('Siargao Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Cloud_9_Siargao.jpg/1280px-Cloud_9_Siargao.jpg', 'Surfing capital (Cloud 9), island hopping to Naked Island, Daku, Guyam.', 'spot-siargaoisland')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Cloud_9_Siargao.jpg/1280px-Cloud_9_Siargao.jpg" alt="Siargao Island">
-          <div class="card-text-overlay">
-            <h3>Siargao Island</h3>
+    
+    <!-- Top 10 Destinations Section -->
+<section class="top10-section">
+  <h2>Top 10 Destinations</h2>
+  <div class="top10-slider-wrapper">
+    <div class="top10-slider" id="top10Slider">
+
+      <div class="top10-slide">
+        <div class="top10-card" onclick="openOverlay('Banaue Rice Terraces', 'assets/siargao.jpg', 'The Banaue Rice Terraces are 2,000-year-old terraces that were carved into the mountains of Ifugao by ancestors of the indigenous people.', 'spot-banauerice-nature')">
+          <img src="assets/siargao.jpg" alt="Banaue Rice Terraces">
+          <div class="top10-caption"><h3>Siargao Island</h3></div>
+        </div>
+      </div>
+
+      <div class="top10-slide">
+        <div class="top10-card" onclick="openOverlay('Mount Pulag', 'assets/hinatuan.jpg', 'Mount Pulag is the third highest mountain in the Philippines and Luzon\'s highest peak.', 'spot-mtpulag-nature')">
+          <img src="assets/hinatuan.jpg" alt="Mount Pulag">
+          <div class="top10-caption"><h3>Hinatuan Enchanted River</h3></div>
+        </div>
+      </div>
+
+      <div class="top10-slide">
+        <div class="top10-card" onclick="openOverlay('Taal Volcano', 'assets/tinuyan.jpg', 'Taal Volcano is a large caldera filled by Taal Lake in Batangas.', 'spot-taal-nature')">
+          <img src="assets/tinuyan.jpg" alt="Taal Volcano">
+          <div class="top10-caption"><h3>Tinuy‑an Falls</h3></div>
+        </div>
+      </div>
+      <div class="top10-slide">
+        <div class="top10-card" onclick="openOverlay('Hundred Islands National Park', 'assets/cdo white water rafting.jpg', 'The Hundred Islands National Park is a protected area located in Alaminos, Pangasinan. It comprises 124 islands at low tide and 123 at high tide, scattered in Lingayen Gulf.', 'spot-hundredislands-nature')">
+          <img src="assets/cdo white water rafting.jpg" alt="Hundred Islands National Park">
+            <div class="top10-caption">
+              <h3>Mount Apo</h3>
+            </div>
+        </div>
+      </div>  
+      <div class="top10-slide">
+          <div class="top10-card" onclick="openOverlay('Mayon Volcano', 'assets/lake sebu.jpg', 'Mayon Volcano is an active stratovolcano in the province of Albay, Bicol Region. It is renowned for its &quot;perfect cone&quot; shape.', 'spot-mayon-nature')">
+            <img src="assets/lake sebu.jpg" alt="Mayon Volcano">
+            <div class="top10-caption">
+              <h3>White Island (Camiguin)</h3>
+            </div>
+          </div>
+      </div>
+      <div class="top10-slide">
+          <div class="top10-card" onclick="openOverlay('Intramuros', 'assets/mt apo.jpg', 'Intramuros, known as the Walled City, is the oldest district and historic center of Manila. It was the seat of government during the Spanish colonial period.', 'spot-intramuros-hist')">
+            <img src="assets/mt apo.jpg" alt="Intramuros">
+            <div class="top10-caption">
+              <h3>Lake Venado</h3>
+            </div>
+          </div>
+      </div>
+      <div class="top10-slide">
+          <div class="top10-card" onclick="openOverlay('Vigan City', 'assets/white island.jpg', 'Vigan City is a UNESCO World Heritage site in Ilocos Sur, known for its well-preserved Spanish colonial town. Calle Crisologo is its most famous street.', 'spot-vigan-hist')">
+            <img src="assets/white island.jpg" alt="Vigan City">
+            <div class="top10-caption">
+              <h3>Maria Cristina Falls</h3>
+            </div>
+          </div>
+      </div>
+      <div class="top10-slide">
+          <div class="top10-card" onclick="openOverlay('Corregidor Island', 'assets/lake venadio.jpg', 'Corregidor Island is a small island located at the entrance of Manila Bay. It was a crucial defense fortress during World War II.', 'spot-corregidor-hist')">
+            <img src="assets/lake venadio.jpg" alt="Corregidor Island">
+            <div class="top10-caption">
+              <h3>Tinago Falls</h3>
+            </div>
+          </div>
+      </div>
+      <div class="top10-slide">    
+          <div class="top10-card" onclick="openOverlay('Mount Pinatubo', 'assets/maria cristina.jpg', 'Mount Pinatubo is an active stratovolcano in the Cabusilan Mountains, located on the tripoint boundary of Zambales, Tarlac, and Pampanga. It is famous for its beautiful crater lake.', 'spot-mtpulatubo-nature')">
+            <img src="assets/maria cristina.jpg" alt="Mount Pinatubo">
+            <div class="top10-caption">
+              <h3>Cagayan de Oro White Water Rafting</h3>
+            </div>
+          </div>
+      </div>
+      <div class="top10-slide">    
+          <div class="top10-card" onclick="openOverlay('Sabang Beach, Baler', 'assets/tinago falls.jpg', 'Sabang Beach is a popular surfing spot in Baler, Aurora. It is known for its consistent waves suitable for beginners and experienced surfers alike.', 'spot-lakesebu')">
+            <img src="assets/tinago falls.jpg" alt="Sabang Beach, Baler">
+            <div class="top10-caption">
+              <h3>Lake Sebu</h3>
+            </div>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Hinatuan Enchanted River', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Hinatuan_Enchanted_River.jpg/1280px-Hinatuan_Enchanted_River.jpg', 'Deep clear-blue river with mystical appeal.', 'spot-enchantedriver')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Hinatuan_Enchanted_River.jpg/1280px-Hinatuan_Enchanted_River.jpg" alt="Hinatuan Enchanted River">
-          <div class="card-text-overlay">
-            <h3>Hinatuan Enchanted River</h3>
-          </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Tinuy‑an Falls', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Tinuy-an_Falls_Bislig.jpg/1280px-Tinuy-an_Falls_Bislig.jpg', 'Wide, multi-tiered cascade called “Little Niagara.”', 'spot-tinuyanfalls')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Tinuy-an_Falls_Bislig.jpg/1280px-Tinuy-an_Falls_Bislig.jpg" alt="Tinuy‑an Falls">
-          <div class="card-text-overlay">
-            <h3>Tinuy‑an Falls</h3>
-          </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Mount Apo', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Mount_Apo_Davao.jpg/1280px-Mount_Apo_Davao.jpg', 'Philippines’ highest peak with rich biodiversity.', 'spot-mountapo')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Mount_Apo_Davao.jpg/1280px-Mount_Apo_Davao.jpg" alt="Mount Apo">
-          <div class="card-text-overlay">
-            <h3>Mount Apo</h3>
-          </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('White Island (Camiguin)', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/White_Island_Camiguin.jpg/1280px-White_Island_Camiguin.jpg', 'Sandy sandbar island emerging at low tide.', 'spot-whiteisland')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/White_Island_Camiguin.jpg/1280px-White_Island_Camiguin.jpg" alt="White Island (Camiguin)">
-          <div class="card-text-overlay">
-            <h3>White Island (Camiguin)</h3>
-          </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Lake Venado', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Lake_Venado_Mount_Apo.jpg/1280px-Lake_Venado_Mount_Apo.jpg', 'Crystal-clear highland lake surrounded by pine forest.', 'spot-lakevenado')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Lake_Venado_Mount_Apo.jpg/1280px-Lake_Venado_Mount_Apo.jpg" alt="Lake Venado">
-          <div class="card-text-overlay">
-            <h3>Lake Venado</h3>
-          </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Maria Cristina Falls', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Maria_Cristina_Falls_Iligan.jpg/1280px-Maria_Cristina_Falls_Iligan.jpg', 'Twin-plunge falls providing hydroelectric power.', 'spot-mariacristina')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Maria_Cristina_Falls_Iligan.jpg/1280px-Maria_Cristina_Falls_Iligan.jpg" alt="Maria Cristina Falls">
-          <div class="card-text-overlay">
-            <h3>Maria Cristina Falls</h3>
-          </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Tinago Falls', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Tinago_Falls_Iligan.jpg/1280px-Tinago_Falls_Iligan.jpg', 'Hidden deep-ravine waterfall accessed via winding steps.', 'spot-tinagofalls')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Tinago_Falls_Iligan.jpg/1280px-Tinago_Falls_Iligan.jpg" alt="Tinago Falls">
-          <div class="card-text-overlay">
-            <h3>Tinago Falls</h3>
-          </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Cagayan de Oro White Water Rafting', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/White_Water_Rafting_Cagayan_de_Oro.jpg/1280px-White_Water_Rafting_Cagayan_de_Oro.jpg', 'Thrilling river rapids adventure in Mindanao’s adventure city.', 'spot-cdorafting')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/White_Water_Rafting_Cagayan_de_Oro.jpg/1280px-White_Water_Rafting_Cagayan_de_Oro.jpg" alt="Cagayan de Oro White Water Rafting">
-          <div class="card-text-overlay">
-            <h3>Cagayan de Oro White Water Rafting</h3>
-          </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Lake Sebu', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Lake_Sebu_South_Cotabato.jpg/1280px-Lake_Sebu_South_Cotabato.jpg', 'Highland lakes with waterfalls, indigenous culture and zip lines.', 'spot-lakesebu')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Lake_Sebu_South_Cotabato.jpg/1280px-Lake_Sebu_South_Cotabato.jpg" alt="Lake Sebu">
-          <div class="card-text-overlay">
-            <h3>Lake Sebu</h3>
-          </div>
-        </div>
-      </section>
-      <button class="scroll-btn right">&#10095;</button>
+      </div>
     </div>
-    </section>
+  </section>
+
 
     <section class="region-section">
     <h2>Historical Destinations</h2>
     <div class="scroll-wrapper">
       <button class="scroll-btn left">&#10094;</button>
       <section class="scroll-row">
-        <div class="spot-card" onclick="openOverlay('Butuan ancient boat & museums', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Butuan_National_Museum.jpg/1280px-Butuan_National_Museum.jpg', 'Historic archaeological finds and river history.', 'spot-butuanmuseums')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Butuan_National_Museum.jpg/1280px-Butuan_National_Museum.jpg" alt="Butuan ancient boat & museums">
+        <div class="spot-card" onclick="openOverlay('Butuan ancient boat & museums', 'assets/butuan museum.jpg', 'spot-butuanmuseums')">
+          <img src="assets/butuan museum.jpg" alt="Butuan ancient boat & museums">
           <div class="card-text-overlay">
             <h3>Butuan ancient boat & museums</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Fort Pilar (Zamboanga City)', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Fort_Pilar_Zamboanga.jpg/1280px-Fort_Pilar_Zamboanga.jpg', '17th-century military defense fortress in Zamboanga.', 'spot-fortpilar')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Fort_Pilar_Zamboanga.jpg/1280px-Fort_Pilar_Zamboanga.jpg" alt="Fort Pilar (Zamboanga City)">
+        <div class="spot-card" onclick="openOverlay('Fort Pilar (Zamboanga City)', 'assets/fort pilar.jpg', '17th-century military defense fortress in Zamboanga.', 'spot-fortpilar')">
+          <img src="assets/fort pilar.jpg" alt="Fort Pilar (Zamboanga City)">
           <div class="card-text-overlay">
             <h3>Fort Pilar (Zamboanga City)</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Rizal Shrine (Dapitan)', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Rizal_Shrine_Dapitan.jpg/1280px-Rizal_Shrine_Dapitan.jpg', 'Where Jose Rizal was exiled.', 'spot-rizalshrine')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Rizal_Shrine_Dapitan.jpg/1280px-Rizal_Shrine_Dapitan.jpg" alt="Rizal Shrine (Dapitan)">
+        <div class="spot-card" onclick="openOverlay('Rizal Shrine (Dapitan)', 'assets/rizal shrine.jpg', 'Where Jose Rizal was exiled.', 'spot-rizalshrine')">
+          <img src="assets/rizal shrine.jpg" alt="Rizal Shrine (Dapitan)">
           <div class="card-text-overlay">
             <h3>Rizal Shrine (Dapitan)</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Davao Museum', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Davao_Museum.jpg/1280px-Davao_Museum.jpg', 'Showcases the rich history and culture of Davao.', 'spot-davaomuseum')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Davao_Museum.jpg/1280px-Davao_Museum.jpg" alt="Davao Museum">
+        <div class="spot-card" onclick="openOverlay('Davao Museum', 'assets/davao museum.jpg', 'Showcases the rich history and culture of Davao.', 'spot-davaomuseum')">
+          <img src="assets/davao museum.jpg" alt="Davao Museum">
           <div class="card-text-overlay">
             <h3>Davao Museum</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Shrine of the Holy Infant Jesus of Prague', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Shrine_of_the_Holy_Infant_Jesus_of_Prague_Davao.jpg/1280px-Shrine_of_the_Holy_Infant_Jesus_of_Prague_Davao.jpg', 'Religious site in Davao City.', 'spot-holyinfantjesus')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Shrine_of_the_Holy_Infant_Jesus_of_Prague_Davao.jpg/1280px-Shrine_of_the_Holy_Infant_Jesus_of_Prague_Davao.jpg" alt="Shrine of the Holy Infant Jesus of Prague">
+        <div class="spot-card" onclick="openOverlay('Shrine of the Holy Infant Jesus of Prague', 'assets/prague.jpg', 'Religious site in Davao City.', 'spot-holyinfantjesus')">
+          <img src="assets/prague.jpg" alt="Shrine of the Holy Infant Jesus of Prague">
           <div class="card-text-overlay">
             <h3>Shrine of the Holy Infant Jesus of Prague</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Monfort Bat Sanctuary', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Monfort_Bat_Sanctuary_Samal.jpg/1280px-Monfort_Bat_Sanctuary_Samal.jpg', 'Home to millions of bats in Samal Island.', 'spot-monfortbatsanctuary')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Monfort_Bat_Sanctuary_Samal.jpg/1280px-Monfort_Bat_Sanctuary_Samal.jpg" alt="Monfort Bat Sanctuary">
+        <div class="spot-card" onclick="openOverlay('Monfort Bat Sanctuary', 'assets/monfort bat.jpg', 'Home to millions of bats in Samal Island.', 'spot-monfortbatsanctuary')">
+          <img src="assets/monfort bat.jpg" alt="Monfort Bat Sanctuary">
           <div class="card-text-overlay">
             <h3>Monfort Bat Sanctuary</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('National Museum of the Philippines - Mindanao', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/National_Museum_Mindanao.jpg/1280px-National_Museum_Mindanao.jpg', 'Showcases the rich cultural heritage of Mindanao.', 'spot-mindanaomuseum')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/National_Museum_Mindanao.jpg/1280px-National_Museum_Mindanao.jpg" alt="National Museum of the Philippines - Mindanao">
+        <div class="spot-card" onclick="openOverlay('National Museum of the Philippines - Mindanao', 'assets/national museum davao.jpg', 'Showcases the rich cultural heritage of Mindanao.', 'spot-mindanaomuseum')">
+          <img src="assets/national museum davao.jpg" alt="National Museum of the Philippines - Mindanao">
           <div class="card-text-overlay">
             <h3>National Museum of the Philippines - Mindanao</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Datu Pagalungan Mosque', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Datu_Pagalungan_Mosque_Maguindanao.jpg/1280px-Datu_Pagalungan_Mosque_Maguindanao.jpg', 'One of the oldest mosques in Mindanao.', 'spot-pagalunganmosque')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Datu_Pagalungan_Mosque_Maguindanao.jpg/1280px-Datu_Pagalungan_Mosque_Maguindanao.jpg" alt="Datu Pagalungan Mosque">
+        <div class="spot-card" onclick="openOverlay('Datu Pagalungan Mosque', 'assets/mosque.jpg', 'One of the oldest mosques in Mindanao.', 'spot-pagalunganmosque')">
+          <img src="assets/mosque.jpg" alt="Datu Pagalungan Mosque">
           <div class="card-text-overlay">
             <h3>Datu Pagalungan Mosque</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Kutawato Cave Complex', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Kutawato_Cave_Cotabato.jpg/1280px-Kutawato_Cave_Cotabato.jpg', 'Historical cave system in Cotabato City.', 'spot-kutawatocave')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Kutawato_Cave_Cotabato.jpg/1280px-Kutawato_Cave_Cotabato.jpg" alt="Kutawato Cave Complex">
+        <div class="spot-card" onclick="openOverlay('Kutawato Cave Complex', 'assets/kutawato.jpg', 'Historical cave system in Cotabato City.', 'spot-kutawatocave')">
+          <img src="assets/kutawato.jpg" alt="Kutawato Cave Complex">
           <div class="card-text-overlay">
             <h3>Kutawato Cave Complex</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Camp Abubakar', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Camp_Abubakar_Maguindanao.jpg/1280px-Camp_Abubakar_Maguindanao.jpg', 'Former MILF camp, now a symbol of peace.', 'spot-campabubakar')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Camp_Abubakar_Maguindanao.jpg/1280px-Camp_Abubakar_Maguindanao.jpg" alt="Camp Abubakar">
+        <div class="spot-card" onclick="openOverlay('Camp Abubakar', 'assets/abubakarn milf.jpg', 'Former MILF camp, now a symbol of peace.', 'spot-campabubakar')">
+          <img src="assets/abubakarn milf.jpg" alt="Camp Abubakar">
           <div class="card-text-overlay">
             <h3>Camp Abubakar</h3>
           </div>
@@ -225,136 +244,137 @@
     </section>  
 
     <section class="region-section">
-    <h2">Nature Escapes</h2>
+    <h2>Nature Escapes</h2>
     <div class="scroll-wrapper">
       <button class="scroll-btn left">&#10094;</button>
       <section class="scroll-row">
-        <div class="spot-card" onclick="openOverlay('Hinatuan Enchanted River', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Hinatuan_Enchanted_River.jpg/1280px-Hinatuan_Enchanted_River.jpg', 'Deep clear-blue river with mystical appeal.', 'spot-enchantedriver-nature')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Hinatuan_Enchanted_River.jpg/1280px-Hinatuan_Enchanted_River.jpg" alt="Hinatuan Enchanted River">
+        <div class="spot-card" onclick="openOverlay('Hinatuan Enchanted River', 'assets/hinatuan.jpg', 'Deep clear-blue river with mystical appeal.', 'spot-enchantedriver')">
+          <img src="assets/hinatuan.jpg" alt="Hinatuan Enchanted River">
           <div class="card-text-overlay">
             <h3>Hinatuan Enchanted River</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Tinuy‑an Falls', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Tinuy-an_Falls_Bislig.jpg/1280px-Tinuy-an_Falls_Bislig.jpg', 'Wide, multi-tiered cascade called “Little Niagara.”', 'spot-tinuyanfalls-nature')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Tinuy-an_Falls_Bislig.jpg/1280px-Tinuy-an_Falls_Bislig.jpg" alt="Tinuy‑an Falls">
+        <div class="spot-card" onclick="openOverlay('Tinuy‑an Falls', 'assets/tinuyan.jpg', 'Wide, multi-tiered cascade called “Little Niagara.”', 'spot-tinuyanfalls')">
+          <img src="assets/tinuyan.jpg" alt="Tinuy‑an Falls">
           <div class="card-text-overlay">
             <h3>Tinuy‑an Falls</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Mount Apo', 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Mount_Apo_Davao.jpg/1280px-Mount_Apo_Davao.jpg', 'Philippines’ highest peak with rich biodiversity.', 'spot-mountapo-nature')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Mount_Apo_Davao.jpg/1280px-Mount_Apo_Davao.jpg" alt="Mount Apo">
+        
+        <div class="spot-card" onclick="openOverlay('Mount Apo', 'assets/mt apo.jpg', 'Philippines’ highest peak with rich biodiversity.', 'spot-mountapo')">
+          <img src="assets/mt apo.jpg" alt="Mount Apo">
           <div class="card-text-overlay">
             <h3>Mount Apo</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('White Island (Camiguin)', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/White_Island_Camiguin.jpg/1280px-White_Island_Camiguin.jpg', 'Sandy sandbar island emerging at low tide.', 'spot-whiteisland-nature')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/White_Island_Camiguin.jpg/1280px-White_Island_Camiguin.jpg" alt="White Island (Camiguin)">
+        <div class="spot-card" onclick="openOverlay('White Island (Camiguin)', 'assets/white island.jpg', 'Sandy sandbar island emerging at low tide.', 'spot-whiteisland')">
+          <img src="assets/white island.jpg" alt="White Island (Camiguin)">
           <div class="card-text-overlay">
             <h3>White Island (Camiguin)</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Lake Venado', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Lake_Venado_Mount_Apo.jpg/1280px-Lake_Venado_Mount_Apo.jpg', 'Crystal-clear highland lake surrounded by pine forest.', 'spot-lakevenado')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Lake_Venado_Mount_Apo.jpg/1280px-Lake_Venado_Mount_Apo.jpg" alt="Lake Venado">
+        <div class="spot-card" onclick="openOverlay('Lake Venado', 'assets/lake venadio.jpg', 'Crystal-clear highland lake surrounded by pine forest.', 'spot-lakevenado')">
+          <img src="assets/lake venadio.jpg" alt="Lake Venado">
           <div class="card-text-overlay">
             <h3>Lake Venado</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Maria Cristina Falls', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Maria_Cristina_Falls_Iligan.jpg/1280px-Maria_Cristina_Falls_Iligan.jpg', 'Twin-plunge falls providing hydroelectric power.', 'spot-mariacristina')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Maria_Cristina_Falls_Iligan.jpg/1280px-Maria_Cristina_Falls_Iligan.jpg" alt="Maria Cristina Falls">
+        <div class="spot-card" onclick="openOverlay('Maria Cristina Falls', 'assets/maria cristina.jpg', 'Twin-plunge falls providing hydroelectric power.', 'spot-mariacristina')">
+          <img src="assets/maria cristina.jpg" alt="Maria Cristina Falls">
           <div class="card-text-overlay">
             <h3>Maria Cristina Falls</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Tinago Falls', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Tinago_Falls_Iligan.jpg/1280px-Tinago_Falls_Iligan.jpg', 'Hidden deep-ravine waterfall accessed via winding steps.', 'spot-tinagofalls')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Tinago_Falls_Iligan.jpg/1280px-Tinago_Falls_Iligan.jpg" alt="Tinago Falls">
+        <div class="spot-card" onclick="openOverlay('Tinago Falls', 'assets/tinago falls.jpg', 'Hidden deep-ravine waterfall accessed via winding steps.', 'spot-tinagofalls')">
+          <img src="assets/tinago falls.jpg" alt="Tinago Falls">
           <div class="card-text-overlay">
             <h3>Tinago Falls</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Lake Sebu', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Lake_Sebu_South_Cotabato.jpg/1280px-Lake_Sebu_South_Cotabato.jpg', 'Highland lakes with waterfalls, indigenous culture and zip lines.', 'spot-lakesebu-nature')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Lake_Sebu_South_Cotabato.jpg/1280px-Lake_Sebu_South_Cotabato.jpg" alt="Lake Sebu">
+         <div class="spot-card" onclick="openOverlay('Lake Sebu', 'assets/lake sebu.jpg', 'Highland lakes with waterfalls, indigenous culture and zip lines.', 'spot-lakesebu')">
+          <img src="assets/lake sebu.jpg" alt="Lake Sebu">
           <div class="card-text-overlay">
             <h3>Lake Sebu</h3>
           </div>
-        </div>
-        <div class="spot-card" onclick="openOverlay('Aliwagwag Falls', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Aliwagwag_Falls_Davao_Oriental.jpg/1280px-Aliwagwag_Falls_Davao_Oriental.jpg', 'Series of cascading waterfalls through forest gorge.', 'spot-aliwagwagfalls')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Aliwagwag_Falls_Davao_Oriental.jpg/1280px-Aliwagwag_Falls_Davao_Oriental.jpg" alt="Aliwagwag Falls">
+        <div class="spot-card" onclick="openOverlay('Aliwagwag Falls', 'assets/aliwagwag.jpg', 'Series of cascading waterfalls through forest gorge.', 'spot-aliwagwagfalls')">
+          <img src="assets/aliwagwag.jpg" alt="Aliwagwag Falls">
           <div class="card-text-overlay">
             <h3>Aliwagwag Falls</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Mati City & Dahican Beach', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dahican_Beach_Mati.jpg/1280px-Dahican_Beach_Mati.jpg', 'Pristine beachfront ideal for surfing and marine turtles.', 'spot-matidahican-nature')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dahican_Beach_Mati.jpg/1280px-Dahican_Beach_Mati.jpg" alt="Mati City & Dahican Beach">
+        <div class="spot-card" onclick="openOverlay('Mati City & Dahican Beach', 'assets/mati.jpg', 'Pristine beachfront ideal for surfing and marine turtles.', 'spot-matidahican-nature')">
+          <img src="assets/mati.jpg" alt="Mati City & Dahican Beach">
           <div class="card-text-overlay">
             <h3>Mati City & Dahican Beach</h3>
           </div>
         </div>
       </section>
       <button class="scroll-btn right">&#10095;</button>
-    </div>
+      </div>
+      
     </section>
 
     <section class="region-section">
-    <h2 class="section-title">Other Attractions</h2>
+    <h2>Other Attractions</h2>
     <div class="scroll-wrapper">
       <button class="scroll-btn left">&#10094;</button>
       <section class="scroll-row">
-        <div class="spot-card" onclick="openOverlay('Cagayan de Oro White Water Rafting', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/White_Water_Rafting_Cagayan_de_Oro.jpg/1280px-White_Water_Rafting_Cagayan_de_Oro.jpg', 'Thrilling river rapids adventure in Mindanao’s adventure city.', 'spot-cdorafting-other')">
-          <img src="assets/00-5-facts-about-the-puerto-princesa-subterranean-river-adobe-cropped.jpg" alt="Cagayan de Oro White Water Rafting">
+        <div class="spot-card" onclick="openOverlay('Cagayan de Oro White Water Rafting', 'assets/white.jpg', 'Thrilling river rapids adventure in Mindanao’s adventure city.', 'spot-cdorafting-other')">
+          <img src="assets/white.jpg" alt="Cagayan de Oro White Water Rafting">
           <div class="card-text-overlay">
             <h3>Cagayan de Oro White Water Rafting</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Davao City People’s Park & Philippine Eagle Center', 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Philippine_Eagle_Center_Davao.jpg/1280px-Philippine_Eagle_Center_Davao.jpg', 'Urban nature park and breeding facility for the national bird.', 'spot-davaopark')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Philippine_Eagle_Center_Davao.jpg/1280px-Philippine_Eagle_Center_Davao.jpg" alt="Davao City People’s Park & Philippine Eagle Center">
+        <div class="spot-card" onclick="openOverlay('Davao City People’s Park & Philippine Eagle Center', 'assets/eagle.jpg', 'Urban nature park and breeding facility for the national bird.', 'spot-davaopark')">
+          <img src="assets/eagle.jpg" alt="Davao City People’s Park & Philippine Eagle Center">
           <div class="card-text-overlay">
             <h3>Davao City People’s Park & Philippine Eagle Center</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Samal Island', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Samal_Island_Davao.jpg/1280px-Samal_Island_Davao.jpg', 'Beach resort island accessible via Davao City ferry.', 'spot-samalisland')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Samal_Island_Davao.jpg/1280px-Samal_Island_Davao.jpg" alt="Samal Island">
+        <div class="spot-card" onclick="openOverlay('Samal Island', 'assets/samal.jpg', 'Beach resort island accessible via Davao City ferry.', 'spot-samalisland')">
+          <img src="assets/samal.jpg" alt="Samal Island">
           <div class="card-text-overlay">
             <h3>Samal Island</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Butuan ancient boat & museums', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Butuan_National_Museum.jpg/1280px-Butuan_National_Museum.jpg', 'Historic archaeological finds and river history.', 'spot-butuanmuseums-other')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Butuan_National_Museum.jpg/1280px-Butuan_National_Museum.jpg" alt="Butuan ancient boat & museums">
+        <div class="spot-card" onclick="openOverlay('Butuan ancient boat & museums', 'assets/butuan museum.jpg', 'spot-butuanmuseums')">
+          <img src="assets/butuan museum.jpg" alt="Butuan ancient boat & museums">
           <div class="card-text-overlay">
             <h3>Butuan ancient boat & museums</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Managong Falls', 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Managong_Falls_Compostela_Valley.jpg/1280px-Managong_Falls_Compostela_Valley.jpg', 'Tall hidden waterfall in forest wilderness of Caraga region.', 'spot-managongfalls')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Managong_Falls_Compostela_Valley.jpg/1280px-Managong_Falls_Compostela_Valley.jpg" alt="Managong Falls">
+        <div class="spot-card" onclick="openOverlay('Managong Falls', 'assets/managong.jpg', 'Tall hidden waterfall in forest wilderness of Caraga region.', 'spot-managongfalls')">
+          <img src="assets/managong.jpg" alt="Managong Falls">
           <div class="card-text-overlay">
             <h3>Managong Falls</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Pink Beach (Zamboanga City)', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Pink_Beach_Zamboanga.jpg/1280px-Pink_Beach_Zamboanga.jpg', 'Rare pink-hued shoreline colored by crushed shells.', 'spot-pinkbeach')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Pink_Beach_Zamboanga.jpg/1280px-Pink_Beach_Zamboanga.jpg" alt="Pink Beach (Zamboanga City)">
+        <div class="spot-card" onclick="openOverlay('Pink Beach (Zamboanga City)', 'assets/fenk.jpg', 'Rare pink-hued shoreline colored by crushed shells.', 'spot-pinkbeach')">
+          <img src="assets/fenk.jpg" alt="Pink Beach (Zamboanga City)">
           <div class="card-text-overlay">
             <h3>Pink Beach (Zamboanga City)</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Cloud 9 boardwalk & surfing area (Siargao)', 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Cloud_9_Siargao.jpg/1280px-Cloud_9_Siargao.jpg', 'Surf culture hub and sunset viewing spot.', 'spot-cloud9-other')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Cloud_9_Siargao.jpg/1280px-Cloud_9_Siargao.jpg" alt="Cloud 9 boardwalk & surfing area (Siargao)">
+        <div class="spot-card" onclick="openOverlay('Cloud 9 boardwalk & surfing area (Siargao)', 'assets/c9.jpg', 'Surf culture hub and sunset viewing spot.', 'spot-cloud9-other')">
+          <img src="assets/c9.jpg">
           <div class="card-text-overlay">
             <h3>Cloud 9 boardwalk & surfing area (Siargao)</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Cambugahay Falls (Siquijor island)', 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Cambugahay_Falls_Siquijor.jpg/1280px-Cambugahay_Falls_Siquijor.jpg', 'Multi-tiered turquoise waterfalls with rope swings.', 'spot-cambugahayfalls')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Cambugahay_Falls_Siquijor.jpg/1280px-Cambugahay_Falls_Siquijor.jpg" alt="Cambugahay Falls (Siquijor island)">
+        <div class="spot-card" onclick="openOverlay('Cambugahay Falls (Siquijor island)', 'assets/cambugahay.jpg', 'Multi-tiered turquoise waterfalls with rope swings.', 'spot-cambugahayfalls')">
+          <img src="assets/cambugahay.jpg" alt="Cambugahay Falls (Siquijor island)">
           <div class="card-text-overlay">
             <h3>Cambugahay Falls (Siquijor island)</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Hinatuan Mangrove Boardwalk', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Hinatuan_Mangrove_Forest.jpg/1280px-Hinatuan_Mangrove_Forest.jpg', 'Protected mangrove ecosystem near Enchanted River.', 'spot-mangroveboardwalk')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Hinatuan_Mangrove_Forest.jpg/1280px-Hinatuan_Mangrove_Forest.jpg" alt="Hinatuan Mangrove Boardwalk">
+        <div class="spot-card" onclick="openOverlay('Hinatuan Mangrove Boardwalk', 'assets/mangrove.jpg', 'Protected mangrove ecosystem near Enchanted River.', 'spot-mangroveboardwalk')">
+          <img src="assets/mangrove.jpg" alt="Hinatuan Mangrove Boardwalk">
           <div class="card-text-overlay">
             <h3>Hinatuan Mangrove Boardwalk</h3>
           </div>
         </div>
-        <div class="spot-card" onclick="openOverlay('Daku Island (Siargao)', 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Daku_Island_Siargao.jpg/1280px-Daku_Island_Siargao.jpg', 'Island hopping destination with white sand and turquoise shallows.', 'spot-dakuisland')">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Daku_Island_Siargao.jpg/1280px-Daku_Island_Siargao.jpg" alt="Daku Island (Siargao)">
+        <div class="spot-card" onclick="openOverlay('Daku Island (Siargao)', 'assets/daku kaayo.jpg', 'Island hopping destination with white sand and turquoise shallows.', 'spot-dakuisland')">
+          <img src="assets/daku kaayo.jpg" alt="Daku Island (Siargao)">
           <div class="card-text-overlay">
             <h3>Daku Island (Siargao)</h3>
           </div>
@@ -375,8 +395,7 @@
 
       <div class="modal-buttons">
         <button id="favoriteModalBtn">♡ Add to Favorites</button>
-        <button id="directionModalBtn">Directions</button>
-        <button id="commentModalBtn">Comments</button>
+
       </div>
 
       <div id="modal-directions" class="modal-directions">

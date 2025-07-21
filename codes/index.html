@@ -40,31 +40,11 @@
         <p>Discover breathtaking islands, stunning beaches, and rich culture.</p>
         <div class="search-container">
             <input type="text" class="search-input" placeholder="Search for a destination...">
-            <button class="search-btn">Search</button>
+            <button class="search-btn">🔍</button>
         </div>
-        <div class="recommended-islands">
-            <div class="island-card">
-                <img src="https://placehold.co/612x612/ffb300/1a2233?text=Palawan" alt="Palawan">
-                <h3>Palawan</h3>
-                <p>El Nido, Coron, Underground River</p>
-            </div>
-            <div class="island-card">
-                <img src="https://placehold.co/612x612/ffb300/1a2233?text=Boracay" alt="Boracay">
-                <h3>Boracay</h3>
-                <p>White Beach, Diniwid Beach, Puka Beach</p>
-            </div>
-            <div class="island-card">
-                <img src="https://placehold.co/612x612/ffb300/1a2233?text=Siargao" alt="Siargao">
-                <h3>Siargao</h3>
-                <p>Cloud 9, Sugba Lagoon, Magpupungko</p>
-            </div>
-             <div class="island-card">
-                <img src="https://placehold.co/612x612/ffb300/1a2233?text=Cebu" alt="Cebu">
-                <h3>Cebu</h3>
-                <p>Bantayan Island, Moalboal, Kawasan Falls</p>
-            </div>
-        </div>
-    </section>
+
+        <section class="recommended-islands" id="recommendedIslands"></section>
+
 
       <section class="travel-pros">
   <h2>For Travel Pros</h2>
@@ -93,66 +73,171 @@
 </footer>
 
 <script>
-    // Existing JavaScript for Burger Menu and other functionalities
-    document.addEventListener('DOMContentLoaded', () => {
-        const burgerMenu = document.getElementById('burgerMenu');
-        const dropdownMenu = document.getElementById('dropdownMenu');
+  // Firebase config and init
+  const firebaseConfig = {
+    apiKey: "AIzaSyDoijFlD_hJ2mp4FstfSZO4qUPKIzEdmPs",
+    authDomain: "hello-e7a6d.firebaseapp.com",
+    projectId: "hello-e7a6d",
+  };
 
-        if (burgerMenu) {
-            burgerMenu.addEventListener('click', () => {
-                dropdownMenu.classList.toggle('show');
-            });
-        }
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (event) => {
-            if (!burgerMenu.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                dropdownMenu.classList.remove('show');
-            }
-        });
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  // Dropdown Burger Menu
+  document.addEventListener('DOMContentLoaded', () => {
+    const burgerMenu = document.getElementById('burgerMenu');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    if (burgerMenu) {
+      burgerMenu.addEventListener('click', () => {
+        dropdownMenu.classList.toggle('show');
+      });
+    }
+
+    document.addEventListener('click', (event) => {
+      if (!burgerMenu.contains(event.target) && !dropdownMenu.contains(event.target)) {
+        dropdownMenu.classList.remove('show');
+      }
     });
+  });
 
-    // Existing animation script
-    document.addEventListener('DOMContentLoaded', () => {
-      const animatedLogoText = document.getElementById('animatedLogoText');
-      if (!animatedLogoText) {
-        console.warn('animatedLogoText element not found. Animation will not play.');
+  // Logo Animation
+  document.addEventListener('DOMContentLoaded', () => {
+    const animatedLogoText = document.getElementById('animatedLogoText');
+    if (!animatedLogoText) return;
+
+    const pauseAfterEntrance = 5000;
+    const pauseBeforeNextCycle = 500;
+
+    function playZoomInDown() {
+      animatedLogoText.style.opacity = '1';
+      animatedLogoText.classList.add('animate__zoomInDown');
+      animatedLogoText.addEventListener('animationend', function handler() {
+        animatedLogoText.classList.remove('animate__zoomInDown');
+        animatedLogoText.removeEventListener('animationend', handler);
+        setTimeout(playFlipOutX, pauseAfterEntrance);
+      }, { once: true });
+    }
+
+    function playFlipOutX() {
+      animatedLogoText.classList.add('animate__flipOutX');
+      animatedLogoText.addEventListener('animationend', function handler() {
+        animatedLogoText.classList.remove('animate__flipOutX');
+        animatedLogoText.removeEventListener('animationend', handler);
+        animatedLogoText.style.opacity = '0';
+        setTimeout(playZoomInDown, pauseBeforeNextCycle);
+      }, { once: true });
+    }
+
+    playZoomInDown();
+  });
+
+  // Load destination cards based on saved preferences
+  firebase.auth().onAuthStateChanged(async (user) => {
+    if (!user) {
+      console.warn("No user logged in.");
+      return;
+    }
+
+    const doc = await db.collection("users").doc(user.uid).get();
+    if (!doc.exists) {
+      console.warn("User document does not exist.");
+      return;
+    }
+
+    const preferences = doc.data().preferences || [];
+    console.log("User preferences:", preferences);
+
+    const islandsEl = document.getElementById('recommendedIslands');
+    islandsEl.innerHTML = '';
+
+    const destinations = {
+      adventure: {
+        name: "Siargao",
+        desc: "Famous for surfing and rock pools.",
+        img: "assets/guyam-island-siargao.jpg"
+      },
+      beach: {
+        name: "Boracay",
+        desc: "Powdery white sand and vibrant nightlife.",
+        img: "assets/boracay-island-4.jpg"
+      },
+      culture: {
+        name: "Vigan",
+        desc: "Spanish-style architecture and heritage.",
+        img: "assets/518235210_1467526944603609_7209739131766340395_n.jpg"
+      },
+      food: {
+        name: "Pampanga",
+        desc: "Culinary capital with unique local flavors.",
+        img: "assets/ezgif-7-3ef32aee3aa1.jpeg"
+      },
+      nature: {
+        name: "Palawan",
+        desc: "Majestic lagoons and hidden beaches.",
+        img: "assets/kayangan-lake-coron-island-palawan-philippines-shutterstock_1404164243.jpg"
+      },
+      history: {
+        name: "Intramuros",
+        desc: "Historic Spanish walled city in Manila.",
+        img: "assets/36-intramuros-main-banner.jpg"
+      },
+      relaxation: {
+        name: "Bohol",
+        desc: "Chocolate Hills and Tarsiers.",
+        img: "assets/2ea00603-df4f-4ef0-910e-b5202325fba8.avif"
+      },
+      festival: {
+        name: "Cebu",
+        desc: "Sinulog Festival and island adventures.",
+        img: "assets/Sinulog+Festival+-+Erwin+Lim.jpg"
+      },
+      spiritual: {
+        name: "Siquijor",
+        desc: "Peaceful healing island getaway.",
+        img: "assets/018.jpg"
+      },
+      mountains: {
+        name: "Sagada",
+        desc: "Caves, terraces, and cool mountain air.",
+        img: "assets/c208694c13abe30089346133d6906bf4.jpg"
+      }
+    };
+
+    preferences.forEach(pref => {
+      const dest = destinations[pref];
+      if (!dest) {
+        console.warn(`No destination for preference: ${pref}`);
         return;
       }
 
-      // Define default animations
-      const pauseAfterEntrance = 5000; // 5 seconds pause after zoomInDown
-      const pauseBeforeNextCycle = 500; // 0.5 second pause before the next zoomInDown
+      const card = document.createElement('div');
+      card.className = 'island-card';
+      card.innerHTML = `
+        <div class="card-inner">
+          <div class="card-front">
+            <img src="${dest.img}" alt="${dest.name}" />
+          </div>
+          <div class="card-back">
+            <h3>${dest.name}</h3>
+            <p>${dest.desc}</p>
+            <small>(Click again to go back)</small>
+          </div>
+        </div>
+      `;
 
-      function playZoomInDown() {
-        // Ensure element is visible at the start of zoomInDown (it will handle opacity transition)
-        animatedLogoText.style.opacity = '1';
-        animatedLogoText.classList.add('animate__zoomInDown');
+      const cardInner = card.querySelector('.card-inner');
+      card.addEventListener('click', () => {
+        cardInner.classList.toggle('flipped');
+      });
 
-        animatedLogoText.addEventListener('animationend', function handler() {
-          animatedLogoText.classList.remove('animate__zoomInDown');
-          animatedLogoText.removeEventListener('animationend', handler); // Clean up listener
-          setTimeout(playFlipOutX, pauseAfterEntrance); // Pause before starting flipOutX
-        }, { once: true });
-      }
-
-      function playFlipOutX() {
-        animatedLogoText.classList.add('animate__flipOutX');
-
-        animatedLogoText.addEventListener('animationend', function handler() {
-          animatedLogoText.classList.remove('animate__flipOutX');
-          animatedLogoText.removeEventListener('animationend', handler); // Clean up listener
-
-          // Ensure element explicitly stays invisible after flipOutX finishes
-          animatedLogoText.style.opacity = '0';
-
-          setTimeout(playZoomInDown, pauseBeforeNextCycle); // Pause before starting the next loop cycle
-        }, { once: true });
-      }
-
-      // Start the animation loop when the page loads
-      playZoomInDown();
+      islandsEl.appendChild(card);
     });
+  });
 </script>
 </body>
 </html>
