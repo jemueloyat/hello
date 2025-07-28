@@ -86,7 +86,7 @@ if (!firebaseConfig.projectId || !firebaseConfig.apiKey) {
     console.error("Firebase initialization warning: Essential firebaseConfig (projectId/apiKey) might be missing even after fallback. Ensure __firebase_config is correctly provided by the Canvas environment or the hardcoded values are correct. Firebase-dependent features will be disabled.");
     if (commentInput) commentInput.disabled = true;
     if (submitCommentBtn) submitCommentBtn.disabled = true;
-    if (postMessageArea) showMessage(postMessageArea, "Error: Hindi makakonekta sa database. Pakisuri ang configuration.", false);
+    if (postMessageArea) showMessage(postMessageArea, "Error: Unable to connect to database. Please check configuration.", false);
 }
 
 
@@ -106,7 +106,7 @@ try {
     console.error("Failed to initialize Firebase:", error);
     if (commentInput) commentInput.disabled = true;
     if (submitCommentBtn) submitCommentBtn.disabled = true;
-    if (postMessageArea) showMessage(postMessageArea, "Error: Hindi makakonekta sa database. Pakisuri ang configuration.", false);
+    if (postMessageArea) showMessage(postMessageArea, "Error: Unable to connect to database. Please check configuration.", false);
     db = null;
     auth = null;
 }
@@ -169,7 +169,7 @@ if (auth) {
       if (commentInput) commentInput.disabled = false;
       if (submitCommentBtn) submitCommentBtn.disabled = false;
 
-      if (commentInput) commentInput.placeholder = "Isulat ang iyong komento...";
+      if (commentInput) commentInput.placeholder = "Write a comment...";
 
       // If there's a modal open, re-check like state and comments permissions
       if (currentOpenPostId && db) { // Check db before accessing it
@@ -193,7 +193,7 @@ if (auth) {
       if (commentInput) commentInput.disabled = true;
       if (submitCommentBtn) submitCommentBtn.disabled = true;
 
-      if (commentInput) commentInput.placeholder = "Mangyaring mag-log in para mag-komento.";
+      if (commentInput) commentInput.placeholder = "Please log in to comment..";
 
       // Attempt anonymous sign-in if no custom token is present
       if (!initialAuthToken && auth) { // Check if auth is valid before attempting signInAnonymously
@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 function loadPosts() {
   if (!db) {
     console.error("Firestore database is not initialized. Cannot load posts.");
-    if (storiesFeed) storiesFeed.innerHTML = '<p class="message-area">Database error. Hindi ma-load ang mga kwento.</p>';
+    if (storiesFeed) storiesFeed.innerHTML = '<p class="message-area">Database error. Unable to load stories.</p>';
     return;
   }
 
@@ -254,7 +254,7 @@ function loadPosts() {
   unsubscribePosts = onSnapshot(q, (snapshot) => {
     if (storiesFeed) storiesFeed.innerHTML = ''; // Clear current feed COMPLETELY
     if (snapshot.empty) {
-      if (storiesFeed) storiesFeed.innerHTML = '<p class="loading-message">Walang post pa. Maging una!</p>';
+      if (storiesFeed) storiesFeed.innerHTML = '<p class="loading-message">No posts yet. Be the first!</p>';
       return;
     }
 
@@ -363,7 +363,7 @@ function attachPostCardEventListeners(postCard, post) {
   if (submitCommentBtnPost && commentInputPost) {
     submitCommentBtnPost.addEventListener('click', async () => {
       if (!currentUserId || !db) {
-        showMessage(postMessageArea, "Mangyaring mag-log in at tiyakin na konektado ang database para mag-komento.", false);
+        showMessage(postMessageArea, "Please log in and ensure the database is connected to comment.", false);
         return;
       }
       const commentText = commentInputPost.value.trim();
@@ -371,7 +371,7 @@ function attachPostCardEventListeners(postCard, post) {
         await addComment(post.id, commentText);
         commentInputPost.value = ''; // Clear input after submission
       } else {
-        showMessage(postMessageArea, "Walang laman ang komento.", false);
+        showMessage(postMessageArea, "The comment is empty.", false);
       }
     });
   }
@@ -389,11 +389,11 @@ function attachPostCardEventListeners(postCard, post) {
   if (deletePostBtn) {
     deletePostBtn.addEventListener('click', async () => {
       if (!db) {
-        showMessage(postMessageArea, "Database error. Hindi makabura ng post.", false);
+        showMessage(postMessageArea, "Database error. Unable to delete post.", false);
         return;
       }
       // Using a custom modal for confirmation instead of confirm()
-      showConfirmModal("Sigurado ka bang gusto mong burahin ang post na ito?", async () => {
+      showConfirmModal("Are you sure you want to delete this post?", async () => {
         await deletePost(post.id);
       });
     });
@@ -404,7 +404,7 @@ function attachPostCardEventListeners(postCard, post) {
 // --- Like Functionality ---
 async function toggleLike(postId, userId) {
   if (!db || !userId) {
-    showMessage(postMessageArea, "Mangyaring mag-log in para mag-like.", false);
+    showMessage(postMessageArea, "Please log in to like.", false);
     return;
   }
   const postRef = doc(db, `artifacts/${appId}/public/data/posts`, postId);
@@ -427,7 +427,7 @@ async function toggleLike(postId, userId) {
     }
   } catch (error) {
     console.error("Error toggling like:", error);
-    showMessage(postMessageArea, "Nabigo ang pag-like. Subukang muli.", false);
+    showMessage(postMessageArea, "Like failed. Try again.", false);
   }
 }
 
@@ -503,7 +503,7 @@ if (overlay) {
 
 async function addComment(postId, commentText) {
   if (!db || !currentUserId || !currentUserName) {
-    showMessage(commentMessageArea, "Mangyaring mag-log in para magkomento.", false);
+    showMessage(commentMessageArea, "Please log in to comment.", false);
     return;
   }
   try {
@@ -523,18 +523,18 @@ async function addComment(postId, commentText) {
       commentsCount: (await getDoc(postRef)).data().commentsCount + 1 || 1
     });
 
-    showMessage(commentMessageArea, "Komento naidagdag na!", true);
+    showMessage(commentMessageArea, "Comment added!", true);
     if (commentInput) commentInput.value = ''; // Clear input
   } catch (error) {
     console.error("Error adding comment:", error);
-    showMessage(commentMessageArea, "Nabigo ang pagdagdag ng komento. Subukang muli.", false);
+    showMessage(commentMessageArea, "Failed to add comment. Please try again.", false);
   }
 }
 
 function loadCommentsForPost(postId, commentsDisplayAreaElement) { // Renamed parameter for clarity
   if (!db) {
     console.error("Firestore database is not initialized. Cannot load comments.");
-    if (commentsDisplayAreaElement) commentsDisplayAreaElement.innerHTML = '<p class="message-area">Database error. Hindi ma-load ang mga komento.</p>';
+    if (commentsDisplayAreaElement) commentsDisplayAreaElement.innerHTML = '<p class="message-area">Database error. Comments could not be loaded.</p>';
     return;
   }
 
@@ -548,7 +548,7 @@ function loadCommentsForPost(postId, commentsDisplayAreaElement) { // Renamed pa
   unsubscribeComments = onSnapshot(q, (snapshot) => {
     if (commentsDisplayAreaElement) commentsDisplayAreaElement.innerHTML = ''; // Clear comments area
     if (snapshot.empty) {
-      if (commentsDisplayAreaElement) commentsDisplayAreaElement.innerHTML = '<p style="text-align: center; color: #aaa;">Walang komento pa. Maging una!</p>';
+      if (commentsDisplayAreaElement) commentsDisplayAreaElement.innerHTML = '<p style="text-align: center; color: #aaa;">No comments yet. Be the first!</p>';
       return;
     }
 
@@ -598,7 +598,7 @@ if (submitCommentBtn && commentInput && commentMessageArea) {
         await addComment(currentOpenPostId, commentText);
       }
     } else {
-      showMessage(commentMessageArea, "Walang laman ang komento.", false);
+      showMessage(commentMessageArea, "The comment is empty.", false);
     }
   });
 }
@@ -608,7 +608,7 @@ if (submitCommentBtn && commentInput && commentMessageArea) {
 function toggleEditMode(storyCard, post) {
   if (!db) {
     console.error("Firestore database is not initialized.");
-    showMessage(postMessageArea, "Database error. Hindi makapag-edit ng post.", false);
+    showMessage(postMessageArea, "Database error. Unable to edit post.", false);
     return;
   }
   const postTextElement = storyCard.querySelector('.post-text');
@@ -671,23 +671,23 @@ function toggleEditMode(storyCard, post) {
 async function updatePost(postId, updates) {
   if (!db) {
     console.error("Firestore database is not initialized.");
-    showMessage(postMessageArea, "Database error. Hindi makapag-update ng post.", false);
+    showMessage(postMessageArea, "Database error. Unable to update post.", false);
     return;
   }
   const postRef = doc(db, `artifacts/${appId}/public/data/posts`, postId);
   try {
     await updateDoc(postRef, updates);
-    showMessage(postMessageArea, "Post na-update na!", true);
+    showMessage(postMessageArea, "Post updated!", true);
   } catch (error) {
     console.error("Error updating post:", error);
-    showMessage(postMessageArea, "Nabigo ang pag-update ng post.", false);
+    showMessage(postMessageArea, "Post update failed.", false);
   }
 }
 
 async function deletePost(postId) {
   if (!db) {
     console.error("Firestore database is not initialized.");
-    showMessage(postMessageArea, "Database error. Hindi makabura ng post.", false);
+    showMessage(postMessageArea, "Database error. Unable to delete post.", false);
     return;
   }
   try {
@@ -704,10 +704,10 @@ async function deletePost(postId) {
     });
     await Promise.all(commentsToDelete);
 
-    showMessage(postMessageArea, "Post at mga komento nabura na!", true);
+    showMessage(postMessageArea, "Post and comments are deleted!", true);
   } catch (error) {
     console.error("Error deleting post and comments:", error);
-    showMessage(postMessageArea, "Nabigo ang pagbura ng post.", false);
+    showMessage(postMessageArea, "Error deleting post and comments.", false);
   }
 }
 
@@ -763,7 +763,7 @@ if (logoutBtn && auth) { // Ensure auth is valid
     } catch (error) {
       console.error("Error signing out:", error);
       // Use custom modal instead of alert in production
-      showMessage(postMessageArea, "Nabigo ang pag-logout. Subukang muli.", false);
+      showMessage(postMessageArea, "Logout failed. Try again.", false);
     }
   });
 }
@@ -778,7 +778,7 @@ if (logoutBtnDropdown && auth) {
       window.location.href = "login.html";
     } catch (error) {
       console.error("Error signing out from dropdown:", error);
-      showMessage(postMessageArea, "Nabigo ang pag-logout. Subukang muli.", false);
+      showMessage(postMessageArea, "Logout failed. Try again.", false);
     }
   });
 }

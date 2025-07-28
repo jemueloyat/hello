@@ -50,7 +50,7 @@ let currentUserId = null; // Para itago ang kasalukuyang user ID
 function updateFavoriteButtonState(button, isFavorited) {
   if (isFavorited) {
     button.classList.add('favorited');
-    button.textContent = '♥ Favorited'; // Ibinabalik sa text na may puso
+    button.textContent = '♥ Added to Favorites'; // Ibinabalik sa text na may puso
   } else {
     button.classList.remove('favorited');
     button.textContent = '♡ Add to Favorites'; // Ibinabalik sa text na may puso
@@ -76,17 +76,17 @@ async function submitReply(parentId, replyText, replyInputContainer) {
   const user = auth.currentUser;
 
   if (!user) {
-    showTemporaryMessage("Mangyaring mag-log in para mag-komento.", true);
+    showTemporaryMessage("Please log in to comment.", true);
     return;
   }
 
   if (!replyText) {
-    showTemporaryMessage("Walang laman ang komento. Mangyaring maglagay ng komento.", true);
+    showTemporaryMessage("The comment is empty. Please enter a comment.", true);
     return;
   }
 
   if (!currentSpotId) {
-    showTemporaryMessage("Walang spot na napili para sa komento.", true);
+    showTemporaryMessage("No spots have been selected for comment.", true);
     return;
   }
 
@@ -99,12 +99,12 @@ async function submitReply(parentId, replyText, replyInputContainer) {
       timestamp: new Date(),
       parentId: parentId // Idagdag ang parentId para sa replies
     });
-    showTemporaryMessage("Komento naidagdag na!", false);
+    showTemporaryMessage("Comment added!", false);
     replyInputContainer.remove(); // Tanggalin ang reply input field pagkatapos mag-submit
     loadComments(currentSpotId); // I-reload ang comments para makita ang bagong reply
   } catch (error) {
-    console.error("Error sa pagdagdag ng komento:", error);
-    showTemporaryMessage("Nabigo ang pagdagdag ng komento. Subukang muli. Tingnan ang console para sa detalye.", true);
+    console.error("Error adding comment:", error);
+    showTemporaryMessage("Failed to add comment. Please try again. See console for details.", true);
   }
 }
 
@@ -131,7 +131,7 @@ function showReplyInput(commentElement, parentId) {
   replyInputArea.style.paddingLeft = '15px'; // Padding for tali
 
   const textarea = document.createElement('textarea');
-  textarea.placeholder = "Isulat ang iyong reply...";
+  textarea.placeholder = "Write your reply...";
   textarea.disabled = !auth.currentUser; // Disable if not logged in
 
   const submitButton = document.createElement('button');
@@ -268,7 +268,7 @@ function loadComments(spotId) {
         }
       });
     } else {
-      commentsDisplayArea.innerHTML = '<p style="text-align: center; color: #aaa;">Walang komento pa. Maging una!</p>';
+      commentsDisplayArea.innerHTML = '<p style="text-align: center; color: #aaa;">No comments yet. Be the first!</p>';
     }
   }, (error) => {
     console.error("Error loading comments (onSnapshot listener): ", error);
@@ -387,7 +387,7 @@ window.openOverlay = async (title, imageUrl, description, spotId) => {
   }
 
   const modalDirections = document.getElementById("modal-directions");
-  modalDirections.innerHTML = `<h3>Directions and Tutorial</h3><p>Makikita mo ang mga direksyon mula sa **${startAddress}** patungo sa **${spotName}** sa mapa sa ibaba. Maaari mong baguhin ang panimulang punto sa Google Maps.</p><iframe src="https://maps.google.com/maps?saddr=${encodeURIComponent(startAddress)}&daddr=${encodeURIComponent(destinationAddress)}&output=embed" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
+  modalDirections.innerHTML = `<h3>Directions and Tutorial</h3><p>You can see directions from ${startAddress} towards ${spotName} on the map below. You can change the starting point in Google Maps.</p><iframe src="https://maps.google.com/maps?saddr=${encodeURIComponent(startAddress)}&daddr=${encodeURIComponent(destinationAddress)}&output=embed" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
 
   // Load comments immediately as well
   loadComments(currentSpotId);
@@ -408,7 +408,7 @@ if (user && favoriteModalBtn) {
     console.error("Error checking favorite status in openOverlay:", error);
     updateFavoriteButtonState(favoriteModalBtn, false);
     favoriteModalBtn.disabled = true;
-    favoriteModalBtn.title = "May error habang kinukuha ang estado ng paborito.";
+    favoriteModalBtn.title = "There was an error while retrieving the favorite's state.";
   }
 }
 
@@ -419,7 +419,7 @@ window.closeOverlay = () => {
   currentSpotId = null;
   // Reset comments and directions sections to their initial state with headings
   document.getElementById("modal-directions").innerHTML = '<h3>Directions and Tutorial</h3>';
-  document.getElementById("modal-comment-section").innerHTML = '<h3>Comments</h3><div id="comments-display-area" class="comments-display-area"></div><div id="comment-message-area" style="display: none;"></div><div class="comment-input-area"><textarea id="comment-input" placeholder="Isulat ang iyong komento..." disabled></textarea><button id="submit-comment-btn" disabled>Submit</button></div>';
+  document.getElementById("modal-comment-section").innerHTML = '<h3>Comments</h3><div id="comments-display-area" class="comments-display-area"></div><div id="comment-message-area" style="display: none;"></div><div class="comment-input-area"><textarea id="comment-input" placeholder="Write yor comment..." disabled></textarea><button id="submit-comment-btn" disabled>Submit</button></div>';
   showTemporaryMessage('');
 
   if (unsubscribeComments) {
@@ -438,14 +438,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.log("Favorite button clicked.");
       const user = auth.currentUser;
       if (!user) {
-        showTemporaryMessage("Mangyaring mag-log in para mag-save ng paborito.", true);
-        console.log("Mangyaring mag-log in para mag-save ng paborito.");
+        showTemporaryMessage("Please log in to save a favorite.", true);
+        console.log("Please log in to save a favorite.");
         return;
       }
 
       if (!currentSpotId) {
         showTemporaryMessage("Walang spot na napili sa modal.", true);
-        console.log("Walang spot na napili sa modal.");
+        console.log("No spot selected in the modal.");
         return;
       }
 
@@ -463,19 +463,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (isCurrentlyFavoritedInModal) {
           await updateDoc(userDocRef, { favorites: arrayRemove(favoriteObj) });
           updateFavoriteButtonState(favoriteModalBtn, false);
-          showTemporaryMessage(`${spotName} inalis mula sa mga paborito.`, false);
-          console.log(`${spotName} inalis mula sa mga paborito.`);
+          showTemporaryMessage(`${spotName} removed from favorites.`, false);
+          console.log(`${spotName} removed from favorites.`);
         } else {
           await updateDoc(userDocRef, { favorites: arrayUnion(favoriteObj) });
           updateFavoriteButtonState(favoriteModalBtn, true);
-          showTemporaryMessage(`${spotName} idinagdag sa mga paborito.`, false);
-          console.log(`${spotName} idinagdag sa mga paborito.`);
+          showTemporaryMessage(`${spotName} added to favorites.`, false);
+          console.log(`${spotName} added to favorites.`);
         }
 
       } catch (error) {
-        console.error('Error sa pag-update ng mga paborito:', error);
-        showTemporaryMessage('Nabigo ang pag-update ng mga paborito. Tingnan ang console.', true);
-        console.log('Nabigo ang pag-update ng mga paborito.');
+        console.error('Error updating favorites:', error);
+        showTemporaryMessage('Failed to update favorites. Check the console.', true);
+        console.log('Failed to update favorites.');
       }
     });
   } else {
@@ -493,20 +493,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       const user = auth.currentUser;
 
       if (!user) {
-        showTemporaryMessage("Mangyaring mag-log in para mag-komento.", true);
-        console.log("Mangyaring mag-log in para mag-komento.");
+        showTemporaryMessage("Please log in to comment.", true);
+        console.log("Please log in to comment.");
         return;
       }
 
       if (!commentText) {
-        showTemporaryMessage("Walang laman ang komento. Mangyaring maglagay ng komento.", true);
-        console.log("Walang laman ang komento.");
+        showTemporaryMessage("The comment is empty. Please enter a comment.", true);
+        console.log("The comment is empty.");
         return;
       }
 
       if (!currentSpotId) {
-        showTemporaryMessage("Walang spot na napili para sa komento.", true);
-        console.log("Walang spot na napili para sa komento.");
+        showTemporaryMessage("No spots have been selected for comment.", true);
+        console.log("No spots have been selected for comment.");
         return;
       }
 
@@ -520,12 +520,12 @@ document.addEventListener('DOMContentLoaded', async () => {
           parentId: null // Top-level comment
         });
         commentInput.value = '';
-        showTemporaryMessage("Komento naidagdag na!", false);
-        console.log("Komento naidagdag na!");
+        showTemporaryMessage("Comment added!", false);
+        console.log("Comment added!!");
       } catch (error) {
-        console.error("Error sa pagdagdag ng komento:", error);
-        showTemporaryMessage("Nabigo ang pagdagdag ng komento. Subukang muli. Tingnan ang console para sa detalye.", true);
-        console.log("Nabigo ang pagdagdag ng komento.");
+        console.error("Error adding comment:", error);
+        showTemporaryMessage("Failed to add comment. Please try again. See console for details.", true);
+        console.log("Adding comment failed.");
       }
     });
   } else {
@@ -562,7 +562,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Enable/disable main comment input and submit button
     if (commentInput) {
         commentInput.disabled = !user;
-        commentInput.placeholder = user ? "Isulat ang iyong komento..." : "Mangyaring mag-log in para mag-komento.";
+        commentInput.placeholder = user ? "Write your comment..." : "Please log in to comment.";
     }
     if (submitCommentBtn) {
         submitCommentBtn.disabled = !user;
@@ -582,7 +582,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (user) {
       currentUserId = user.uid;
-      console.log('Nakalog-in ang user:', user.uid);
+      console.log('User logged in:', user.uid);
 
       if (currentSpotId && favoriteModalBtn) {
         try {
@@ -597,7 +597,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           console.error("Error updating favorite button on auth state change:", error);
           updateFavoriteButtonState(favoriteModalBtn, false);
           favoriteModalBtn.disabled = true;
-          favoriteModalBtn.title = 'Mangyaring mag-log in para mag-paborito.';
+          favoriteModalBtn.title = 'Please log in to view favorites.';
         }
       }
     } else {
@@ -606,7 +606,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (favoriteModalBtn) {
         updateFavoriteButtonState(favoriteModalBtn, false);
         favoriteModalBtn.disabled = true;
-        favoriteModalBtn.title = 'Mangyaring mag-log in para mag-paborito.';
+        favoriteModalBtn.title = 'Please log in to favorite..';
       }
 
       if (!initialAuthToken) {

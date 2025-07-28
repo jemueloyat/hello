@@ -54,7 +54,7 @@ console.log("Firebase Config in use: Using hardcoded values.");
 // Suriin kung ang mahahalagang Firebase config ay nawawala pa rin
 if (!firebaseConfig.projectId || !firebaseConfig.apiKey) {
     console.error("Firebase initialization warning: Essential firebaseConfig (projectId/apiKey) might be missing even after fallback. Firebase-dependent features will be disabled.");
-    if (postMessageArea) showMessage(postMessageArea, "Error: Hindi makakonekta sa database. Pakisuri ang configuration.", false);
+    if (postMessageArea) showMessage(postMessageArea, "Error: Unable to connect to database. Please check the configuration.", false);
 }
 
 const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
@@ -74,7 +74,7 @@ try {
     // storage = getStorage(app);
 } catch (error) {
     console.error("Failed to initialize Firebase:", error);
-    if (postMessageArea) showMessage(postMessageArea, "Error: Hindi makakonekta sa database. Pakisuri ang configuration.", false);
+    if (postMessageArea) showMessage(postMessageArea, "Error: Unable to connect to database. Please check the configuration.", false);
     db = null;
     auth = null;
     // TINANGGAL: storage = null;
@@ -154,7 +154,7 @@ if (auth) {
         if (profileEmail) profileEmail.textContent = 'Please try again later.';
         if (profileBio) profileBio.textContent = 'Database connection failed.';
         if (profileAvatar) profileAvatar.src = 'https://placehold.co/120?text=Error';
-        if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="message-area">Hindi ma-load ang mga post. Database error.</p>';
+        if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="message-area">Posts cannot be loaded.. Database error.</p>';
       }
 
       // I-adjust ang UI batay kung sariling profile o hindi
@@ -200,7 +200,7 @@ if (auth) {
           if (profileEmail) profileEmail.textContent = 'Please try again later.';
           if (profileBio) profileBio.textContent = 'Database connection failed.';
           if (profileAvatar) profileAvatar.src = 'https://placehold.co/120?text=Error';
-          if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="message-area">Hindi ma-load ang mga post. Database error.</p>';
+          if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="message-area">Posts cannot be loaded.. Database error.</p>';
         }
 
         if (postCreationSection) postCreationSection.style.display = 'none';
@@ -214,7 +214,7 @@ if (auth) {
         if (profileEmail) profileEmail.textContent = '';
         if (profileBio) profileBio.textContent = 'Please log in to see your profile.';
         if (profileAvatar) profileAvatar.src = 'https://placehold.co/120?text=P';
-        if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="loading-message">Mangyaring mag-log in para makita ang iyong mga post.</p>';
+        if (profilePostsFeed) profilePostsFeed.innerHTML = '<p class="loading-message">Please log in to see your posts..</p>';
         if (postCreationSection) postCreationSection.style.display = 'none';
         if (profileActionsDiv) profileActionsDiv.style.display = 'none';
         if (editProfileBtn) editProfileBtn.style.display = 'none'; // Hide button
@@ -286,7 +286,7 @@ async function loadProfileData(userIdToLoad) {
         profileEmail.style.display = 'none'; // Hide the element
       }
 
-      if (profileBio) profileBio.textContent = userData.bio || 'Walang bio pa.';
+      if (profileBio) profileBio.textContent = userData.bio || 'No bio yet.';
       if (userData.avatarUrl && profileAvatar) {
         profileAvatar.src = userData.avatarUrl;
       } else {
@@ -302,7 +302,7 @@ async function loadProfileData(userIdToLoad) {
         profileEmail.style.display = 'none'; // Hide the element
       }
 
-      if (profileBio) profileBio.textContent = 'Ang profile na ito ay hindi umiiral o nabura.';
+      if (profileBio) profileBio.textContent = 'This profile does not exist or has been deleted.';
       if (profileAvatar) profileAvatar.src = 'https://placehold.co/120?text=P';
     }
   } catch (error) {
@@ -317,7 +317,7 @@ async function loadProfileData(userIdToLoad) {
       profileEmail.style.display = 'none'; // Hide the element
     }
 
-    if (profileBio) profileBio.textContent = 'May problema sa pag-load ng profile. Pakisuri ang console para sa detalye.';
+    if (profileBio) profileBio.textContent = 'There was a problem loading the profile. Please check the console for details.';
     if (profileAvatar) profileAvatar.src = 'https://placehold.co/120?text=Error'; // Error placeholder
   }
 }
@@ -327,7 +327,7 @@ async function loadProfileData(userIdToLoad) {
 if (editProfileBtn) {
   editProfileBtn.addEventListener('click', async () => {
     if (!currentUserId || !db || targetProfileUserId !== currentUserId) {
-      showMessage(postMessageArea, "Hindi mo maaaring i-edit ang profile na ito.", false);
+      showMessage(postMessageArea, "You cannot edit this profile.", false);
       return;
     }
     const newUsername = prompt("Enter new username:", profileUsername.textContent);
@@ -353,7 +353,7 @@ if (editProfileBtn) {
           if (updates.username) currentUserName = updates.username;
         } catch (error) {
           console.error("Error updating profile:", error);
-          showMessage(postMessageArea, "Nabigo ang pag-update ng profile.", false);
+          showMessage(postMessageArea, "Profile update failed.", false);
         }
       }
     }
@@ -364,7 +364,7 @@ if (editProfileBtn) {
 if (changeAvatarBtn && avatarUpload) {
     changeAvatarBtn.addEventListener('click', () => {
         if (!currentUserId || targetProfileUserId !== currentUserId) {
-            showMessage(postMessageArea, "Hindi mo maaaring palitan ang profile picture na ito.", false);
+            showMessage(postMessageArea, "You cannot change this profile picture.", false);
             return;
         }
         avatarUpload.click(); // I-trigger ang hidden file input
@@ -380,7 +380,7 @@ if (avatarUpload && profileAvatar && db) {
     if (!file) return;
 
     if (!currentUserId || targetProfileUserId !== currentUserId) {
-        showMessage(postMessageArea, "Hindi mo maaaring i-upload ang avatar para sa profile na ito.", false);
+        showMessage(postMessageArea, "You cannot upload an avatar for this profile.", false);
         return;
     }
     showMessage(postMessageArea, "Uploading avatar...", false);
@@ -403,7 +403,7 @@ if (avatarUpload && profileAvatar && db) {
     };
     reader.onerror = (error) => {
         console.error("Error reading file:", error);
-        showMessage(postMessageArea, "Nabigo ang pagbasa ng imahe.", false);
+        showMessage(postMessageArea, "Image reading failed.", false);
     };
     reader.readAsDataURL(file);
   });
@@ -418,7 +418,7 @@ if (avatarUpload && profileAvatar && db) {
 if (createPostBtn) {
   createPostBtn.addEventListener('click', async () => {
     if (!currentUserId || !currentUserName || !db || targetProfileUserId !== currentUserId) {
-      showMessage(postMessageArea, "Hindi ka maaaring mag-post sa profile na ito.", false);
+      showMessage(postMessageArea, "You cannot post to this profile.", false);
       return;
     }
 
@@ -426,7 +426,7 @@ if (createPostBtn) {
     const imageFile = postImageInput.files[0];
 
     if (!postContent && !imageFile) {
-      showMessage(postMessageArea, "Mangyaring magsulat ng post o mag-upload ng imahe.", false);
+      showMessage(postMessageArea, " Please write a post or upload an image.", false);
       return;
     }
 
@@ -703,8 +703,8 @@ function showConfirmModal(message, onConfirm) {
       <div class="modal-content" style="max-width: 400px; padding: 20px; text-align: center;">
         <p id="confirmMessage" style="font-size: 1.1em; margin-bottom: 20px; color: #333;"></p>
         <div style="display: flex; justify-content: center; gap: 15px;">
-          <button id="confirmYesBtn" style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Oo</button>
-          <button id="confirmNoBtn" style="background-color: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Hindi</button>
+          <button id="confirmYesBtn" style="background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Yes</button>
+          <button id="confirmNoBtn" style="background-color: #6c757d; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">No</button>
         </div>
       </div>
     `;
